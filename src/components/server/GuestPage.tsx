@@ -1,7 +1,7 @@
 import { Inconsolata, Istok_Web } from "next/font/google";
 import Link from "next/link";
-const inconsolata = Inconsolata({ weight: "900" });
-const istokWeb = Istok_Web({ weight: "400" });
+const inconsolata = Inconsolata({ weight: "900", subsets: ["latin"] });
+const istokWeb = Istok_Web({ weight: "400", subsets: ["latin"] });
 export default function GuestPage() {
   return (
     <main className="flex h-dvh w-full flex-col items-center justify-center bg-gradient-to-r from-[#92B079] to-white">

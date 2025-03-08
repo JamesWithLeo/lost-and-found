@@ -1,7 +1,11 @@
 import { IBM_Plex_Sans_Thai_Looped, Inter_Tight } from "next/font/google";
 import Link from "next/link";
 const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["700"] });
-const inter = Inter_Tight({ weight: ["300", "400", "600"], style: "italic" });
+const inter = Inter_Tight({
+  weight: ["300", "400", "600"],
+  style: "italic",
+  subsets: ["latin"],
+});
 export default function ClientStory() {
   return (
     <main className="w-full px-20">

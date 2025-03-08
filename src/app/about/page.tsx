@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-const inter = Inter({ weight: "300" });
+const inter = Inter({ weight: "300", subsets: ["latin"] });
 import TeamCard from "@/components/client/teamCard";
 import Link from "next/link";
 
