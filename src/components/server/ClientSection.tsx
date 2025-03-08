@@ -6,7 +6,7 @@ const inter = Inter_Tight({
   style: "italic",
   subsets: ["latin"],
 });
-export default function ClientStory() {
+export default function ClientSection() {
   return (
     <main className="w-full px-20">
       <h1 className={`${ibm.className} text-[3.75rem] font-bold`}>
