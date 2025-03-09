@@ -1,10 +1,9 @@
 import GuestPage from "@/components/server/GuestPage";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Record<string, string> | null | undefined;
-}) {
+interface PageProps {
+  searchParams?: { [key: string]: string };
+}
+export default async function Home({ searchParams }: PageProps) {
   const openSearch = searchParams?.new === "true";
   return (
     <div className="flex min-h-screen flex-col items-center justify-items-center">
