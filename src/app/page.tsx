@@ -1,7 +1,7 @@
 import GuestPage from "@/components/server/GuestPage";
 
 interface PageProps {
-  searchParams?: { [key: string]: string };
+  searchParams?: Record<string, string | string[]>;
 }
 export default async function Home({ searchParams }: PageProps) {
   const openSearch = searchParams?.new === "true";
