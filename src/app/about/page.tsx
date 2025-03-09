@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 const inter = Inter({ weight: "300", subsets: ["latin"] });
-import TeamCard from "@/components/client/teamCard";
+import TeamCard from "@/components/server/teamCard";
 import Link from "next/link";
 
 export default function AboutPage() {
@@ -34,7 +34,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="flex flex-col items-center">
+      <section className="flex flex-col items-center pb-8">
         <h1 className="mb-4 text-center text-3xl">Our story </h1>
         <p
           className={`h-max w-[520px] text-center leading-9 ${inter.className}`}

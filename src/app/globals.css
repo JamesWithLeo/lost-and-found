@@ -3,9 +3,36 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #4c96d7;
+  --primary-darker: #1761a0;
+  --primary-lighter: #8dcaff;
+}
+
+@theme static {
+  --bg-primary: var(--primary);
+  --bg-primary-darker: var(--primary-darker);
+  --bg-primary-lighter: var(--primary-lighter);
+
+}
+
+
+@layer utilities {
+
+  .bg-primary {
+    background-color: var(--primary);
+  }
+
+  .text-primary {
+    color: var(--primary)
+  }
+
+  .text-primary-dark {
+    color: var(--primary-darker)
+  }
 }
 
 @theme inline {
+  --bg-primary: var(--primary);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -14,8 +41,12 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --primary: var(--primary);
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary: #4c96d7;
+    --primary-darker: #1761a0;
+    --primary-lighter: #8dcaff;
   }
 }
 

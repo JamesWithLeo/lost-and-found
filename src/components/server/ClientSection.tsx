@@ -8,7 +8,7 @@ const inter = Inter_Tight({
 });
 export default function ClientSection() {
   return (
-    <section className="flex w-full flex-col gap-8 px-24">
+    <section className="flex w-full max-w-[1440px] flex-col gap-8 px-24">
       <div className="flex">
         <div className="w-max">
           <h1 className={`${ibm.className} text-[3.75rem] font-bold`}>

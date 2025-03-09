@@ -1,4 +1,5 @@
 import { Anonymous_Pro } from "next/font/google";
+import Form from "next/form";
 
 const anony = Anonymous_Pro({
   weight: ["400", "700"],
@@ -7,15 +8,16 @@ const anony = Anonymous_Pro({
 });
 export default function Page() {
   return (
-    <main className="flex flex-col gap-8 px-28 py-10">
-      <h1 className={`${anony.className} text-center text-2xl`}>
-        Report found items
-      </h1>
-      <div className="flex justify-evenly">
+    <Form
+      className="flex w-full max-w-[1440px] flex-col gap-8 bg-gradient-to-b from-slate-50 to-white px-48 py-10"
+      action={"/report/result"}
+    >
+      <div className="grid w-full grid-cols-2 justify-center gap-16">
         <div className="flex flex-col gap-4">
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Item name *</label>
             <input
+              name="Item-name"
               placeholder="Umbrella"
               className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
             />
@@ -25,6 +27,7 @@ export default function Page() {
             <label className={`${anony.className}`}>Color *</label>
             <input
               placeholder="Black"
+              name="color"
               className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
             />
           </span>
@@ -32,6 +35,7 @@ export default function Page() {
             <label className={`${anony.className}`}>Brand/Model *</label>
             <input
               placeholder="UV"
+              name="brandmodel"
               className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
             />
           </span>
@@ -40,6 +44,7 @@ export default function Page() {
             <label className={`${anony.className}`}>Location</label>
             <input
               placeholder="Rizal"
+              name="location"
               className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
             />
           </span>
@@ -48,6 +53,7 @@ export default function Page() {
             <input
               placeholder=""
               type="datetime-local"
+              name="time-date"
               className={`h-[60px] w-[400px] rounded-full bg-gray-100 px-6 focus:outline-0 ${anony.className}`}
             />
           </span>
@@ -109,12 +115,14 @@ export default function Page() {
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Caption</label>
             <input
+              name="caption"
               className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
             />
           </span>
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Description</label>
             <input
+              name="desc"
               className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
             />
           </span>
@@ -128,7 +136,10 @@ export default function Page() {
       </div>
 
       <div className="flex flex-col items-center justify-center">
-        <button className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-1">
+        <button
+          className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-1"
+          type="submit"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
@@ -142,6 +153,6 @@ export default function Page() {
         </button>
         {/* <Link href={"/"}>upload report</Link> */}
       </div>
-    </main>
+    </Form>
   );
 }

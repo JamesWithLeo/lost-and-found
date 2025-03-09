@@ -6,7 +6,7 @@ import SearchModal from "./SearchModal";
 
 export default function GuestPage({ isModalOpen }: { isModalOpen: boolean }) {
   return (
-    <main className="flex flex-col gap-28">
+    <main className="flex w-full flex-col gap-36">
       <GuestHero />
       {isModalOpen && <SearchModal />}
       <ClientSection />

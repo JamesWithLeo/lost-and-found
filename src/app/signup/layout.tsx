@@ -1,4 +1,4 @@
-import Header from "../../components/server/headers/header";
+import SignupHeader from "@/components/server/headers/SignUpheader";
 
 export default function AboutLayout({
   children,
@@ -7,7 +7,7 @@ export default function AboutLayout({
 }) {
   return (
     <main className="w-full">
-      <Header />
+      <SignupHeader />
       {children}
     </main>
   );

@@ -11,17 +11,23 @@ const inri = Inria_Sans({
 export default function NavigationButton({
   label,
   target,
+  hideOn,
 }: {
   label: string;
   target: string;
+  hideOn: string[];
 }) {
   const path = usePathname();
   return (
-    <Link
-      href={target}
-      className={`${inri.className} ${path === target ? "underline-offset-3 underline" : "no-underline"}`}
-    >
-      {label}
-    </Link>
+    <>
+      {!hideOn.includes(path) && (
+        <Link
+          href={target}
+          className={`${inri.className} ${path === target ? "underline-offset-3 text-primary-dark underline" : "no-underline"} ${path === "/start" && label === "Home" ? "underline-offset-3 text-primary-dark underline" : ""}`}
+        >
+          {label}
+        </Link>
+      )}
+    </>
   );
 }

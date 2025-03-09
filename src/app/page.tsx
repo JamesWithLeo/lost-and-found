@@ -1,14 +1,11 @@
-import GuestPage from "@/components/server/GuestPage";
-interface PageProps {
-  searchParams?: Promise<Record<string, string | string[]>>;
-}
+import { redirect } from "next/navigation";
 
-export default async function Page({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const openSearch = params?.new === "true";
+export default async function Page() {
+  const isLoggedIn = true;
+  if (!isLoggedIn) {
+    redirect("/discovery");
+  }
   return (
-    <div className="flex min-h-screen flex-col items-center justify-items-center">
-      <GuestPage isModalOpen={openSearch} />
-    </div>
+    <div className="flex min-h-screen flex-col items-center justify-items-center"></div>
   );
 }

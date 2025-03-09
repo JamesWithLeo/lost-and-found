@@ -3,8 +3,8 @@ import Link from "next/link";
 export default function SearchModal() {
   return (
     <>
-      <div className="fixed inset-0 z-20 h-full w-full bg-black opacity-45"></div>
-      <div className="fixed left-1/2 top-1/2 z-20 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-10 rounded-xl bg-white p-4">
+      <div className="fixed inset-0 z-40 h-full w-full bg-black opacity-45"></div>
+      <div className="fixed left-1/2 top-1/2 z-50 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-10 rounded-xl bg-white p-4">
         <div className="flex flex-col items-end">
           <Link href={"/"}>
             <svg
@@ -20,7 +20,7 @@ export default function SearchModal() {
         </div>
         <h1 className="text-center">Search for...</h1>
         <div className="flex w-full justify-evenly">
-          <Link href={"/item"}>
+          <Link href={"/my-item"}>
             <div className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded bg-gray-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ export default function SearchModal() {
               <h1>Item</h1>
             </div>
           </Link>
-          <Link href={"/"}>
+          <Link href={"/report"}>
             <div className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded bg-gray-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
