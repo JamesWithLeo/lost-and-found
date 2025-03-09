@@ -1,5 +1,5 @@
 import { IBM_Plex_Sans_Thai_Looped, Istok_Web } from "next/font/google";
-const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["700"] });
+const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["700"], subsets: ["latin"] });
 const istokWeb = Istok_Web({ weight: "400", subsets: ["latin"] });
 export default function ContactUsSection() {
   return (

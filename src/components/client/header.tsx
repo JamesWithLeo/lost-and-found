@@ -1,6 +1,6 @@
-import NavigationButton from "../server/NavigationButton";
+import NavigationButton from "./NavigationButton";
 
-export default async function Header() {
+export default async function Header({}) {
   return (
     <header
       className={`sticky top-0 flex h-[5rem] w-full items-center justify-between bg-white px-8 shadow`}
@@ -9,7 +9,9 @@ export default async function Header() {
       <span className="flex gap-8">
         <NavigationButton label="Home" target="/" />
         <NavigationButton label="About us" target="/about" />
-        <NavigationButton label="Contact us" target="contact" />
+        <NavigationButton label="Contact us" target="/contact" />
+        <NavigationButton label="Sign in" target="/Signin" />
+        <NavigationButton label="Sign up" target="/Signup" />
       </span>
     </header>
   );

@@ -1,7 +1,9 @@
 import { Inconsolata, Istok_Web } from "next/font/google";
 import Link from "next/link";
+
 const inconsolata = Inconsolata({ weight: "900", subsets: ["latin"] });
 const istokWeb = Istok_Web({ weight: "400", subsets: ["latin"] });
+
 export default function GuestHero() {
   return (
     <section className="flex h-dvh w-full flex-col items-center justify-center bg-gradient-to-r from-[#92B079] to-white">
@@ -15,7 +17,8 @@ export default function GuestHero() {
               who have lost items with those who have found them.
             </p>
             <Link
-              href={"/"}
+              href={"/?new=true"}
+              scroll={false}
               className="rounded-full border px-4 py-2 text-[14px]"
             >
               Search

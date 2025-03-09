@@ -1,9 +1,14 @@
 import GuestPage from "@/components/server/GuestPage";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Record<string, string> | null | undefined;
+}) {
+  const openSearch = searchParams?.new === "true";
   return (
     <div className="flex min-h-screen flex-col items-center justify-items-center">
-      <GuestPage />
+      <GuestPage isModalOpen={openSearch} />
     </div>
   );
 }

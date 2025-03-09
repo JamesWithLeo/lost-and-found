@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "../components/client/header";
+import Header from "@/components/client/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,8 +20,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  auth,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  auth: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en">
@@ -30,6 +34,8 @@ export default function RootLayout({
       >
         <Header />
         {children}
+        {auth}
+        {modal}
       </body>
     </html>
   );
