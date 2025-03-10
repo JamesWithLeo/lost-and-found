@@ -20,7 +20,7 @@ export default function Page() {
               <input
                 name="Item-name"
                 placeholder="Umbrella"
-                className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+                className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
               />
             </span>
 
@@ -29,7 +29,7 @@ export default function Page() {
               <input
                 placeholder="Black"
                 name="color"
-                className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+                className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
               />
             </span>
             <span className="flex flex-col gap-1">
@@ -37,7 +37,7 @@ export default function Page() {
               <input
                 placeholder="UV"
                 name="brandmodel"
-                className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+                className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
               />
             </span>
 
@@ -46,7 +46,7 @@ export default function Page() {
               <input
                 placeholder="Rizal"
                 name="location"
-                className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+                className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
               />
             </span>
             <span className="flex flex-col gap-1">
@@ -55,7 +55,7 @@ export default function Page() {
                 placeholder=""
                 type="datetime-local"
                 name="time-date"
-                className={`h-[60px] w-[400px] rounded-full bg-gray-100 px-6 focus:outline-0 ${anony.className}`}
+                className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 px-6 focus:outline-0 ${anony.className}`}
               />
             </span>
           </div>
@@ -117,14 +117,14 @@ export default function Page() {
               <label className={`${anony.className}`}>Caption</label>
               <input
                 name="caption"
-                className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+                className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
               />
             </span>
             <span className="flex flex-col gap-1">
               <label className={`${anony.className}`}>Description</label>
               <input
                 name="desc"
-                className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+                className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
               />
             </span>
 
@@ -135,8 +135,10 @@ export default function Page() {
             </span>
           </div>
         </div>
-        <div>
-          <h1>Locate</h1>
+        <div className="flex w-full flex-col items-center">
+          <button className="bg-primary rounded-full px-4 py-1 text-white">
+            Locate Item
+          </button>
         </div>
       </Form>
     </>

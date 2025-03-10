@@ -1,8 +1,9 @@
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
 export default async function Page() {
-  const isLoggedIn = true;
-  if (!isLoggedIn) {
+  const session = await getServerSession();
+  if (!session) {
     redirect("/discovery");
   }
   return (
