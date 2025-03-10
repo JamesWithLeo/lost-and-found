@@ -22,6 +22,7 @@ export default function DefaultHeader({ isAuth }: { isAuth: boolean }) {
         <NavigationButton label="About us" target="/about" />
         <NavigationButton label="Contact us" target="/contact" />
         <div className="h-6 border-l border-gray-300"></div>
+
         {isAuth ? (
           <LogoutButton />
         ) : (

@@ -7,6 +7,9 @@ export default async function Page() {
     redirect("/discovery");
   }
   return (
-    <div className="flex min-h-screen flex-col items-center justify-items-center"></div>
+    <div className="flex min-h-screen flex-col items-center justify-items-center">
+      <h1>Welcome back,</h1>
+      <h1>James Leo Ocampo</h1>
+    </div>
   );
 }
