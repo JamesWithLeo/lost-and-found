@@ -1,9 +1,9 @@
 import Link from "next/link";
 const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["300", "400"] });
 import { IBM_Plex_Sans_Thai_Looped } from "next/font/google";
-import NavigationButton from "../../client/NavigationButton";
-import Logo from "../Logo";
-export default function LocateHeader() {
+import NavigationButton from "../client/NavigationButton";
+import Logo from "./Logo";
+export default function LocateHeader({ isAuth }: { isAuth: boolean }) {
   return (
     <>
       <header
@@ -12,8 +12,11 @@ export default function LocateHeader() {
         <div className="flex w-full justify-between px-8">
           <Logo />
           <span className="flex items-center gap-8">
-            <NavigationButton label="Home" target="/" hideOn={[]} />
-            <NavigationButton label="About us" target="/about" hideOn={[]} />
+            <NavigationButton
+              label={isAuth ? "Home" : "Discovery"}
+              target={isAuth ? "/" : "discovery"}
+            />
+            <NavigationButton label="About us" target="/about" />
           </span>
         </div>
 

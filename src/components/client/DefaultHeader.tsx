@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import Logo from "../server/Logo";
 import NavigationButton from "./NavigationButton";

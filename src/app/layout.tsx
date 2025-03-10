@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/server/footer";
 import MainHeader from "@/components/server/MainHeader";
-import { headers } from "next/headers";
+import { getServerSession } from "next-auth";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,13 +25,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = (await headers()).get("x-pathname") || "/";
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex flex-col items-center antialiased`}
       >
-        <MainHeader pathname={pathname} />
+        <MainHeader isAuth={!!session} />
         {children}
         <Footer />
       </body>

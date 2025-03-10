@@ -6,7 +6,10 @@ const anony = Anonymous_Pro({
   style: ["normal", "italic"],
   subsets: ["latin"],
 });
-const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["300", "400"] });
+const ibm = IBM_Plex_Sans_Thai_Looped({
+  weight: ["300", "400"],
+  subsets: ["latin"],
+});
 export default function SigninPage() {
   return (
     <main className="flex h-dvh flex-col items-center justify-center">

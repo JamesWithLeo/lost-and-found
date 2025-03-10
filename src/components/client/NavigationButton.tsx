@@ -1,4 +1,5 @@
 "use client";
+
 import { Inria_Sans } from "next/font/google";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -20,7 +21,7 @@ export default function NavigationButton({
     <>
       <Link
         href={target}
-        className={`${inri.className} ${path === target ? "text-primary-dark border-b" : "no-underline"} ${path === "/discovery" && label === "Home" ? "text-primary-dark border-b" : ""}`}
+        className={`${inri.className} ${path === target ? "text-primary-dark border-b" : ""} ${path === "/discovery" && label === "Home" ? "text-primary-dark border-b" : ""}`}
       >
         {label}
       </Link>

@@ -2,8 +2,8 @@ const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["300", "400"] });
 import { IBM_Plex_Sans_Thai_Looped } from "next/font/google";
 import NavigationButton from "@/components/client/NavigationButton";
 import Link from "next/link";
-import Logo from "../Logo";
-export default function ReportHeader() {
+import Logo from "./Logo";
+export default function ReportHeader({ isAuth }: { isAuth: boolean }) {
   return (
     <>
       <header
@@ -11,24 +11,12 @@ export default function ReportHeader() {
       >
         <div className="flex w-full justify-between px-8">
           <Logo />
-          <span className="flex gap-8">
-            <NavigationButton label="Home" target="/" hideOn={[]} />
-            <NavigationButton label="About us" target="/about" hideOn={[]} />
+          <span className="flex items-center gap-8">
             <NavigationButton
-              label="Contact us"
-              target="/contact"
-              hideOn={["/report"]}
+              label={isAuth ? "Home" : "Discovery"}
+              target={isAuth ? "/" : "discovery"}
             />
-            <NavigationButton
-              label="Sign in"
-              target="/Signin"
-              hideOn={["/report"]}
-            />
-            <NavigationButton
-              label="Sign up"
-              target="/Signup"
-              hideOn={["/report"]}
-            />
+            <NavigationButton label="About us" target="/about" />
           </span>
         </div>
 

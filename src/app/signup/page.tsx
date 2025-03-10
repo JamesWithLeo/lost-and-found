@@ -1,4 +1,7 @@
-const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["300", "400"] });
+const ibm = IBM_Plex_Sans_Thai_Looped({
+  weight: ["300", "400"],
+  subsets: ["latin"],
+});
 import { IBM_Plex_Sans_Thai_Looped, Anonymous_Pro } from "next/font/google";
 import GoogleButton from "@/components/client/GoogleButton";
 
