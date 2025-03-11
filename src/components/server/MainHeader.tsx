@@ -10,9 +10,9 @@ import { usePathname } from "next/navigation";
 export default function MainHeader({ isAuth }: { isAuth: boolean }) {
   const pathname = usePathname();
   if (pathname.startsWith("/signup")) {
-    return <SignupHeader />;
+    return <SignupHeader isAuth={isAuth} />;
   } else if (pathname.startsWith("/signin")) {
-    return <SigninHeader />;
+    return <SigninHeader isAuth={isAuth} />;
   } else if (pathname.startsWith("/my-item")) {
     return <LocateHeader isAuth={isAuth} />;
   } else if (pathname.startsWith("/report")) {
