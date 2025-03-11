@@ -3,6 +3,7 @@ import {
   Inter_Tight,
   Istok_Web,
 } from "next/font/google";
+import Image from "next/image";
 const ibm = IBM_Plex_Sans_Thai_Looped({ weight: ["700"], subsets: ["latin"] });
 const istokWeb = Istok_Web({ weight: "400", subsets: ["latin"] });
 const inter = Inter_Tight({
@@ -22,7 +23,13 @@ export default function ContactUsSection() {
             here to assist you in any way we can.
           </p>
         </div>
-        <div className="h-96 w-[600px] bg-gray-200"></div>
+        <Image
+          src={"/images/contactus.png"}
+          alt="contact"
+          width={600}
+          height={384}
+        />
+        {/* <div className="h-96 w-[600px] bg-gray-200"></div> */}
       </div>
       <div className="flex w-1/2 flex-col gap-8 pr-28">
         <h1 className={`${inter.className} mt-4 text-2xl font-bold`}>

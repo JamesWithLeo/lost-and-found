@@ -6,15 +6,21 @@ declare module "next-auth" {
       name?: string;
       email?: string;
       image?: string;
-      role?: string;
+      id?: string;
+      firstName?: string | null;
+      lastName?: string | null;
       accessToken?: string;
+      isCompletedAccount: boolean;
     } & DefaultSession["user"]; // Keeps default fields
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    role?: "user" | "admin";
+    id?: string;
     accessToken?: string;
+    lName?: string | null;
+    fName?: string | null;
+    ica: boolean; // is completed account
   }
 }

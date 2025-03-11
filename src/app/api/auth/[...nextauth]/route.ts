@@ -1,21 +1,10 @@
+import { db, getUsers, hasNullOrUndefinedData } from "@/db/drizzle";
+import { eq } from "drizzle-orm";
+import { users } from "@/db/schema";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-// declare module "next-auth" {
-//   interface Session {
-//     user?: {
-//       name?: string | null;
-//       email?: string | null;
-//       image?: string | null;
-//       role?: string;
-//       accessToken?: string;
-//     };
-//   }
-//   interface JWT{
-
-//   }
-// }
-const option: NextAuthOptions = {
+export const option: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -23,34 +12,85 @@ const option: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      console.log("user:", user);
-      console.log("account", account);
-      console.log("profile", profile);
-      console.log("email", email);
-      console.log("credential", credentials);
+    async signIn({ account, profile }) {
+      let email: string | undefined = undefined;
+      let googleId: string | undefined = undefined;
+      let facebookId: string | undefined = undefined;
+      let githubId: string | undefined = undefined;
+      let existingUser;
 
-      if (account?.provider === "google") {
+      if (account?.provider === "google" && profile?.sub) {
+        googleId = profile.sub; // Google UID
+        email = profile.email;
+        existingUser = await db
+          .select()
+          .from(users)
+          .where(eq(users.googleId, googleId));
+      } else if (account?.provider === "facebook" && profile?.sub) {
+        facebookId = profile.sub; // Facebook UID
+        email = profile.email;
+        existingUser = await db
+          .select()
+          .from(users)
+          .where(eq(users.facebookId, facebookId));
+      } else if (account?.provider === "github" && profile?.sub) {
+        githubId = profile.sub; // GitHub UID
+        email = profile.email;
+        existingUser = await db
+          .select()
+          .from(users)
+          .where(eq(users.githubId, githubId));
+      } else {
+        return false;
+      }
+
+      // create account
+      if (!existingUser.length) {
+        await db
+          .insert(users)
+          .values({ googleId, githubId, facebookId, email })
+          .returning();
+        return true;
+      } else {
+        console.log(existingUser);
         return true;
       }
-      return false;
     },
     async redirect({ baseUrl }) {
       return baseUrl;
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account, user }) {
+      let dbUser:
+        | {
+            id?: string;
+            firstName?: string | null;
+            lastName?: string | null;
+          }
+        | undefined = undefined;
       if (account) {
+        if (account.provider === "google") {
+          dbUser = await getUsers(user.id, "googleId");
+        } else if (account.provider === "facebook") {
+          dbUser = await getUsers(user.id, "facebookId");
+        }
+
         token.accessToken = account.access_token;
-        token.role = "user";
+        token.id = dbUser?.id;
+        token.fNmame = dbUser?.firstName;
+        token.lName = dbUser?.lastName;
+        token.ica = hasNullOrUndefinedData({
+          firstName: dbUser?.firstName,
+          lastName: dbUser?.lastName,
+        });
       }
       return token;
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.role = token.role;
-        session.user.accessToken = token.accessToken;
-      }
-
+      session.user.accessToken = token.accessToken;
+      session.user.id = token.id;
+      session.user.firstName = token.fName;
+      session.user.lastName = token.lName;
+      session.user.isCompletedAccount = token.ica;
       return session;
     },
   },
