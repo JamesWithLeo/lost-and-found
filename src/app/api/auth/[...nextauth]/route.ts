@@ -4,7 +4,7 @@ import { users } from "@/db/schema";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-export const option: NextAuthOptions = {
+export const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -103,6 +103,6 @@ export const option: NextAuthOptions = {
     strategy: "jwt",
   },
 };
-const handler = NextAuth(option);
+const handler = NextAuth(options);
 
 export { handler as GET, handler as POST };

@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import Dashboard from "@/components/client/Dashboard";
-import { option } from "./api/auth/[...nextauth]/route";
+import { options } from "./api/auth/[...nextauth]/route";
 
 export default async function Page() {
-  const session = await getServerSession(option);
+  const session = await getServerSession(options);
   console.log("session in server:", session);
   if (!session) {
     redirect("/discovery");
