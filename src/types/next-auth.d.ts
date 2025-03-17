@@ -19,8 +19,5 @@ declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
     accessToken?: string;
-    lName?: string | null;
-    fName?: string | null;
-    ica: boolean; // is completed account
   }
 }

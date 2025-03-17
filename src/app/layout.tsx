@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/server/footer";
-import MainHeader from "@/components/server/MainHeader";
+import Footer from "@/ui/server/footer";
+import MainHeader from "@/ui/server/MainHeader";
 import { getServerSession } from "next-auth";
 
 const geistSans = Geist({
@@ -33,7 +33,8 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex flex-col items-center antialiased`}
       >
-        <MainHeader isAuth={!!session} />
+        <MainHeader isAuth={!!session} photoUrl={session?.user.image} />
+
         {children}
         <Footer />
       </body>

@@ -1,4 +1,4 @@
-import { db, getUsers, hasNullOrUndefinedData } from "@/db/drizzle";
+import { db, getUsersByProvider } from "@/db/drizzle";
 import { eq } from "drizzle-orm";
 import { users } from "@/db/schema";
 import { NextAuthOptions } from "next-auth";
@@ -69,28 +69,19 @@ export const authOptions: NextAuthOptions = {
         | undefined = undefined;
       if (account) {
         if (account.provider === "google") {
-          dbUser = await getUsers(user.id, "googleId");
+          dbUser = await getUsersByProvider(user.id, "googleId");
         } else if (account.provider === "facebook") {
-          dbUser = await getUsers(user.id, "facebookId");
+          dbUser = await getUsersByProvider(user.id, "facebookId");
         }
 
         token.accessToken = account.access_token;
         token.id = dbUser?.id;
-        token.fNmame = dbUser?.firstName;
-        token.lName = dbUser?.lastName;
-        token.ica = hasNullOrUndefinedData({
-          firstName: dbUser?.firstName,
-          lastName: dbUser?.lastName,
-        });
       }
       return token;
     },
     async session({ session, token }) {
       session.user.accessToken = token.accessToken;
       session.user.id = token.id;
-      session.user.firstName = token.fName;
-      session.user.lastName = token.lName;
-      session.user.isCompletedAccount = token.ica;
       return session;
     },
   },

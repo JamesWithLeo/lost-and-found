@@ -5,9 +5,23 @@ import {
   uuid,
   timestamp,
   varchar,
+  date,
+  integer,
 } from "drizzle-orm/pg-core";
 
 export const role = pgEnum("role", ["user", "admin"]);
+export const gender = pgEnum("gender", ["male", "female"]);
+export const itemStatusEnum = pgEnum("status", [
+  "pending",
+  "expired",
+  "returned",
+]);
+export const itemTypeEnum = pgEnum("type", [
+  "lost",
+  "stolen",
+  "missing",
+  "found",
+]);
 
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -15,6 +29,8 @@ export const users = pgTable("users", {
   lastName: varchar({ length: 256 }),
   role: role("role").notNull().default("user"),
   createdAt: timestamp("created_at").defaultNow(),
+  birthDate: date("birth_date"),
+  gender: gender(),
 
   email: text().unique(),
   googleId: text("google_id").unique(),
@@ -23,12 +39,25 @@ export const users = pgTable("users", {
 });
 
 export const items = pgTable("items", {
-  id: uuid("id").primaryKey(),
-  name: text("name").notNull(),
-  description: text("description"),
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id),
+  itemName: text("item_name").notNull(),
+  itemStatus: itemStatusEnum("item_status").notNull().default("pending"),
+  color: text("color"),
+  brandModel: text("brand_model"),
   location: text("location").notNull(),
-  status: text("status").default("lost"), // lost, found, claimed
-  foundBy: uuid("found_by").references(() => users.id), // Who found it?
-  lostBy: uuid("lost_by").references(() => users.id), // Who lost it?
-  createdAt: timestamp("created_at").defaultNow(),
+  timeDate: timestamp("time_date", { mode: "date" }).notNull(),
+  category: text("category").notNull(),
+  caption: text("caption").notNull(),
+  desc: text("desc"),
+  createdAt: text("created_at").default(new Date().toISOString()),
+  type: itemTypeEnum().notNull().default("lost"),
+  claimantCount: integer("claimant_count").default(0),
+});
+
+export const category = pgTable("category", {
+  id: integer("id").primaryKey(),
+  name: varchar("256").unique().notNull(),
 });

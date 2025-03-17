@@ -1,4 +1,4 @@
-import ContactUsSection from "@/components/server/ContactUsSection";
+import ContactUsSection from "@/ui/server/ContactUsSection";
 
 export default function Page() {
   return (

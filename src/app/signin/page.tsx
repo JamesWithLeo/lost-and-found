@@ -1,5 +1,5 @@
 import { IBM_Plex_Sans_Thai_Looped, Anonymous_Pro } from "next/font/google";
-import GoogleButton from "@/components/client/GoogleButton";
+import GoogleButton from "@/ui/client/GoogleButton";
 
 const anony = Anonymous_Pro({
   weight: ["400", "700"],

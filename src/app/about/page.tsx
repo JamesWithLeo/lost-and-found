@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
 const inter = Inter({ weight: "300", subsets: ["latin"] });
-import TeamCard from "@/components/server/teamCard";
+import TeamCard from "@/ui/server/teamCard";
 import Link from "next/link";
 
 export default function AboutPage() {

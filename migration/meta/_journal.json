@@ -8,6 +8,125 @@
       "when": 1741671171036,
       "tag": "0000_amused_taskmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1741703491678,
+      "tag": "0001_lean_texas_twister",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1741703594831,
+      "tag": "0002_lying_malice",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1741704213463,
+      "tag": "0003_icy_ben_grimm",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1741919116803,
+      "tag": "0004_lovely_skin",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1741919946844,
+      "tag": "0005_familiar_corsair",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1741921209427,
+      "tag": "0006_wide_silverclaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1741921676944,
+      "tag": "0007_slimy_iron_patriot",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1741956829822,
+      "tag": "0008_useful_lady_vermin",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1741968362357,
+      "tag": "0009_quick_shatterstar",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1741970856989,
+      "tag": "0010_flashy_stryfe",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1742004057154,
+      "tag": "0011_high_namor",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1742004137983,
+      "tag": "0012_condemned_firebrand",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1742004347315,
+      "tag": "0013_overrated_catseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1742004399179,
+      "tag": "0014_thick_kitty_pryde",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1742004435335,
+      "tag": "0015_yummy_rockslide",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1742010998766,
+      "tag": "0016_bouncy_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1742011266627,
+      "tag": "0017_easy_captain_flint",
+      "breakpoints": true
     }
   ]
 }

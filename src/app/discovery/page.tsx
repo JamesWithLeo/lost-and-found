@@ -1,4 +1,4 @@
-import GuestPage from "@/components/server/GuestPage";
+import GuestPage from "@/ui/server/GuestPage";
 interface PageProps {
   searchParams?: Promise<Record<string, string | string[]>>;
 }
