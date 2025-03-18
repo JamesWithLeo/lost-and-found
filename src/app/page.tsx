@@ -4,6 +4,7 @@ import { authOptions } from "../authOptions";
 import { getUser, hasNullOrUndefinedData } from "@/db/drizzle";
 import Link from "next/link";
 import SearchModal from "@/ui/server/SearchModal";
+import QuickSearchSection from "@/ui/QuickSearchSection";
 
 interface PageProps {
   searchParams?: Promise<Record<string, string | string[]>>;
@@ -27,19 +28,102 @@ export default async function Page({ searchParams }: PageProps) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-items-center">
+    <div className="flex min-h-screen w-full max-w-[1440px] flex-col items-center justify-items-center">
       {openSearch && <SearchModal />}
 
-      <span className="h-[140px] w-[396px] text-right text-4xl font-bold text-gray-400">
-        Today, we helped 36 people reunite with their lost items!
-      </span>
-      <Link href={"/?new=true"} className={`rounded-full border px-4 py-1`}>
-        Search Item/Owner
-      </Link>
-      <h1 className="text-6xl font-bold">Welcome back</h1>
-      <h1 className="text-4xl font-bold">
-        {user?.firstName} {user?.lastName}
-      </h1>
+      <section className="w-full flex-col">
+        <div className="grid h-80 w-full grid-cols-3 grid-rows-4 justify-items-center overflow-clip bg-[url(/images/hero.png)] bg-cover bg-center">
+          <div className="col-span-3 row-span-2 row-start-3"></div>
+          <span className="right-16 top-56 col-span-2 col-start-2 row-start-2 h-[140px] w-full max-w-[396px] text-clip text-wrap text-right text-5xl font-bold text-white opacity-85 drop-shadow-xl">
+            Today, we helped 2,451 people reunite with their lost items!
+          </span>
+        </div>
+      </section>
+      <section className="flex w-full flex-col gap-4">
+        <div className="w-full bg-slate-100 py-2">
+          <QuickSearchSection />
+        </div>
+        <div className="flex w-full flex-col items-center justify-between gap-2 px-48">
+          <div className="flex gap-4 border p-2">
+            <div className="h-28 w-40 rounded bg-blue-200 p-4">
+              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
+                10,329
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-globe"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                  <path d="M2 12h20" />
+                </svg>
+              </h1>
+              <h1 className="">Global case</h1>
+            </div>
+            <div className="h-28 w-40 rounded bg-gray-50 p-4">
+              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
+                61%
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-trending-up"
+                >
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg>
+              </h1>
+              <h1 className="ml-4 text-xl">Honesty</h1>
+            </div>
+            <div className="h-28 w-40 rounded bg-gray-200 p-4">
+              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
+                5, 321
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-trending-up"
+                >
+                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                  <polyline points="16 7 22 7 22 13" />
+                </svg>
+              </h1>
+              <h1 className="">Returned Item</h1>
+            </div>
+          </div>
+          <h1 className="text-primary text-6xl font-bold">Welcome back</h1>
+          <h1 className="text-4xl font-bold">
+            {user?.firstName} {user?.lastName}
+          </h1>
+          <span className="col-start-2 row-start-4 flex">
+            <Link
+              href={"/?new=true"}
+              className={`h-max w-max rounded-full border bg-white px-4 py-1 text-center`}
+            >
+              Post my item / Found Item
+            </Link>
+          </span>
+        </div>
+      </section>
     </div>
   );
 }

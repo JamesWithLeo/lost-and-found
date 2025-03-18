@@ -1,7 +1,7 @@
 "use client";
 
-import SignupHeader from "./SignUpheader";
-import SigninHeader from "./Signinheader";
+import SignupHeader from "../SignUpheader";
+import SigninHeader from "../Signinheader";
 import DefaultHeader from "../client/DefaultHeader";
 import LocateHeader from "./LocateHeader";
 import ReportHeader from "./ReportHeader";
@@ -19,16 +19,16 @@ export default function MainHeader({
     return <SignupHeader isAuth={isAuth} />;
   } else if (pathname.startsWith("/signin")) {
     return <SigninHeader isAuth={isAuth} />;
-  } else if (pathname.startsWith("/my-item/qs")) {
-    return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
-  } else if (pathname.startsWith("/my-item/ps")) {
-    return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else if (pathname.startsWith("/my-item")) {
+    return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
+  } else if (pathname.startsWith("/my-item/new")) {
     return <LocateHeader isAuth={isAuth} />;
   } else if (pathname.startsWith("/found-item/ps")) {
     return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
-  } else if (pathname.startsWith("/found-item")) {
+  } else if (pathname.startsWith("/found-item/new")) {
     return <ReportHeader isAuth={isAuth} />;
+  } else if (pathname.startsWith("/found-item")) {
+    return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else {
     return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   }

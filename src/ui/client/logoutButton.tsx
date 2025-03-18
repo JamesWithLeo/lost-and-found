@@ -5,7 +5,7 @@ export default function LogoutButton() {
   return (
     <DropdownMenuItem
       onClick={() => signOut({})}
-      className="mx-1 flex cursor-pointer items-center justify-between rounded border-0 px-2 py-1 text-red-400 outline-0 hover:bg-gray-100"
+      className="100 mx-1 flex cursor-pointer items-center justify-between rounded border-0 px-2 py-1 text-red-400 outline-0 hover:bg-red-400 hover:text-white"
     >
       Logout
       <svg

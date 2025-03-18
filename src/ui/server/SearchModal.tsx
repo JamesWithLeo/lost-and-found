@@ -20,7 +20,7 @@ export default function SearchModal() {
         </div>
         <h1 className="text-center">Search for...</h1>
         <div className="flex w-full justify-evenly">
-          <Link href={"/my-item"}>
+          <Link href={"/my-item/new"}>
             <div className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded bg-gray-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +34,7 @@ export default function SearchModal() {
               <h1>Item</h1>
             </div>
           </Link>
-          <Link href={"/found-item"}>
+          <Link href={"/found-item/new"}>
             <div className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded bg-gray-100">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
