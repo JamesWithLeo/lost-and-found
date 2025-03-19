@@ -46,7 +46,7 @@ export const hasNullOrUndefinedData = ({
   lastName?: string | null;
   birthDate?: string | null;
 }) => {
-  return !!firstName || !!lastName || !!birthDate;
+  return !(!!firstName || !!lastName || !!birthDate);
 };
 
 export const insertItem = async ({
