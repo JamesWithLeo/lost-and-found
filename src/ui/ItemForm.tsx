@@ -223,21 +223,41 @@ export default function ItemForm({
                     <div className="flex gap-2">
                       {imageUrl.map((url) => (
                         <>
-                          <CldImage
-                            key={url}
-                            src={url}
-                            alt="item proof"
-                            width={100}
-                            height={100}
-                            crop={"scale"}
-                          />
-                          <button
-                            onClick={() => {
-                              handleRemoveImage(url);
-                            }}
-                          >
-                            x
-                          </button>
+                          <div className="relative inline-block">
+                            <CldImage
+                              key={url}
+                              src={url}
+                              alt="item proof"
+                              width={100}
+                              height={100}
+                              crop="scale"
+                              className="pointer-events-none rounded-lg opacity-70"
+                            />
+
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveImage(url);
+                              }}
+                              className="absolute right-0 top-0 flex -translate-y-1/2 translate-x-1/2 transform cursor-pointer items-center justify-center rounded-full bg-red-500 p-1 text-white shadow-md hover:bg-red-600"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="lucide lucide-x"
+                              >
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+                              </svg>
+                            </button>
+                          </div>
                         </>
                       ))}
                     </div>
