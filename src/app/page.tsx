@@ -2,9 +2,9 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
 import { getUser, hasNullOrUndefinedData } from "@/db/drizzle";
-import Link from "next/link";
 import SearchModal from "@/ui/server/SearchModal";
 import QuickSearchSection from "@/ui/QuickSearchSection";
+import QuickSearchModal from "@/ui/QuickSearchModal";
 
 interface PageProps {
   searchParams?: Promise<Record<string, string | string[]>>;
@@ -12,6 +12,7 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   const openSearch = (await searchParams)?.new === "true";
+  const q = (await searchParams)?.q === "true";
   const session = await getServerSession(authOptions);
   const user = await getUser();
   if (
@@ -30,16 +31,16 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <div className="flex min-h-screen w-full max-w-[1440px] flex-col items-center justify-items-center">
       {openSearch && <SearchModal />}
-
+      {q && <QuickSearchModal />}
       <section className="w-full flex-col">
         <div className="grid h-80 w-full grid-cols-3 grid-rows-4 justify-items-center overflow-clip bg-[url(/images/hero.png)] bg-cover bg-center">
           <div className="col-span-3 row-span-2 row-start-3"></div>
-          <span className="right-16 top-56 col-span-2 col-start-2 row-start-2 h-[140px] w-full max-w-[396px] text-clip text-wrap text-right text-5xl font-bold text-white opacity-85 drop-shadow-xl">
-            Today, we helped 2,451 people reunite with their lost items!
+          <span className="right-16 top-56 col-span-2 col-start-2 row-start-2 h-[140px] w-full max-w-[396px] select-none text-clip text-wrap bg-clip-text text-right text-5xl font-bold text-slate-50 opacity-70 drop-shadow-xl backdrop-opacity-45">
+            Today, we helped 451 people reunite with their lost items!
           </span>
         </div>
       </section>
-      <section className="flex w-full flex-col gap-4">
+      <section className="flex w-full flex-col gap-4 pb-10">
         <div className="w-full bg-slate-100 py-2">
           <QuickSearchSection />
         </div>
@@ -110,18 +111,16 @@ export default async function Page({ searchParams }: PageProps) {
               <h1 className="">Returned Item</h1>
             </div>
           </div>
-          <h1 className="text-primary text-6xl font-bold">Welcome back</h1>
-          <h1 className="text-4xl font-bold">
-            {user?.firstName} {user?.lastName}
-          </h1>
-          <span className="col-start-2 row-start-4 flex">
-            <Link
-              href={"/?new=true"}
-              className={`h-max w-max rounded-full border bg-white px-4 py-1 text-center`}
-            >
-              Post my item / Found Item
-            </Link>
-          </span>
+
+          <div className="flex flex-col items-center gap-4">
+            <span>
+              <h1 className="text-primary text-6xl font-bold">Welcome back</h1>
+              <h1 className="text-4xl font-bold">
+                {user?.firstName} {user?.lastName}
+              </h1>
+            </span>
+            <span className="col-start-2 row-start-4 flex"></span>
+          </div>
         </div>
       </section>
     </div>

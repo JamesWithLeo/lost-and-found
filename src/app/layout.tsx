@@ -34,7 +34,6 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex flex-col items-center antialiased`}
       >
         <MainHeader isAuth={!!session} photoUrl={session?.user.image} />
-
         {children}
         <Footer />
       </body>

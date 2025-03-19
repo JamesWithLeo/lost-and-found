@@ -9,8 +9,8 @@ export default async function MatchingCard(
 ) {
   return (
     <section className="grid h-full max-h-96 w-full max-w-96 grid-rows-[8fr_2fr] gap-1.5 rounded bg-white">
-      <div className="h-full w-full bg-gray-100"></div>
-      <div className="h-full w-full bg-gray-100 p-1.5">
+      <div className="h-full w-full cursor-pointer bg-gray-100"></div>
+      <div className="h-full w-full cursor-pointer bg-gray-100 p-1.5">
         <h1 className={`${anony.className} `}>{item.itemName}</h1>
         <h1 className={`${inter.className} text-xs`}>
           Claimant: {item.claimantCount}

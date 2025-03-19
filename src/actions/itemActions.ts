@@ -2,6 +2,7 @@
 
 import { insertItem } from "@/db/drizzle";
 import { postSearchSchema, quickSearchSchema } from "@/lib/ItemActionSchema";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function postSearchItems(
@@ -82,16 +83,12 @@ export async function quickSearchItems(formData: FormData) {
   const validatedFields = quickSearchSchema.safeParse({
     itemName: formData.get("itemName") as string,
     color: formData.get("color") as string,
-    brandModel: formData.get("brandModel") as string,
     location: formData.get("location") as string,
     timeDate: formData.get("timeDate") as string,
     category: formData.get("category") as string,
-    caption: formData.get("caption") as string,
   });
   if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.issues,
-    };
+    console.log(validatedFields.error.flatten().fieldErrors);
   } else {
     console.log(validatedFields);
     const { data } = validatedFields;
@@ -99,10 +96,11 @@ export async function quickSearchItems(formData: FormData) {
       itemName: data.itemName,
       color: data?.color ?? "",
       category: data.category,
-      brandModel: data?.brandModel ?? "",
       location: data.location,
       timeDate: new Date(data?.timeDate).toString() ?? "",
     }).toString();
-    redirect(`/my-item/qs?${params}`);
+    revalidatePath("/result", "page");
+
+    redirect(`/result?${params}`);
   }
 }

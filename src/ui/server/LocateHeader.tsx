@@ -35,7 +35,7 @@ export default function LocateHeader({ isAuth }: { isAuth: boolean }) {
             </span>
             <span className="col-start-2 flex items-end justify-end gap-4">
               <Link
-                href="/found-item"
+                href="/found-item/new"
                 className={
                   "flex gap-2 rounded border border-gray-200 bg-slate-50 px-3 py-1"
                 }
