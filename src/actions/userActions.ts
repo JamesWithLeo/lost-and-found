@@ -3,7 +3,7 @@
 import { db } from "@/db/drizzle";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const schema = z.object({
@@ -55,7 +55,7 @@ export async function saveUserSetup(
           birthDate: validatedFields.data?.birthDate,
         })
         .where(eq(users.id, userId));
-      revalidatePath("/");
+      redirect("/");
     } catch (error) {
       console.error(error);
     }
