@@ -35,6 +35,8 @@ export default function MainHeader({
     return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else if (pathname.startsWith("/discovery")) {
     return <DiscoveryHeader isAuth={isAuth} photoUrl={photoUrl} />;
+  } else if (pathname.startsWith("/contact") || pathname.startsWith("/about")) {
+    return <DiscoveryHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else {
     return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   }
