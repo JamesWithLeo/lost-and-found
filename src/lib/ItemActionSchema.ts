@@ -1,5 +1,17 @@
 import { z } from "zod";
 
+const truncateToMinute = (date: Date) => {
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    date.getHours(),
+    date.getMinutes(),
+  );
+};
+
+const now = truncateToMinute(new Date());
+
 export const postSearchSchema = z.object({
   itemName: z
     .string()
@@ -15,7 +27,7 @@ export const postSearchSchema = z.object({
     .regex(/^[a-zA-Z0-9\s,.-]*$/, "Invalid location format"),
   timeDate: z.coerce
     .date()
-    .max(new Date(), { message: "Date and time must not be in the future" }),
+    .max(now, { message: "Date and time must not be in the future" }),
   category: z.enum([
     "animals",
     "accessory",

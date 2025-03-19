@@ -61,7 +61,7 @@ export default function DefaultHeader({
             side={"bottom"}
             align="start"
             sideOffset={10}
-            className="w-40 rounded-sm border bg-white py-2 shadow"
+            className="mr-10 w-40 rounded-sm border bg-white py-2 shadow"
           >
             <DropdownMenuGroup>
               <DropdownMenuItem className="mx-1 flex items-center justify-between rounded border-0 px-2 py-1 outline-0 hover:bg-gray-100">

@@ -2,21 +2,25 @@
 import { quickSearchItems } from "@/actions/itemActions";
 import { Anonymous_Pro } from "next/font/google";
 import Form from "next/form";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const anony = Anonymous_Pro({ weight: ["400", "700"], subsets: ["latin"] });
 
 export default function QuickSearchModal() {
+  const router = useRouter();
   return (
     <>
-      <Link
-        href="/ "
+      <div
+        onClick={() => router.back()}
         className="fixed h-full w-full cursor-pointer bg-slate-500 opacity-60"
-      ></Link>
+      ></div>
       <div className="-translate-1/2 fixed left-1/2 top-1/2 z-10 w-full max-w-xl">
         <Form className="flex w-full flex-col gap-3" action={quickSearchItems}>
           <div className="flex justify-end gap-3">
-            <Link href={"/"} className="cursor-pointer rounded bg-white p-2">
+            <button
+              onClick={() => router.back()}
+              className="cursor-pointer rounded bg-white p-2"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -32,7 +36,7 @@ export default function QuickSearchModal() {
                 <path d="M18 6 6 18" />
                 <path d="m6 6 12 12" />
               </svg>
-            </Link>
+            </button>
           </div>
 
           <div className="flex w-full flex-col gap-2 rounded bg-white px-2 py-3 shadow-2xl">

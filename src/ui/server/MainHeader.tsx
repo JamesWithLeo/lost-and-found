@@ -27,15 +27,15 @@ export default function MainHeader({
     return <LocateHeader isAuth={isAuth} />;
   } else if (pathname.startsWith("/my-item")) {
     return <DiscoveryHeader isAuth={isAuth} photoUrl={photoUrl} />;
-  } else if (pathname.startsWith("/found-item/ps")) {
-    return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else if (pathname.startsWith("/found-item/new")) {
     return <ReportHeader isAuth={isAuth} />;
-  } else if (pathname.startsWith("/found-item")) {
-    return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else if (pathname.startsWith("/discovery")) {
     return <DiscoveryHeader isAuth={isAuth} photoUrl={photoUrl} />;
-  } else if (pathname.startsWith("/contact") || pathname.startsWith("/about")) {
+  } else if (
+    pathname.startsWith("/contact") ||
+    pathname.startsWith("/about") ||
+    pathname.startsWith("/found-item")
+  ) {
     return <DiscoveryHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else {
     return <DefaultHeader isAuth={isAuth} photoUrl={photoUrl} />;

@@ -10,7 +10,7 @@ export default async function Page({
   const { data: item } = { ...(await getFoundItem(id)) };
   return (
     <main className="flex min-h-dvh w-full flex-col items-center bg-slate-50 px-48 py-10">
-      <span className="flex w-full items-center gap-6 py-2 text-sm">
+      <span className="flex w-full items-center gap-6 py-2 text-sm text-gray-600">
         <Link href={"/"} className="">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@ export default async function Page({
           </svg>
         </Link>
         /<Link href="/found-item">Found Item</Link>/{" "}
-        <Link href={`/my-item/${id}`}>{item?.itemName}</Link>
+        <Link href={`/found-item/${id}`}>{item?.itemName}</Link>
       </span>
       <section className="grid h-52 w-full max-w-[1440px] grid-cols-[30%_70%] gap-2 rounded border border-gray-300 bg-white p-2">
         <div className="bg-gray-100"></div>

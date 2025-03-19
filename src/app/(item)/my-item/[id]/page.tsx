@@ -40,7 +40,7 @@ export default async function Page({
         <div
           className={`${inter.className} flex h-full w-full max-w-xl flex-col gap-2 border-x border-gray-200 p-2`}
         >
-          <span className="flex items-center gap-6 text-sm">
+          <span className="flex items-center gap-6 text-sm text-gray-600">
             <Link href={"/"} className="">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
