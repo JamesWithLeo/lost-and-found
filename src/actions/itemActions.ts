@@ -65,6 +65,7 @@ export async function postFoundItems(
     console.log(validatedFields.error.message);
   } else {
     const { data } = validatedFields;
+    console.log(data);
     const insertedItem = await insertItem({
       userId,
       itemName: data.itemName,

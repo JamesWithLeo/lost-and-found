@@ -50,12 +50,12 @@ export default function ItemForm({
   const onSubmitForm: SubmitHandler<FormSchema> = async (data) => {
     const formData = new FormData();
     formData.append("itemName", data.itemName);
-    formData.append("brandModel", data?.brandModel ?? "");
+    formData.append("brandModel", data.brandModel!);
     formData.append("caption", data.caption);
     formData.append("category", data.category);
-    formData.append("desc", data.desc ?? "");
+    formData.append("desc", data.desc!);
     formData.append("location", data.location);
-    formData.append("timeDate", data?.timeDate.toString() ?? "");
+    formData.append("timeDate", data.timeDate.toString());
     // formData.append("itemProof", JSON.stringify(imageUrl));
     await postSearchItems(id, formData);
   };
@@ -104,6 +104,7 @@ export default function ItemForm({
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Brand/Model *</label>
             <input
+              {...register("brandModel")}
               value={brandModel}
               placeholder="UV"
               name="brandModel"
@@ -120,6 +121,7 @@ export default function ItemForm({
             <label className={`${anony.className}`}>Location</label>
             <input
               value={location}
+              {...register("location")}
               placeholder="City, State or Address"
               name="location"
               type="text"
@@ -136,6 +138,7 @@ export default function ItemForm({
             <input
               placeholder=""
               type="datetime-local"
+              {...register("timeDate")}
               defaultValue={
                 timeDate ? new Date(timeDate).toString() : undefined
               }
@@ -155,8 +158,8 @@ export default function ItemForm({
             <label className={`${anony.className}`}>Category *</label>
 
             <select
-              name="category"
               required
+              {...register("category")}
               defaultValue={category}
               className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 px-6 focus:outline-0 ${anony.className}`}
             >
@@ -188,7 +191,7 @@ export default function ItemForm({
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Caption</label>
             <input
-              name="caption"
+              {...register("caption")}
               defaultValue={caption}
               className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
             />
@@ -202,6 +205,7 @@ export default function ItemForm({
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Description</label>
             <input
+              {...register("desc")}
               name="desc"
               defaultValue={desc}
               className={`h-[60px] w-[400px] rounded-2xl bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
