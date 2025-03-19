@@ -3,6 +3,7 @@
 import { db } from "@/db/drizzle";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -33,31 +34,36 @@ export async function saveUserSetup(
   formData: FormData,
 ) {
   if (!userId) {
-    console.error("saveUserSetup doesn't recieved userId");
-  } else {
-    const validatedFields = schema.safeParse({
-      firstName: formData.get("firstName") as string,
-      lastName: formData.get("lastName") as string,
-      gender: formData.get("gender") as string,
-      birthDate: formData.get("birthDate") as string,
-    });
-    if (!validatedFields.success) {
-      // to do : return some error message
-    }
-
-    try {
-      await db
-        .update(users)
-        .set({
-          firstName: validatedFields.data?.firstName,
-          lastName: validatedFields.data?.lastName,
-          gender: validatedFields.data?.gender,
-          birthDate: validatedFields.data?.birthDate,
-        })
-        .where(eq(users.id, userId));
-      redirect("/");
-    } catch (error) {
-      console.error(error);
-    }
+    console.error("saveUserSetup didn't receive userId");
+    return;
   }
+
+  const validatedFields = schema.safeParse({
+    firstName: formData.get("firstName") as string,
+    lastName: formData.get("lastName") as string,
+    gender: formData.get("gender") as string,
+    birthDate: formData.get("birthDate") as string,
+  });
+
+  if (!validatedFields.success) {
+    console.error(validatedFields.error.flatten().formErrors);
+    return;
+  }
+
+  const updateData = Object.fromEntries(
+    Object.entries(validatedFields.data).filter(([, v]) => v !== undefined),
+  );
+
+  if (Object.keys(updateData).length === 0) {
+    console.error("No valid fields to update");
+    return;
+  }
+
+  await db
+    .update(users)
+    .set(updateData)
+    .where(eq(users.id, userId))
+    .returning();
+  revalidatePath("/");
+  redirect("/");
 }

@@ -28,12 +28,11 @@ export const getUsersByProvider = async (
 
 export const getUser = async () => {
   const session = await getServerSession(authOptions);
-  const userId = session?.user.id;
-  if (!userId) return null;
+  if (!session || !session.user.id) return null;
   return await db
     .select()
     .from(users)
-    .where(eq(users.id, userId))
+    .where(eq(users.id, session.user.id))
     .limit(1)
     .then((res) => res[0]);
 };
@@ -47,7 +46,7 @@ export const hasNullOrUndefinedData = ({
   lastName?: string | null;
   birthDate?: string | null;
 }) => {
-  return !!firstName && !!lastName && !!birthDate;
+  return !!firstName || !!lastName || !!birthDate;
 };
 
 export const insertItem = async ({

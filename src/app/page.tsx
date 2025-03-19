@@ -16,7 +16,7 @@ export default async function Page({ searchParams }: PageProps) {
   const session = await getServerSession(authOptions);
   const user = await getUser();
   if (
-    !hasNullOrUndefinedData({
+    hasNullOrUndefinedData({
       firstName: user?.firstName,
       lastName: user?.lastName,
       birthDate: user?.birthDate,
@@ -24,6 +24,7 @@ export default async function Page({ searchParams }: PageProps) {
   ) {
     redirect("/signup");
   }
+
   if (!session) {
     redirect("/discovery");
   }

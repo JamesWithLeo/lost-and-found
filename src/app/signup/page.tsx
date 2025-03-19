@@ -72,7 +72,7 @@ export default async function Page() {
                 </span>
                 <button
                   type="submit"
-                  className="bg-primary w-full rounded-xl py-2 text-white"
+                  className="bg-primary w-full cursor-pointer rounded-xl py-2 text-white"
                 >
                   Continue
                 </button>
