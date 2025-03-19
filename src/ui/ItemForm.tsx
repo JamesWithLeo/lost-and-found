@@ -1,11 +1,13 @@
 "use client";
 
+import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { FormSchema, postSearchSchema } from "@/lib/ItemActionSchema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Anonymous_Pro } from "next/font/google";
 import ItemFormButton from "@/ui/ItemFormButton";
 import { postSearchItems } from "@/actions/itemActions";
+import { useState } from "react";
 const anony = Anonymous_Pro({
   weight: ["400", "700"],
   style: ["normal", "italic"],
@@ -38,6 +40,8 @@ export default function ItemForm({
     category,
     desc,
   } = value;
+  const [imageUrl, setImageUrl] = useState<string[]>([]); // Store uploaded image URL
+
   const {
     formState: { errors },
     register,
@@ -46,7 +50,17 @@ export default function ItemForm({
   const onSubmitForm: SubmitHandler<FormSchema> = async (data) => {
     const formData = new FormData();
     formData.append("itemName", data.itemName);
+    formData.append("brandModel", data?.brandModel ?? "");
+    formData.append("caption", data.caption);
+    formData.append("category", data.category);
+    formData.append("desc", data.desc ?? "");
+    formData.append("location", data.location);
+    formData.append("timeDate", data?.timeDate.toString() ?? "");
+    formData.append("itemProof", JSON.stringify(imageUrl));
     await postSearchItems(id, formData);
+  };
+  const handleRemoveImage = (toRemoveUrl: string) => {
+    setImageUrl([...imageUrl].filter((url) => url !== toRemoveUrl));
   };
   return (
     <form
@@ -202,26 +216,74 @@ export default function ItemForm({
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Item proof</label>
 
-            <span className="flex h-[60px] w-[400px] rounded-2xl">
-              <label className="cursor-pointer rounded-xl bg-gray-100 p-4 text-gray-500">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-image-up"
+            <span className="flex h-max w-[400px] rounded-2xl">
+              <label className="flex cursor-pointer gap-2 rounded-xl bg-gray-100 p-4 text-gray-500">
+                {imageUrl && (
+                  <>
+                    <div className="flex gap-2">
+                      {imageUrl.map((url) => (
+                        <>
+                          <CldImage
+                            key={url}
+                            src={url}
+                            alt="item proof"
+                            width={100}
+                            height={100}
+                            crop={"scale"}
+                          />
+                          <button
+                            onClick={() => {
+                              handleRemoveImage(url);
+                            }}
+                          >
+                            x
+                          </button>
+                        </>
+                      ))}
+                    </div>
+                  </>
+                )}
+                <CldUploadWidget
+                  uploadPreset="ml_default"
+                  onSuccess={(result) => {
+                    if (typeof result !== "string") {
+                      const secureUrl = (
+                        result as { info: { secure_url: string } }
+                      ).info.secure_url;
+                      setImageUrl((prev: string[]) => {
+                        const updatedUrls = [...prev, secureUrl].slice(0, 3);
+                        return updatedUrls;
+                      });
+                    }
+                  }}
+                  signatureEndpoint={"/api/sign-cloudinary-params"}
                 >
-                  <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
-                  <path d="m14 19.5 3-3 3 3" />
-                  <path d="M17 22v-5.5" />
-                  <circle cx="9" cy="9" r="2" />
-                </svg>
-                <input type="file" className={`hidden ${anony.className}`} />
+                  {({ open }) => {
+                    return (
+                      <button onClick={() => open()}>
+                        {imageUrl.length < 3 ? (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-image-up"
+                          >
+                            <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
+                            <path d="m14 19.5 3-3 3 3" />
+                            <path d="M17 22v-5.5" />
+                            <circle cx="9" cy="9" r="2" />
+                          </svg>
+                        ) : null}
+                      </button>
+                    );
+                  }}
+                </CldUploadWidget>
               </label>
             </span>
           </span>
