@@ -55,7 +55,7 @@ export async function saveUserSetup(
           birthDate: validatedFields.data?.birthDate,
         })
         .where(eq(users.id, userId));
-      revalidatePath("/signup");
+      revalidatePath("/");
     } catch (error) {
       console.error(error);
     }
