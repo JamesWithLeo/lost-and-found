@@ -1,5 +1,7 @@
+import { authOptions } from "@/authOptions";
 import { findMatchingItems, getItem } from "@/db/drizzle";
 import MatchingCard from "@/ui/client/MatchingCard";
+import { getServerSession } from "next-auth";
 import { Anonymous_Pro } from "next/font/google";
 import { Inter_Tight } from "next/font/google";
 import Link from "next/link";
@@ -16,6 +18,7 @@ export default async function Page({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
+  const session = await getServerSession(authOptions);
   const { data: item } = await getItem(id);
 
   if (!item) {
@@ -23,10 +26,12 @@ export default async function Page({
   }
   const matchingItems = await findMatchingItems({
     id: item.id,
+    userId: session?.user.id,
     itemName: item.itemName,
     location: item.location,
     category: item.category,
     timeDate: item.timeDate,
+    color: item.color,
   });
 
   return (
