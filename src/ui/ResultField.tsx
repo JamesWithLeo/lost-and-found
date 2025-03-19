@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function ResultField({
@@ -13,6 +14,21 @@ export default function ResultField({
   category: string | undefined;
 }) {
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const router = useRouter();
+  const handleSave = () => {
+    const itemName = document.getElementById("itemName") as HTMLInputElement;
+    const location = document.getElementById("location") as HTMLInputElement;
+    const timeDate = document.getElementById("timeDate") as HTMLInputElement;
+    const category = document.getElementById("category") as HTMLSelectElement;
+    console.log(timeDate.value);
+    const params = new URLSearchParams({
+      itemName: itemName.value,
+      location: location.value,
+      timeDate: timeDate.value,
+      category: category.value,
+    }).toString();
+    router.push(`/result?${params}`, { scroll: false });
+  };
   return (
     <div className="grid-col grid w-full flex-col gap-2 p-2">
       <div className="flex justify-between">
@@ -25,7 +41,10 @@ export default function ResultField({
             {isEditing ? "Cancel" : "Edit"}
           </button>
           {isEditing && (
-            <button className="cursor-pointer rounded border bg-red-400 px-2 text-sm text-white shadow-sm">
+            <button
+              className="cursor-pointer rounded border bg-red-400 px-2 text-sm text-white shadow-sm"
+              onClick={handleSave}
+            >
               Save
             </button>
           )}
@@ -41,6 +60,7 @@ export default function ResultField({
           <>
             <h1>Item:</h1>
             <input
+              id="itemName"
               className="rounded border px-2"
               defaultValue={itemName}
               name="itemName"
@@ -61,6 +81,7 @@ export default function ResultField({
 
             <select
               name="category"
+              id="category"
               required
               defaultValue={category}
               className="rounded border px-2"
@@ -101,6 +122,7 @@ export default function ResultField({
             <input
               className="rounded border px-2"
               name="location"
+              id="location"
               defaultValue={location}
             />
 
@@ -108,6 +130,7 @@ export default function ResultField({
             <input
               className="rounded border px-2"
               name="timeDate"
+              id="timeDate"
               type="datetime-local"
               defaultValue={timeDate}
             />

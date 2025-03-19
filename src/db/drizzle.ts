@@ -130,38 +130,45 @@ export async function getFoundItem(id: string) {
   }
 }
 
-export async function findMatchingItems(lostItem: {
-  id: string;
+export async function findMatchingItems({
+  itemName,
+  category,
+  location,
+  userId,
+  color,
+  id,
+  timeDate,
+  brandModel,
+}: {
   itemName: string;
-  location: string;
-  category: string;
-  color?: string | null;
-  brandModel?: string | null;
-  timeDate: Date;
+  id?: string | undefined;
+  userId: string | undefined;
+  location: string | undefined;
+  category: string | undefined;
+  color: string | null | undefined;
+  brandModel?: string | null | undefined;
+  timeDate: Date | undefined;
 }) {
+  const conditions = [
+    or(
+      ...itemName.split(" ").map((term) => ilike(items.itemName, `%${term}%`)),
+    ),
+    eq(items.type, "found"),
+    eq(items.itemStatus, "pending"),
+  ];
+
+  if (location) conditions.push(ilike(items.location, `%${location}%`));
+  if (category) conditions.push(eq(items.category, category));
+  if (color) conditions.push(ilike(items.color, `%${color}%`));
+  if (brandModel) conditions.push(ilike(items.brandModel, `%${brandModel}%`));
+  if (timeDate) conditions.push(gte(items.timeDate, timeDate));
+  if (id) conditions.push(not(eq(items.id, id)));
+  if (userId) conditions.push(not(eq(items.userId, userId)));
+
   const matchingItems = await db
     .select()
     .from(items)
-    .where(
-      and(
-        or(
-          ...lostItem.itemName
-            .split(" ")
-            .map((term) => ilike(items.itemName, `%${term}%`)),
-        ),
-        ilike(items.location, `%${lostItem.location}%`),
-        eq(items.type, "found"),
-        not(eq(items.id, lostItem.id)),
-        eq(items.category, lostItem.category),
-        lostItem.color ? ilike(items.color, `%${lostItem.color}%`) : undefined,
-        lostItem.brandModel
-          ? ilike(items.brandModel, `%${lostItem.brandModel}%`)
-          : undefined,
-        eq(items.itemStatus, "pending"),
-        gte(items.timeDate, lostItem.timeDate),
-      ),
-    );
-
+    .where(and(...conditions));
   return matchingItems;
 }
 

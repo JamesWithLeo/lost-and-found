@@ -17,19 +17,19 @@ export default async function Page({
 }) {
   const session = await getServerSession(authOptions);
   const { itemName, category, location, color, timeDate } = await searchParams;
-  if (!itemName || !category || !location || !timeDate) {
+  if (!itemName) {
     redirect("/");
   }
   const matchingItem = await findMatchingItems({
-    id: session?.user.id ?? "",
+    userId: session?.user.id,
     category: category,
     itemName,
     color,
-    timeDate: new Date(timeDate),
+    timeDate: timeDate ? new Date(timeDate) : undefined,
     location,
   });
   return (
-    <main className="grid min-h-dvh w-full grid-rows-[1fr_9fr] flex-col items-center gap-4 pb-10">
+    <main className="grid min-h-dvh w-full grid-rows-[1fr_2fr] flex-col items-center gap-4 pb-10">
       <section
         className={`${anony.className} sticky top-20 w-full max-w-[1440px] border-b bg-white px-28`}
       >
@@ -50,7 +50,7 @@ export default async function Page({
         </section>
       ) : (
         <section className="h-full w-full max-w-[1440px] grow px-28">
-          <div className="flex h-full w-full flex-col items-center justify-center p-2 text-gray-700">
+          <div className="mt-10 flex h-max w-full flex-col items-center justify-start text-gray-700">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="96"
