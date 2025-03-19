@@ -134,6 +134,13 @@
       "when": 1742363416017,
       "tag": "0018_tense_cloak",
       "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1742367788419,
+      "tag": "0019_groovy_shocker",
+      "breakpoints": true
     }
   ]
 }

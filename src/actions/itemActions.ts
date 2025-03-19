@@ -21,6 +21,7 @@ export async function postSearchItems(
     category: formData.get("category") as string,
     caption: formData.get("caption") as string,
     desc: formData.get("desc") as string,
+    itemProof: formData.get("itemProof") as string,
   });
   if (!validatedFields.success) {
   } else {
@@ -36,6 +37,7 @@ export async function postSearchItems(
       desc: data.desc,
       caption: data.caption,
       type: "lost",
+      itemProof: JSON.stringify(data.itemProof),
     });
     console.log("inserted item", insertedItem);
     redirect(`/my-item/ps/${insertedItem.id}`);
@@ -57,6 +59,7 @@ export async function postFoundItems(
     category: formData.get("category") as string,
     caption: formData.get("caption") as string,
     desc: formData.get("desc") as string,
+    itemProof: formData.get("itemProof") as string,
   });
   if (!validatedFields.success) {
     console.log(validatedFields.error.message);
@@ -73,6 +76,7 @@ export async function postFoundItems(
       desc: data.desc,
       caption: data.caption,
       type: "found",
+      itemProof: JSON.stringify(data.itemProof),
     });
     console.log("inserted item", insertedItem);
     redirect(`/found-item/ps/${insertedItem.id}`);

@@ -1,13 +1,13 @@
 "use client";
 
-import { CldImage, CldUploadWidget } from "next-cloudinary";
+// import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { FormSchema, postSearchSchema } from "@/lib/ItemActionSchema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Anonymous_Pro } from "next/font/google";
 import ItemFormButton from "@/ui/ItemFormButton";
 import { postSearchItems } from "@/actions/itemActions";
-import { useState } from "react";
+// import { useState } from "react";
 const anony = Anonymous_Pro({
   weight: ["400", "700"],
   style: ["normal", "italic"],
@@ -40,7 +40,7 @@ export default function ItemForm({
     category,
     desc,
   } = value;
-  const [imageUrl, setImageUrl] = useState<string[]>([]); // Store uploaded image URL
+  // const [imageUrl, setImageUrl] = useState<string[]>([]); // Store uploaded image URL
 
   const {
     formState: { errors },
@@ -56,12 +56,12 @@ export default function ItemForm({
     formData.append("desc", data.desc ?? "");
     formData.append("location", data.location);
     formData.append("timeDate", data?.timeDate.toString() ?? "");
-    formData.append("itemProof", JSON.stringify(imageUrl));
+    // formData.append("itemProof", JSON.stringify(imageUrl));
     await postSearchItems(id, formData);
   };
-  const handleRemoveImage = (toRemoveUrl: string) => {
-    setImageUrl([...imageUrl].filter((url) => url !== toRemoveUrl));
-  };
+  // const handleRemoveImage = (toRemoveUrl: string) => {
+  //   setImageUrl([...imageUrl].filter((url) => url !== toRemoveUrl));
+  // };
   return (
     <form
       onSubmit={handleSubmit(onSubmitForm)}
@@ -216,49 +216,46 @@ export default function ItemForm({
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Item proof</label>
 
-            <span className="flex h-max w-[400px] rounded-2xl">
+            {/* <span className="flex h-max w-[400px] rounded-2xl">
               <label className="flex cursor-pointer gap-2 rounded-xl bg-gray-100 p-4 text-gray-500">
                 {imageUrl && (
                   <>
                     <div className="flex gap-2">
                       {imageUrl.map((url) => (
-                        <>
-                          <div className="relative inline-block">
-                            <CldImage
-                              key={url}
-                              src={url}
-                              alt="item proof"
-                              width={100}
-                              height={100}
-                              crop="scale"
-                              className="pointer-events-none rounded-lg opacity-70"
-                            />
+                        <div className="relative inline-block" key={url}>
+                          <CldImage
+                            src={url}
+                            alt="item proof"
+                            width={100}
+                            height={100}
+                            crop="scale"
+                            className="pointer-events-none rounded-lg opacity-70"
+                          />
 
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleRemoveImage(url);
-                              }}
-                              className="absolute right-0 top-0 flex -translate-y-1/2 translate-x-1/2 transform cursor-pointer items-center justify-center rounded-full bg-red-500 p-1 text-white shadow-md hover:bg-red-600"
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveImage(url);
+                            }}
+                            className="absolute right-0 top-0 flex -translate-y-1/2 translate-x-1/2 transform cursor-pointer items-center justify-center rounded-full bg-red-500 p-1 text-white shadow-md hover:bg-red-600"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="lucide lucide-x"
                             >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="lucide lucide-x"
-                              >
-                                <path d="M18 6 6 18" />
-                                <path d="m6 6 12 12" />
-                              </svg>
-                            </button>
-                          </div>
-                        </>
+                              <path d="M18 6 6 18" />
+                              <path d="m6 6 12 12" />
+                            </svg>
+                          </button>
+                        </div>
                       ))}
                     </div>
                   </>
@@ -305,7 +302,7 @@ export default function ItemForm({
                   }}
                 </CldUploadWidget>
               </label>
-            </span>
+            </span> */}
           </span>
         </div>
       </div>
