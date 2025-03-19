@@ -24,6 +24,8 @@ export async function postSearchItems(
     itemProof: formData.get("itemProof") as string,
   });
   if (!validatedFields.success) {
+    console.log(validatedFields.error);
+    console.log(validatedFields.success);
   } else {
     const { data } = validatedFields;
     const insertedItem = await insertItem({
@@ -37,7 +39,7 @@ export async function postSearchItems(
       desc: data.desc,
       caption: data.caption,
       type: "lost",
-      itemProof: JSON.stringify(data.itemProof),
+      // itemProof: JSON.stringify(data.itemProof),
     });
     console.log("inserted item", insertedItem);
     redirect(`/my-item/ps/${insertedItem.id}`);
@@ -77,10 +79,10 @@ export async function postFoundItems(
       desc: data.desc,
       caption: data.caption,
       type: "found",
-      itemProof: JSON.stringify(data.itemProof),
+      // itemProof: JSON.stringify(data.itemProof),
     });
     console.log("inserted item", insertedItem);
-    redirect(`/found-item/ps/${insertedItem.id}`);
+    redirect(`/found-item/${insertedItem.id}`);
   }
 }
 

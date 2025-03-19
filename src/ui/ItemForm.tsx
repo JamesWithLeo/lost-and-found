@@ -237,6 +237,7 @@ export default function ItemForm({
                           />
 
                           <button
+                            type="button"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleRemoveImage(url);
@@ -265,6 +266,7 @@ export default function ItemForm({
                   </>
                 )}
                 <CldUploadWidget
+                  {...register("itemProof")}
                   uploadPreset="ml_default"
                   onSuccess={(result) => {
                     if (typeof result !== "string") {

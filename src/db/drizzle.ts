@@ -61,7 +61,7 @@ export const insertItem = async ({
   caption,
   desc,
   type,
-  itemProof,
+  // itemProof,
 }: {
   userId: string;
   itemName: string;
@@ -73,7 +73,7 @@ export const insertItem = async ({
   caption: string;
   desc?: string | null;
   type: "lost" | "stolen" | "missing" | "found";
-  itemProof: string;
+  // itemProof: string;
 }) => {
   const result = await db
     .insert(items)
@@ -88,7 +88,7 @@ export const insertItem = async ({
       category,
       desc,
       type,
-      itemProof,
+      // itemProof,
     })
     .returning();
   console.log(result);
