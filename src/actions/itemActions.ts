@@ -42,7 +42,7 @@ export async function postSearchItems(
       // itemProof: JSON.stringify(data.itemProof),
     });
     console.log("inserted item", insertedItem);
-    redirect(`/my-item/ps/${insertedItem.id}`);
+    redirect(`/my-item/${insertedItem.id}`);
   }
 }
 export async function postFoundItems(
