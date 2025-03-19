@@ -19,9 +19,9 @@ export default async function Page({
 }) {
   const id = (await params).id;
   const session = await getServerSession(authOptions);
-  const { data: item } = await getItem(id);
+  const { data: item, withError } = await getItem(id, "lost");
 
-  if (!item) {
+  if (!item || withError) {
     return <h1>Item not found.</h1>;
   }
   const matchingItems = await findMatchingItems({
@@ -62,13 +62,15 @@ export default async function Page({
             <h1 className={`${anony.className} text-xs`}>Id: {id}</h1>
           </span>
           <h1 className={`${anony.className} text-xs`}>
-            Category:{item?.category}
+            Category: {item?.category}
           </h1>
-          <h1>
+          <h1 className={`${anony.className} text-xs`}>
             last seen: {item?.location} at
             {item?.timeDate && new Date(item.timeDate).toLocaleString()}
           </h1>
-          <h1>color: {item?.color}</h1>
+          <h1 className={`${anony.className} text-xs`}>
+            color: {item?.color ?? "unknown"}
+          </h1>
 
           <div className="grid h-64 w-full grid-cols-3 grid-rows-2 gap-2">
             <div className="col-span-2 row-span-2 w-full bg-gray-100"></div>
@@ -77,6 +79,7 @@ export default async function Page({
           </div>
           <h1>Description :{item?.desc}</h1>
         </div>
+
         <div className="grid w-full grid-cols-2 border-r border-gray-200 p-2">
           <ul>
             {matchingItems && matchingItems.length > 0 ? (

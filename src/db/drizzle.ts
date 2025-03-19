@@ -94,12 +94,21 @@ export const insertItem = async ({
   return result[0];
 };
 
-export async function getItem(id: string) {
+export async function getItem(
+  id: string,
+  type: "lost" | "stolen" | "missing" | "found",
+) {
+  const conditions = [eq(items.id, id)];
+  if (type === "found") {
+    conditions.push(eq(items.type, "found"));
+  } else {
+    conditions.push(not(eq(items.type, "found")));
+  }
   try {
     const res = await db
       .select()
       .from(items)
-      .where(and(eq(items.id, id), not(eq(items.type, "found"))))
+      .where(and(...conditions))
       .limit(1)
       .then((res) => res[0]);
 
@@ -159,7 +168,13 @@ export async function findMatchingItems({
     eq(items.itemStatus, "pending"),
   ];
 
-  if (location) conditions.push(ilike(items.location, `%${location}%`));
+  // if (location) conditions.push(ilike(items.location, `%${location}%`));
+  if (location?.trim()) {
+    const terms = location.split(/[^a-zA-Z0-9]+/).map((term) => {
+      return ilike(items.location, `%${term}%`);
+    });
+    conditions.push(or(...terms));
+  }
   if (category) conditions.push(eq(items.category, category));
   if (color) conditions.push(ilike(items.color, `%${color}%`));
   if (brandModel) conditions.push(ilike(items.brandModel, `%${brandModel}%`));
