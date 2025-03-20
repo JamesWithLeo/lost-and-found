@@ -37,6 +37,21 @@ export const getUser = async () => {
     .then((res) => res[0]);
 };
 
+export const getUserSafe = async (id: string | undefined) => {
+  if (!id) return null;
+  return await db
+    .select({
+      id: users.id,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      email: users.email,
+    })
+    .from(users)
+    .where(eq(users.id, id))
+    .limit(1)
+    .then((res) => res[0]);
+};
+
 export const hasNullOrUndefinedData = ({
   firstName,
   lastName,

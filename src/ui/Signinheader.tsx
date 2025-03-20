@@ -5,7 +5,7 @@ import Logo from "./server/Logo";
 export default function SigninHeader({ isAuth }: { isAuth: boolean }) {
   return (
     <header
-      className={`sticky top-0 z-40 grid h-[5rem] w-full grid-cols-1 grid-rows-1 items-center justify-between border-b border-b-gray-200 bg-white text-sm`}
+      className={`sticky top-0 z-40 grid h-[var(--header-height)] w-full grid-cols-1 grid-rows-1 items-center justify-between border-b border-b-gray-200 bg-white text-sm`}
     >
       <div className="flex w-full justify-between px-8">
         <Link href={"/discovery"}>

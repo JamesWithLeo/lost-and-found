@@ -23,7 +23,7 @@ export default function DiscoveryHeader({
 }) {
   return (
     <header
-      className={`sticky top-0 z-40 flex h-[5rem] w-full items-center justify-between bg-white px-8 text-sm shadow`}
+      className={`sticky top-0 z-40 flex h-[--header-height] w-full items-center justify-between bg-white px-8 text-sm shadow`}
     >
       <Link href={isAuth ? "/" : "/discovery"} className={""}>
         <Logo />

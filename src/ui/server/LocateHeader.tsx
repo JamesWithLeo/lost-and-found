@@ -10,7 +10,7 @@ export default function LocateHeader({ isAuth }: { isAuth: boolean }) {
   return (
     <>
       <header
-        className={`sticky top-0 z-40 grid h-[10rem] w-full grid-cols-1 grid-rows-2 items-center justify-between bg-white text-sm`}
+        className={`sticky top-0 z-40 grid h-[var(--header-height-10)] w-full grid-cols-1 grid-rows-2 items-center justify-between bg-white text-sm`}
       >
         <div className="flex w-full justify-between px-8">
           <Logo />

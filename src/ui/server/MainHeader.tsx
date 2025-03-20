@@ -25,8 +25,10 @@ export default function MainHeader({
     return <ResultHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else if (pathname.startsWith("/my-item/new")) {
     return <LocateHeader isAuth={isAuth} />;
-  } else if (pathname.startsWith("/my-item")) {
+  } else if (pathname === "/my-item") {
     return <DiscoveryHeader isAuth={isAuth} photoUrl={photoUrl} />;
+  } else if (pathname.startsWith("/my-item")) {
+    return null;
   } else if (pathname.startsWith("/found-item/new")) {
     return <ReportHeader isAuth={isAuth} />;
   } else if (pathname.startsWith("/discovery")) {

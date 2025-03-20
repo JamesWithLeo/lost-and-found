@@ -30,6 +30,7 @@ export default async function Page({
         <div className="bg-gray-100"></div>
         <div className="flex flex-col gap-3">
           <h1>{item?.itemName}</h1>
+          <h1 className="text-xs">{item?.id}</h1>
           <span>
             <h1 className="text-primary text-xs font-light">Category</h1>
             <h1>{item?.category}</h1>

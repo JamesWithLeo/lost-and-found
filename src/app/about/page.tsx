@@ -14,7 +14,10 @@ export default function AboutPage() {
             owners and helping the community thrive. Join us in making a
             difference today!
           </p>
-          <Link href={"/"} className="rounded-full border px-8 py-2">
+          <Link
+            href={"/"}
+            className="bg-primary rounded-full px-8 py-2 text-white"
+          >
             Join Now
           </Link>
         </div>
@@ -22,15 +25,36 @@ export default function AboutPage() {
 
       <section className="flex flex-col items-center gap-20 px-16">
         <h1 className="text-center text-3xl">Meet the team</h1>
-        <div className="grid h-max grid-cols-4 gap-8">
-          <TeamCard />
-          <TeamCard />
-          <TeamCard />
-          <TeamCard />
-          <TeamCard />
-          <TeamCard />
-          <TeamCard />
-          <TeamCard />
+        <div className="flex h-max flex-wrap items-center justify-center gap-16">
+          <TeamCard
+            firstName="James Leo "
+            photo="/images/james.jpg"
+            lastName="Ocampo"
+            fbLink="https://www.facebook.com/JAMES.ocampoGI"
+            gLink="mailto:jamesocampogi04@gmail.com?"
+          />
+          <TeamCard
+            firstName="Darrelle"
+            lastName="Laizon"
+            photo="/images/darelle.jpg"
+            fbLink="https://www.facebook.com/JDlaizon.MachineGunKelly"
+            gLink="mailto:Johndarrellelaizon@gmail.com"
+          />
+          <TeamCard
+            firstName="Leona Grachelle"
+            lastName="Buriel"
+            photo="/images/leona.jpg"
+            fbLink="https://www.facebook.com/sai.yona123#"
+            gLink="mailto:tsmsaiyona@gmail.com"
+          />
+          <TeamCard
+            lastName={"Paral"}
+            firstName="Abbey Torres"
+            photo="/images/abbey.jpg"
+            fbLink="https://www.facebook.com/Abbeyahhh"
+            gLink="mailto:abegailparal3@gmail.com"
+          />
+          <TeamCard firstName="Joel" lastName="Penaredondo" photo="" />
         </div>
       </section>
 

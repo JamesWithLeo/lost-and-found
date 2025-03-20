@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
-import Logo from "../server/Logo";
-import LogoutButton from "./logoutButton";
-import SigninButton from "../server/SigninButton";
-import SignupButton from "../server/SignupButton";
+import Logo from "./server/Logo";
+import LogoutButton from "./client/logoutButton";
+import SigninButton from "./server/SigninButton";
+import SignupButton from "./server/SignupButton";
 
 import {
   DropdownMenu,
@@ -14,7 +16,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 
-export default function DefaultHeader({
+export default function MyItemHeader({
   isAuth,
   photoUrl,
 }: {
@@ -23,7 +25,7 @@ export default function DefaultHeader({
 }) {
   return (
     <header
-      className={`fixed top-0 z-40 flex h-[--header-height] w-full items-center justify-between bg-transparent px-8 text-sm`}
+      className={`bg-tranparent sticky top-0 z-40 flex h-[var(--header-height)] w-full items-center justify-between border-b px-8 text-sm`}
     >
       <Link href={isAuth ? "/" : "/discovery"} className={""}>
         <Logo />

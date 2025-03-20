@@ -5,6 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
+  --header-height: 5rem;
+  --header-height-10: 10rem;
   --primary: #4c96d7;
   --primary-darker: #1761a0;
   --primary-lighter: #8dcaff;
