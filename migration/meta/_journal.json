@@ -141,6 +141,13 @@
       "when": 1742367788419,
       "tag": "0019_groovy_shocker",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1742463459374,
+      "tag": "0020_big_mole_man",
+      "breakpoints": true
     }
   ]
 }

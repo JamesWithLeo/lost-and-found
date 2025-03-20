@@ -78,7 +78,7 @@ export const claims = pgTable(
   },
   (table) => {
     return {
-      pk: primaryKey({ columns: [table.userId, table.itemId] }), // Composite primary key
+      pk: primaryKey({ columns: [table.userId, table.itemId] }),
     };
   },
 );
