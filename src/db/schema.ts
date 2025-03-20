@@ -8,6 +8,7 @@ import {
   date,
   integer,
   json,
+  primaryKey,
 } from "drizzle-orm/pg-core";
 
 export const role = pgEnum("role", ["user", "admin"]);
@@ -63,3 +64,21 @@ export const category = pgTable("category", {
   id: integer("id").primaryKey(),
   name: varchar("256").unique().notNull(),
 });
+
+export const claims = pgTable(
+  "claims",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    itemId: uuid("item_id")
+      .notNull()
+      .references(() => items.id, { onDelete: "cascade" }),
+    claimedAt: timestamp("claimed_at").defaultNow(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.userId, table.itemId] }), // Composite primary key
+    };
+  },
+);
