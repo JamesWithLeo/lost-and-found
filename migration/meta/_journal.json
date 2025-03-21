@@ -148,6 +148,20 @@
       "when": 1742463459374,
       "tag": "0020_big_mole_man",
       "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1742587907274,
+      "tag": "0021_glossy_namorita",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1742588138042,
+      "tag": "0022_kind_deadpool",
+      "breakpoints": true
     }
   ]
 }
