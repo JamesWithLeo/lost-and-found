@@ -28,7 +28,7 @@ export default function Modal({ children }: { children: React.ReactNode }) {
           <path d="m6 6 12 12" />
         </svg>
       </button>
-      <section className="-translate-1/2 fixed left-1/2 top-1/2 z-50 h-[90%] rounded-2xl bg-white shadow">
+      <section className="-translate-1/2 fixed left-1/2 top-1/2 z-50 h-full max-h-[90%] w-full max-w-5xl overflow-y-auto rounded-2xl bg-white shadow">
         {children}
       </section>
     </>
