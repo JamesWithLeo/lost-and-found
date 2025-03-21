@@ -74,7 +74,8 @@ export const claims = pgTable(
     itemId: uuid("item_id")
       .notNull()
       .references(() => items.id, { onDelete: "cascade" }),
-    claimedAt: timestamp("claimed_at").defaultNow(),
+    claimedAt: timestamp("claimed_at"),
+    createdAt: text("created_at").default(new Date().toISOString()),
   },
   (table) => {
     return {

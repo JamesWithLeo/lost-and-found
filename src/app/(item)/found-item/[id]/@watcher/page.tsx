@@ -61,11 +61,15 @@ export default async function Page({
       <section className="shad w-full max-w-[1440px] gap-2 rounded border-gray-300">
         <div className="grid w-full grid-cols-2 gap-2">
           <button className="w-full cursor-pointer rounded border bg-white px-2 py-1">
-            Mesage samaritan
+            Contact Samaritan
           </button>
-          <button className="bg-primary w-full cursor-pointer rounded border px-2 py-1 text-white">
+          <Link
+            href={`/found-item/${id}/ownership`}
+            scroll={false}
+            className="bg-primary flex w-full cursor-pointer flex-col items-center rounded border px-2 py-1 text-white"
+          >
             File ownership
-          </button>
+          </Link>
         </div>
       </section>
     </main>
