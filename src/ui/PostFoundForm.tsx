@@ -7,6 +7,7 @@ import { postFoundItems } from "@/actions/itemActions";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import { useFormStatus } from "react-dom";
+import { CATEGORIES } from "@/constant/constant";
 
 const anony = Anonymous_Pro({
   weight: ["400", "700"],
@@ -14,13 +15,16 @@ const anony = Anonymous_Pro({
   subsets: ["latin"],
 });
 
-export default function PostFormItem({ id }: { id: string | undefined }) {
+export default function PostFoundForm({ id }: { id: string | undefined }) {
   const {
     formState: { errors },
+    setValue,
     register,
     handleSubmit,
   } = useForm({ resolver: zodResolver(postSearchSchema) });
   const [imageUrl, setImageUrl] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategories] =
+    useState<(typeof CATEGORIES)[number]>("");
   const [imagePreview, setImagePreview] = useState<File[] | []>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const onSubmitForm: SubmitHandler<FormSchema> = async (data) => {
@@ -55,6 +59,19 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
     const files = event.target.files ? Array.from(event.target.files) : [];
     setImagePreview((prev) => [...prev, ...files]);
   };
+  const HandleClickUnknownBrand = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const brandModelInput = document.getElementById(
+      "brand",
+    ) as HTMLInputElement;
+    if (event.target.checked) {
+      brandModelInput.value = "unknown";
+    } else {
+      brandModelInput.value = "";
+    }
+  };
+
   useEffect(() => {
     if (!imagePreview.length) return;
 
@@ -69,15 +86,44 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
       onSubmit={handleSubmit(onSubmitForm)}
       className="flex w-full max-w-[1440px] flex-col gap-8 bg-gradient-to-b from-slate-50 to-white px-48 py-10"
     >
-      <div className="grid w-full grid-cols-2 justify-center gap-16">
+      <div className="grid w-full grid-cols-1 justify-center gap-16">
         <div className="flex flex-col gap-4">
+          <span className="flex w-full flex-wrap gap-2">
+            {CATEGORIES.map((cat) => {
+              return (
+                <label
+                  key={cat}
+                  className={`w-max rounded-2xl bg-white px-4 py-1 text-sm text-gray-700 shadow ${selectedCategory === cat ? "bg-primary text-white" : "bg- text-gray-700"}`}
+                >
+                  <input
+                    type="radio"
+                    value={cat}
+                    className="hidden"
+                    {...register("category")}
+                    onChange={() => {
+                      setSelectedCategories(cat);
+                      setValue("category", cat);
+                      console.log(
+                        "cat:",
+                        cat,
+                        "\n",
+                        "selected:",
+                        selectedCategory,
+                      );
+                    }}
+                  />
+                  <h1>{cat}</h1>
+                </label>
+              );
+            })}
+          </span>
           <span className="flex flex-col gap-1">
             <label className={`${anony.className}`}>Item name *</label>
             <input
               {...register("itemName")}
               name="itemName"
               placeholder="Umbrella"
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+              className={`h-[40px] w-full rounded-full border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />{" "}
             {errors.itemName?.message && (
               <label className="mr-4 text-right text-xs text-red-400">
@@ -92,7 +138,7 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
               {...register("color")}
               placeholder="Black"
               name="color"
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+              className={`h-[40px] w-full rounded-full border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />{" "}
             {errors.color?.message && (
               <label className="mr-4 text-right text-xs text-red-400">
@@ -106,13 +152,19 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
               {...register("brandModel")}
               placeholder="UV"
               name="brandModel"
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+              className={`h-[40px] w-full rounded-full border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />{" "}
             {errors.brandModel?.message && (
               <label className="mr-4 text-right text-xs text-red-400">
                 {errors.brandModel.message}
               </label>
             )}
+            <span
+              className={`flex justify-end text-sm ${anony.className} items-center gap-2`}
+            >
+              <input type="checkbox" onChange={HandleClickUnknownBrand} />
+              <label>unknown</label>
+            </span>
           </span>
 
           <span className="flex flex-col gap-1">
@@ -121,7 +173,7 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
               {...register("location")}
               placeholder="Rizal"
               name="location"
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+              className={`h-[40px] w-full rounded-full border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />{" "}
             {errors.location?.message && (
               <label className="mr-4 text-right text-xs text-red-400">
@@ -136,39 +188,11 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
               placeholder=""
               type="datetime-local"
               name="timeDate"
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 px-6 focus:outline-0 ${anony.className}`}
+              className={`h-[40px] w-full rounded-full border bg-white px-6 focus:outline-0 ${anony.className}`}
             />{" "}
             {errors.timeDate?.message && (
               <label className="mr-4 text-right text-xs text-red-400">
                 {errors.timeDate.message}
-              </label>
-            )}
-          </span>
-        </div>
-
-        <div className="flex flex-col gap-4">
-          <span className="flex flex-col gap-1">
-            <label className={`${anony.className}`}>Category *</label>
-            <select
-              {...register("category")}
-              name="category"
-              required
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 px-6 focus:outline-0 ${anony.className}`}
-            >
-              <option value="">Select a category</option>
-              <option value="animals">Animals</option>
-              <option value="accessory">Accessory</option>
-              <option value="clothing">Clothing</option>
-              <option value="bags & wallet">Bags & Wallet</option>
-              <option value="documents">Documents</option>
-              <option value="electronics">Electronics</option>
-              <option value="food & beverages">Food & Beverages</option>
-              <option value="pets & person">Pets & Person</option>
-              <option value="miscellaneous">Miscellaneous</option>
-            </select>
-            {errors.category?.message && (
-              <label className="mr-4 text-right text-xs text-red-400">
-                {errors.category.message}
               </label>
             )}
           </span>
@@ -178,7 +202,7 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
             <input
               {...register("caption")}
               name="caption"
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+              className={`h-[40px] w-full rounded-full border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />
             {errors.category?.message && (
               <label className="mr-4 text-right text-xs text-red-400">
@@ -187,11 +211,11 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
             )}
           </span>
           <span className="flex flex-col gap-1">
-            <label className={`${anony.className}`}>Description</label>
-            <input
+            <textarea
               {...register("desc")}
               name="desc"
-              className={`h-[60px] w-[400px] rounded-full bg-gray-100 pl-6 focus:outline-0 ${anony.className}`}
+              rows={3}
+              className={`min-h-32 w-full resize-none rounded-2xl border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />
             {errors.desc?.message && (
               <label className="mr-4 text-right text-xs text-red-400">
@@ -205,7 +229,7 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
 
             <span className="flex h-max w-[400px] gap-2 rounded-2xl">
               {imageUrl.map((img, index) => (
-                <div key={index} className="relative max-h-20 max-w-20">
+                <div key={index} className="relative max-h-28 max-w-28">
                   <button
                     className="absolute right-1 top-1 cursor-pointer rounded-full bg-gray-400 p-1 text-white hover:bg-gray-500"
                     type="button"
@@ -234,7 +258,6 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
               ))}
 
               <input
-                // {...register("itemProof")}
                 hidden
                 type="file"
                 accept="image/*"
@@ -243,6 +266,7 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
                 onChange={HandleFileChange}
               />
               <button
+                className="hover:text-primary rounded-2xl border bg-white p-8 text-gray-700"
                 type="button"
                 onClick={() => {
                   fileInputRef.current?.click();
@@ -250,8 +274,8 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
+                  width="36"
+                  height="36"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

@@ -33,16 +33,8 @@ export default function ItemForm({
     caption: string | undefined;
   };
 }) {
-  const {
-    itemName,
-    brandModel,
-    location,
-    timeDate,
-    color,
-    caption,
-    category,
-    desc,
-  } = value;
+  const { itemName, brandModel, location, timeDate, color, caption, desc } =
+    value;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imageUrl, setImageUrl] = useState<string[]>([]);
   const [imagePreview, setImagePreview] = useState<File[] | []>([]);
@@ -110,7 +102,7 @@ export default function ItemForm({
   const HandleRemoveImage = (img: string) => {
     setImageUrl((prev) => prev.filter((p) => p !== img));
   };
-  const HandleClickUnknownLocation = (
+  const HandleClickUnknownBrand = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const brandModelInput = document.getElementById(
@@ -153,7 +145,7 @@ export default function ItemForm({
                   >
                     <input
                       type="radio"
-                      value={category}
+                      value={cat}
                       className="hidden"
                       {...register("category")}
                       onChange={() => {
@@ -238,7 +230,7 @@ export default function ItemForm({
             <span
               className={`flex justify-end text-sm ${anony.className} items-center gap-2`}
             >
-              <input type="checkbox" onChange={HandleClickUnknownLocation} />
+              <input type="checkbox" onChange={HandleClickUnknownBrand} />
               <label>unknown</label>
             </span>
           </span>
