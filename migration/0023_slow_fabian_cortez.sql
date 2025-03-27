@@ -1,0 +1,2 @@
+ALTER TABLE "claims" ALTER COLUMN "created_at" SET DEFAULT '2025-03-24T13:03:59.902Z';--> statement-breakpoint
+ALTER TABLE "items" ALTER COLUMN "created_at" SET DEFAULT '2025-03-24T13:03:59.900Z';

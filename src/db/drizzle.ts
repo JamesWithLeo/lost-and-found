@@ -75,7 +75,7 @@ export const insertItem = async ({
   caption,
   desc,
   type,
-  // itemProof,
+  itemProof,
 }: {
   userId: string;
   itemName: string;
@@ -87,7 +87,7 @@ export const insertItem = async ({
   caption: string;
   desc?: string | null;
   type: "lost" | "stolen" | "missing" | "found";
-  // itemProof: string;
+  itemProof: string[];
 }) => {
   const result = await db
     .insert(items)
@@ -102,7 +102,7 @@ export const insertItem = async ({
       category,
       desc,
       type,
-      // itemProof,
+      itemProof,
     })
     .returning();
   console.log(result);
@@ -160,7 +160,6 @@ export async function findMatchingItems({
   itemName,
   category,
   location,
-  userId,
   color,
   id,
   timeDate,
@@ -168,7 +167,6 @@ export async function findMatchingItems({
 }: {
   itemName: string;
   id?: string | undefined;
-  userId: string | undefined;
   location: string | undefined;
   category: string | undefined;
   color: string | null | undefined;
@@ -183,7 +181,6 @@ export async function findMatchingItems({
     eq(items.itemStatus, "pending"),
   ];
 
-  // if (location) conditions.push(ilike(items.location, `%${location}%`));
   if (location?.trim()) {
     const terms = location.split(/[^a-zA-Z0-9]+/).map((term) => {
       return ilike(items.location, `%${term}%`);
@@ -195,31 +192,60 @@ export async function findMatchingItems({
   if (brandModel) conditions.push(ilike(items.brandModel, `%${brandModel}%`));
   if (timeDate) conditions.push(gte(items.timeDate, timeDate));
   if (id) conditions.push(not(eq(items.id, id)));
-  if (userId) conditions.push(not(eq(items.userId, userId)));
 
   const matchingItems = await db
-    .select()
+    .select({
+      item: items,
+      user: {
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+      },
+    })
     .from(items)
+    .leftJoin(users, eq(items.userId, users.id))
     .where(and(...conditions));
   return matchingItems;
 }
 
-export async function getFoundItems(userId: string | undefined | null) {
+export async function getFoundItems(
+  userId: string | undefined | null,
+  limit?: number,
+) {
   if (!userId) {
     throw new Error("User id is required to perform this query");
   }
-  return await db
-    .select()
-    .from(items)
-    .where(and(eq(items.userId, userId), eq(items.type, "found")));
+  if (limit)
+    return await db
+      .select()
+      .from(items)
+      .where(and(eq(items.userId, userId), eq(items.type, "found")))
+      .limit(limit);
+  else {
+    return await db
+      .select()
+      .from(items)
+      .where(and(eq(items.userId, userId), eq(items.type, "found")));
+  }
 }
 
-export async function getMyItems(userId: string | undefined) {
+export async function getMyItems(userId: string | undefined, limit?: number) {
   if (!userId) {
     throw new Error("User id is required to perform this query");
+  }
+  if (limit) {
+    return await db
+      .select()
+      .from(items)
+      .where(and(eq(items.userId, userId), not(eq(items.type, "found"))))
+      .limit(limit);
   }
   return await db
     .select()
     .from(items)
     .where(and(eq(items.userId, userId), not(eq(items.type, "found"))));
+}
+export async function GetGlobalCase() {
+  return await db.select().from(items);
 }

@@ -8,7 +8,6 @@ import {
   date,
   integer,
   primaryKey,
-  jsonb,
 } from "drizzle-orm/pg-core";
 
 export const role = pgEnum("role", ["user", "admin"]);
@@ -57,7 +56,7 @@ export const items = pgTable("items", {
   createdAt: text("created_at").default(new Date().toISOString()),
   type: itemTypeEnum().notNull().default("lost"),
   claimantCount: integer("claimant_count").default(0),
-  itemProof: jsonb("item_proof").default([]),
+  itemProof: text("item_proof").array().default([]),
 });
 
 export const category = pgTable("category", {

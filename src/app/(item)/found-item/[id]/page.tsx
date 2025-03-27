@@ -1,4 +1,5 @@
 import { getFoundItem } from "@/db/drizzle";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Page({
@@ -27,7 +28,17 @@ export default async function Page({
         <Link href={`/found-item/${id}`}>{item?.itemName}</Link>
       </span>
       <section className="grid h-52 w-full max-w-[1440px] grid-cols-[30%_70%] gap-2 rounded border border-gray-300 bg-white p-2">
-        <div className="bg-gray-100"></div>
+        <div className="overflow-hidden bg-gray-100">
+          {item?.itemProof?.length && item.itemProof[0] && (
+            <Image
+              src={item.itemProof[0]}
+              width={100}
+              height={100}
+              alt={`proof-${item.itemName}`}
+              className="h-full w-full"
+            />
+          )}
+        </div>
         <div className="flex flex-col gap-3">
           <h1>{item?.itemName}</h1>
           <h1 className="text-xs">{item?.id}</h1>

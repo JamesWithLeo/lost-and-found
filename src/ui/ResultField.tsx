@@ -27,7 +27,9 @@ export default function ResultField({
       timeDate: timeDate.value,
       category: category.value,
     }).toString();
-    router.push(`/result?${params}`, { scroll: false });
+    setIsEditing(false);
+    router.push(`/result?${params}`, { scroll: true });
+    router.refresh();
   };
   return (
     <div className="grid-col grid w-full flex-col gap-2 p-2">

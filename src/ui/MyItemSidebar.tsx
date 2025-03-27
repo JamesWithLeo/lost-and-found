@@ -7,6 +7,7 @@ import {
 import { items } from "@/db/schema";
 import { InferSelectModel } from "drizzle-orm";
 import { Anonymous_Pro } from "next/font/google";
+import Image from "next/image";
 import Link from "next/link";
 
 const anony = Anonymous_Pro({ weight: ["400", "700"], subsets: ["latin"] });
@@ -37,7 +38,6 @@ export function MyItemSidebar({
           </span>
           <span className="flex flex-col items-baseline gap-2">
             <h1 className={`${anony.className} text-2xl`}>{item?.itemName}</h1>
-            <h1 className={`${anony.className} text-xs`}>Id: {item?.id}</h1>
           </span>
           <h1 className={`${anony.className} text-sm`}>
             Category: {item?.category}
@@ -51,11 +51,23 @@ export function MyItemSidebar({
           </h1>
 
           <div className="grid h-64 w-full grid-cols-3 grid-rows-2 gap-2">
-            <div className="col-span-2 row-span-2 w-full bg-gray-100"></div>
-            <div className="w-full bg-gray-100"></div>
-            <div className="w-full bg-gray-100"></div>
+            {item?.itemProof &&
+              item?.itemProof.map((p, index) => (
+                <div
+                  className="col-span-2 row-span-2 w-full bg-gray-100"
+                  key={`proof ${index}`}
+                >
+                  <Image
+                    className="h-full w-full"
+                    src={p}
+                    width={100}
+                    height={100}
+                    alt={`item ${item?.id}`}
+                  />
+                </div>
+              ))}
           </div>
-          <h1>Description :{item?.desc}</h1>
+          <h1 className={`${anony.className}`}>Description :{item?.desc}</h1>
         </SidebarGroup>
         <SidebarGroup />
       </SidebarContent>

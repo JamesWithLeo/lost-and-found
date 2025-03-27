@@ -21,7 +21,6 @@ export default async function Page({
     redirect("/");
   }
   const matchingItem = await findMatchingItems({
-    userId: session?.user.id,
     category: category,
     itemName,
     color,
@@ -29,7 +28,7 @@ export default async function Page({
     location,
   });
   return (
-    <main className="grid min-h-dvh w-full grid-rows-[1fr_2fr] flex-col items-center gap-4 pb-10">
+    <main className="flex min-h-dvh w-full flex-col items-center bg-slate-50 pb-10">
       <section
         className={`${anony.className} sticky top-20 w-full max-w-[1440px] border-b bg-white px-28`}
       >
@@ -41,10 +40,15 @@ export default async function Page({
         />
       </section>
       {matchingItem.length ? (
-        <section className="h-full w-full max-w-[1440px] px-24">
+        <section className="h-full w-full max-w-[1440px] bg-slate-50 px-24">
           <div className="grid h-full w-full grid-cols-3 gap-3 p-2">
             {matchingItem.map((i) => (
-              <MatchingCard {...i} key={i.id} />
+              <MatchingCard
+                item={i.item}
+                user={i.user}
+                key={i.item.id}
+                isCurrentUser={session?.user.id === i.user?.id}
+              />
             ))}
           </div>
         </section>

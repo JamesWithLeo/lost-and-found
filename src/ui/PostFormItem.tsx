@@ -4,6 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Anonymous_Pro } from "next/font/google";
 import { postFoundItems } from "@/actions/itemActions";
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
+import { useFormStatus } from "react-dom";
 
 const anony = Anonymous_Pro({
   weight: ["400", "700"],
@@ -17,6 +20,9 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
     register,
     handleSubmit,
   } = useForm({ resolver: zodResolver(postSearchSchema) });
+  const [imageUrl, setImageUrl] = useState<string[]>([]);
+  const [imagePreview, setImagePreview] = useState<File[] | []>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const onSubmitForm: SubmitHandler<FormSchema> = async (data) => {
     const formData = new FormData();
     formData.append("itemName", data.itemName);
@@ -26,9 +32,38 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
     formData.append("desc", data.desc!);
     formData.append("location", data.location);
     formData.append("timeDate", data.timeDate.toString());
-
-    await postFoundItems(id, formData);
+    const base64Images = await Promise.all(
+      imagePreview.map((image) => {
+        return new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+        });
+      }),
+    );
+    await postFoundItems(id, base64Images, formData);
   };
+  const HandleRemoveImage = (img: string) => {
+    setImageUrl((prev) => prev.filter((p) => p !== img));
+  };
+  const HandleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (imageUrl.length === 3) {
+      event.preventDefault();
+      return;
+    }
+    const files = event.target.files ? Array.from(event.target.files) : [];
+    setImagePreview((prev) => [...prev, ...files]);
+  };
+  useEffect(() => {
+    if (!imagePreview.length) return;
+
+    const objectUrls = imagePreview.map((file) => URL.createObjectURL(file));
+    setImageUrl(objectUrls);
+
+    return () => objectUrls.forEach((url) => URL.revokeObjectURL(url));
+  }, [imagePreview]);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmitForm)}
@@ -165,31 +200,117 @@ export default function PostFormItem({ id }: { id: string | undefined }) {
             )}
           </span>
 
-          <span className="">
-            <button className={`rounded-full bg-gray-100 px-4 py-1 text-sm`}>
-              Attach picture
-            </button>
+          <span className="flex flex-col gap-1">
+            <label className={`${anony.className}`}>Item proof</label>
+
+            <span className="flex h-max w-[400px] gap-2 rounded-2xl">
+              {imageUrl.map((img, index) => (
+                <div key={index} className="relative max-h-20 max-w-20">
+                  <button
+                    className="absolute right-1 top-1 cursor-pointer rounded-full bg-gray-400 p-1 text-white hover:bg-gray-500"
+                    type="button"
+                    onClick={() => {
+                      HandleRemoveImage(img);
+                    }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg "
+                      width="12"
+                      height="12"
+                      fill="currentColor"
+                      viewBox="0 0 256 256"
+                    >
+                      <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"></path>
+                    </svg>
+                  </button>
+                  <Image
+                    className="h-auto w-auto rounded object-cover shadow-sm"
+                    src={img}
+                    height={100}
+                    width={100}
+                    alt={index.toString()}
+                  />
+                </div>
+              ))}
+
+              <input
+                // {...register("itemProof")}
+                hidden
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                multiple
+                onChange={HandleFileChange}
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  fileInputRef.current?.click();
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-image-up"
+                >
+                  <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
+                  <path d="m14 19.5 3-3 3 3" />
+                  <path d="M17 22v-5.5" />
+                  <circle cx="9" cy="9" r="2" />
+                </svg>
+              </button>
+            </span>
           </span>
         </div>
       </div>
-
       <div className="flex flex-col items-end justify-center">
-        <button
-          className="bg-primary flex cursor-pointer items-center gap-2 rounded-full px-4 py-1 text-white"
-          type="submit"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="currentColor"
-            viewBox="0 0 256 256"
-          >
-            <path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0ZM93.66,77.66,120,51.31V144a8,8,0,0,0,16,0V51.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,77.66Z"></path>
-          </svg>
-          Upload report
-        </button>
+        <ReportButton />
       </div>
     </form>
+  );
+}
+
+function ReportButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      className="bg-primary flex cursor-pointer items-center gap-2 rounded-full px-4 py-1 text-white"
+      type="submit"
+    >
+      {!pending ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+        >
+          <path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0ZM93.66,77.66,120,51.31V144a8,8,0,0,0,16,0V51.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,77.66Z"></path>
+        </svg>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-loader-circle animate-spin"
+        >
+          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+        </svg>
+      )}
+      Upload report
+    </button>
   );
 }

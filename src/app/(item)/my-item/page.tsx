@@ -46,7 +46,12 @@ export default async function PostSearchPage() {
             className="grid grid-cols-3 justify-end gap-1.5"
           >
             {items.map((i) => (
-              <FoundItemCard key={`${i.id}`} href={`/my-item/${i.id}`} i={i} />
+              <FoundItemCard
+                view="grid"
+                key={`${i.id}`}
+                href={`/my-item/${i.id}`}
+                i={i}
+              />
             ))}
           </TabsContent>
           <TabsContent
@@ -57,6 +62,7 @@ export default async function PostSearchPage() {
               .filter((h) => h.itemStatus === "pending")
               .map((i) => (
                 <FoundItemCard
+                  view="grid"
                   key={`${i.id}`}
                   href={`/my-item/${i.id}`}
                   i={i}

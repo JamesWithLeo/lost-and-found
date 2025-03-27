@@ -162,6 +162,27 @@
       "when": 1742588138042,
       "tag": "0022_kind_deadpool",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1742821439919,
+      "tag": "0023_slow_fabian_cortez",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1742822351475,
+      "tag": "0024_lame_sunset_bain",
+      "breakpoints": true
+    },
+    {
+      "idx": 25,
+      "version": "7",
+      "when": 1742823780206,
+      "tag": "0025_brown_lake",
+      "breakpoints": true
     }
   ]
 }

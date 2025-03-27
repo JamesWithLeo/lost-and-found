@@ -1,10 +1,17 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
-import { getUser, hasNullOrUndefinedData } from "@/db/drizzle";
+import {
+  getFoundItems,
+  GetGlobalCase,
+  getMyItems,
+  getUser,
+  hasNullOrUndefinedData,
+} from "@/db/drizzle";
 import SearchModal from "@/ui/server/SearchModal";
 import QuickSearchSection from "@/ui/QuickSearchSection";
 import QuickSearchModal from "@/ui/QuickSearchModal";
+import RecentSection from "@/ui/RecentSection";
 
 interface PageProps {
   searchParams?: Promise<Record<string, string | string[]>>;
@@ -29,6 +36,21 @@ export default async function Page({ searchParams }: PageProps) {
     redirect("/discovery");
   }
 
+  const recentlyFoundItems = await getFoundItems(session.user.id, 2);
+  const recentlylostItems = await getMyItems(session.user.id, 2);
+  const allCase = await GetGlobalCase();
+  const globalCaseQuantity = allCase.length;
+
+  const returnedItemsQuantity = allCase.reduce(
+    (count, caseItem) =>
+      caseItem.itemStatus === "returned" ? count + 1 : count,
+    0,
+  );
+  const honestyPercentage =
+    globalCaseQuantity > 0
+      ? (returnedItemsQuantity / globalCaseQuantity) * 100
+      : 0;
+
   return (
     <div className="flex min-h-screen w-full max-w-[1440px] flex-col items-center justify-items-center">
       {openSearch && <SearchModal />}
@@ -46,81 +68,22 @@ export default async function Page({ searchParams }: PageProps) {
           <QuickSearchSection />
         </div>
         <div className="flex w-full flex-col items-center justify-between gap-2 px-48">
-          <div className="flex gap-4 border p-2">
-            <div className="h-28 w-40 rounded bg-blue-200 p-4">
-              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
-                10,329
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-globe"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                  <path d="M2 12h20" />
-                </svg>
-              </h1>
-              <h1 className="">Global case</h1>
-            </div>
-            <div className="h-28 w-40 rounded bg-gray-50 p-4">
-              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
-                61%
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-trending-up"
-                >
-                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-                  <polyline points="16 7 22 7 22 13" />
-                </svg>
-              </h1>
-              <h1 className="ml-4 text-xl">Honesty</h1>
-            </div>
-            <div className="h-28 w-40 rounded bg-gray-200 p-4">
-              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
-                5, 321
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-trending-up"
-                >
-                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-                  <polyline points="16 7 22 7 22 13" />
-                </svg>
-              </h1>
-              <h1 className="">Returned Item</h1>
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center gap-4">
-            <span>
+          <div className="flex w-full flex-col items-center gap-4">
+            <span className="w-full">
               <h1 className="text-primary text-6xl font-bold">Welcome back</h1>
               <h1 className="text-4xl font-bold">
                 {user?.firstName} {user?.lastName}
               </h1>
             </span>
-            <span className="col-start-2 row-start-4 flex"></span>
+            <span className="col-start-2 row-start-4 flex">
+              <RecentSection
+                honestyPercentage={honestyPercentage}
+                returnedItemsQuantity={returnedItemsQuantity}
+                globalCaseQuantity={globalCaseQuantity}
+                foundItems={recentlyFoundItems}
+                lostItems={recentlylostItems}
+              />
+            </span>
           </div>
         </div>
       </section>

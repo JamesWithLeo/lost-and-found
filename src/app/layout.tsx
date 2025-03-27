@@ -4,6 +4,7 @@ import "./globals.css";
 import Footer from "@/ui/server/footer";
 import MainHeader from "@/ui/server/MainHeader";
 import { getServerSession } from "next-auth";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex flex-col items-center antialiased`}
       >
         <MainHeader isAuth={!!session} photoUrl={session?.user.image} />
+        <Toaster />
         {children}
         <Footer />
       </body>

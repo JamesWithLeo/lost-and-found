@@ -1,5 +1,28 @@
 import { z } from "zod";
 
+export const CATEGORIES = [
+  "animals",
+  "accessory",
+  "clothing",
+  "bags & wallet",
+  "documents",
+  "electronics",
+  "food & beverages",
+  "pets & person",
+  "miscellaneous",
+  "furniture",
+  "toys & games",
+  "health & beauty",
+  "home appliances",
+  "sports & outdoors",
+  "automotive",
+  "books & stationery",
+  "jewelry",
+  "art & collectibles",
+  "tools & equipment",
+  "garden supplies",
+];
+
 const truncateToMinute = (date: Date) => {
   return new Date(
     date.getFullYear(),
@@ -28,31 +51,9 @@ export const postSearchSchema = z.object({
   timeDate: z.coerce
     .date()
     .max(now, { message: "Date and time must not be in the future" }),
-  category: z.enum([
-    "animals",
-    "accessory",
-    "clothing",
-    "bags & wallet",
-    "documents",
-    "electronics",
-    "food & beverages",
-    "pets & person",
-    "miscellaneous",
-    "furniture",
-    "toys & games",
-    "health & beauty",
-    "home appliances",
-    "sports & outdoors",
-    "automotive",
-    "books & stationery",
-    "jewelry",
-    "art & collectibles",
-    "tools & equipment",
-    "garden supplies",
-  ]),
+  category: z.enum(["unknown", ...CATEGORIES]),
   caption: z.string().min(10).max(256),
   desc: z.string().optional().nullable(),
-  // itemProof: z.string(),
 });
 
 export const quickSearchSchema = z.object({
@@ -63,24 +64,23 @@ export const quickSearchSchema = z.object({
     .trim(),
   color: z
     .string()
-    .min(2)
     .max(256)
     .optional()
+    .nullable()
     .transform((value) => (value === "" ? null : value)),
   brandModel: z
     .string()
-    .min(2)
     .max(256)
     .optional()
+    .nullable()
     .transform((value) => (value === "" ? null : value)),
   location: z
     .string()
-    .min(2)
     .max(256)
-    .regex(/^[a-zA-Z0-9\s,.-]*$/, "Invalid location format"),
-  timeDate: z.coerce
-    .date()
-    .max(new Date(), { message: "Date and time must not be in the future" }),
+    .regex(/^[a-zA-Z0-9\s,.-]*$/, "Invalid location format")
+    .nullable()
+    .optional(),
+  timeDate: z.date().nullable().optional(),
   category: z.enum([
     "animals",
     "accessory",

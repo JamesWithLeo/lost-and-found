@@ -3,6 +3,7 @@ import { quickSearchItems } from "@/actions/itemActions";
 import { Anonymous_Pro } from "next/font/google";
 import Form from "next/form";
 import { useRouter } from "next/navigation";
+import { useFormStatus } from "react-dom";
 
 const anony = Anonymous_Pro({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -41,18 +42,20 @@ export default function QuickSearchModal() {
 
           <div className="flex w-full flex-col gap-2 rounded bg-white px-2 py-3 shadow-2xl">
             <span
-              className={`${anony.className} grid grid-cols-[5rem_1rem_1fr] items-center gap-2 rounded border px-4 py-2 text-gray-400`}
+              className={`${anony.className} grid grid-cols-[5rem_1rem_1fr_1rem_4rem] items-center gap-2 rounded border px-4 py-2 text-gray-400`}
             >
-              <h1 className="w-max text-center">Item name</h1>
+              <h1 className="w-max text-center">Item name </h1>
               <div className="h-full w-2 border-r"></div>
               <input
                 className={`w-full outline-0 ${anony.className} text-gray-900`}
                 name="itemName"
                 required
               />
+              <div className="h-full w-2 border-r"></div>
+              <h1>required</h1>
             </span>
             <span
-              className={`${anony.className} grid grid-cols-[5rem_1rem_1fr] items-center gap-2 rounded border px-4 py-2 text-gray-400`}
+              className={`${anony.className} grid grid-cols-[5rem_1rem_1fr_1rem_4rem] items-center gap-2 rounded border px-4 py-2 text-gray-400`}
             >
               <h1 className="w-max text-center">Category</h1>
               <div className="h-full w-2 border-r"></div>
@@ -79,6 +82,8 @@ export default function QuickSearchModal() {
                 <option value={"jewelry"}>jewelry</option>
                 <option value={"art & collectibles"}>art & collectibles</option>
               </select>
+              <div className="h-full w-2 border-r"></div>
+              <h1>required</h1>
             </span>
 
             <span
@@ -90,7 +95,6 @@ export default function QuickSearchModal() {
                 className={`w-full outline-0 ${anony.className} text-gray-900`}
                 placeholder="Morong, Rizal"
                 name="location"
-                required
               />
             </span>
             <span
@@ -113,33 +117,57 @@ export default function QuickSearchModal() {
                 className={`w-full outline-0 ${anony.className} text-gray-900`}
                 type="datetime-local"
                 name="timeDate"
-                required
               />
             </span>
+            <QuickSearch />
           </div>
-          <button
-            type="submit"
-            className="bg-primary flex cursor-pointer items-center justify-center gap-4 rounded p-2 text-white shadow-2xl"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-search"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.3-4.3" />
-            </svg>
-            Quick Search
-          </button>
         </Form>
       </div>
     </>
+  );
+}
+
+function QuickSearch() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="bg-primary flex cursor-pointer items-center justify-center gap-4 rounded p-2 text-white shadow-2xl"
+    >
+      {pending ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-loader-circle animate-spin"
+        >
+          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+        </svg>
+      ) : (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-search"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+      )}
+      Quick Search
+    </button>
   );
 }

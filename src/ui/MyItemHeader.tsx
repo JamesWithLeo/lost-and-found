@@ -25,7 +25,7 @@ export default function MyItemHeader({
 }) {
   return (
     <header
-      className={`bg-tranparent sticky top-0 z-40 flex h-[var(--header-height)] w-full items-center justify-between border-b px-8 text-sm`}
+      className={`bg-tranparent sticky top-0 z-40 flex h-[var(--header-height)] w-full items-center justify-between border-b px-8 text-sm backdrop-blur-sm`}
     >
       <Link href={isAuth ? "/" : "/discovery"} className={""}>
         <Logo />
