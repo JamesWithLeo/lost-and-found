@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Logo from "../server/Logo";
 import LogoutButton from "./logoutButton";
@@ -13,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { useEffect, useState } from "react";
 
 export default function DefaultHeader({
   isAuth,
@@ -21,9 +23,20 @@ export default function DefaultHeader({
   isAuth: boolean;
   photoUrl: string | undefined;
 }) {
+  const [isBlur, setIsBlur] = useState<boolean>(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      const triggerHeight = 1;
+      setIsBlur(window.scrollY > triggerHeight);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
   return (
     <header
-      className={`fixed top-0 z-40 flex h-[--header-height] w-full items-center justify-between bg-transparent px-8 text-sm`}
+      className={`${isBlur && "backdrop-blur-xs"} fixed top-0 z-40 flex h-[--header-height] w-full items-center justify-between bg-transparent px-8 text-sm`}
     >
       <Link href={isAuth ? "/" : "/discovery"} className={""}>
         <Logo />

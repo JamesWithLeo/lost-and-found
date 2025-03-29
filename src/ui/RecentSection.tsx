@@ -18,11 +18,11 @@ export default function RecentSection({
 }) {
   return (
     <>
-      <main className="grid grid-cols-3 gap-2">
-        <div className="flex h-max w-full gap-2 border-r pr-2">
-          <div className="row-start-2 flex flex-col gap-2">
-            <div className="h-28 w-40 rounded bg-blue-200 p-4">
-              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
+      <main className="flex flex-col gap-2 md:grid md:grid-cols-3">
+        <div className="flex h-max w-full gap-2">
+          <div className="row-start-2 grid w-full grid-cols-3 gap-2 md:grid-cols-1 md:grid-rows-3 md:flex-col">
+            <div className="h-full w-full rounded bg-blue-200 p-2 sm:h-28 sm:w-full sm:p-4">
+              <h1 className="mb-4 flex items-baseline gap-2 text-lg font-bold sm:text-3xl">
                 {globalCaseQuantity}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -41,10 +41,10 @@ export default function RecentSection({
                   <path d="M2 12h20" />
                 </svg>
               </h1>
-              <h1 className="">Global case</h1>
+              <h1 className="text-sm">Global case</h1>
             </div>
-            <div className="h-28 w-40 rounded bg-gray-50 p-4">
-              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
+            <div className="h-full w-full rounded bg-gray-50 p-2 sm:h-28 sm:w-full sm:p-4">
+              <h1 className="mb-4 flex items-baseline gap-2 text-lg font-bold sm:text-3xl">
                 {honestyPercentage}%
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -62,10 +62,10 @@ export default function RecentSection({
                   <polyline points="16 7 22 7 22 13" />
                 </svg>
               </h1>
-              <h1 className="ml-4 text-xl">Honesty</h1>
+              <h1 className="ml-4 text-sm">Honesty</h1>
             </div>
-            <div className="h-28 w-40 rounded bg-gray-200 p-4">
-              <h1 className="mb-4 flex items-baseline gap-2 text-3xl font-bold">
+            <div className="h-full w-full rounded bg-gray-200 p-2 sm:h-28 sm:w-full sm:p-4">
+              <h1 className="mb-4 flex items-baseline gap-2 text-lg font-bold sm:text-3xl">
                 {returnedItemsQuantity}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -83,14 +83,22 @@ export default function RecentSection({
                   <polyline points="16 7 22 7 22 13" />
                 </svg>
               </h1>
-              <h1 className="">Returned Item</h1>
+              <h1 className="text-sm">Returned Item</h1>
             </div>
           </div>
         </div>
 
         <div className="flex h-full w-full flex-col gap-2 rounded border p-2">
-          <h1 className="col-span-2 font-bold">Recently Lost</h1>
-          <div className="flex h-96 grow flex-col gap-2">
+          <span className="flex justify-between">
+            <h1 className="col-span-2 text-sm font-bold">Recently Lost</h1>
+            <Link
+              className="text-sm text-gray-500 hover:text-gray-700 md:hidden"
+              href="/my-item"
+            >
+              view more
+            </Link>
+          </span>
+          <div className="flex h-max grow flex-col gap-2">
             {lostItems &&
               lostItems.length !== 0 &&
               lostItems
@@ -104,7 +112,7 @@ export default function RecentSection({
                   />
                 ))}
           </div>
-          <span className="flex h-min grow-0 flex-col items-center">
+          <span className="hidden h-min grow-0 flex-col items-center md:flex">
             <Link
               className="text-sm text-gray-500 hover:text-gray-700"
               href="/my-item"
@@ -115,8 +123,16 @@ export default function RecentSection({
         </div>
 
         <div className="flex h-full w-full flex-col gap-2 rounded border p-2">
-          <h1 className="col-span-2 w-full font-bold">Recently Found</h1>
-          <div className="flex grow flex-col gap-2">
+          <span className="flex justify-between">
+            <h1 className="col-span-2 text-sm font-bold">Recently Found</h1>
+            <Link
+              className="dtext-gray-500 text-sm hover:text-gray-700 md:hidden"
+              href="/found-item"
+            >
+              view more
+            </Link>
+          </span>
+          <div className="flex min-h-36 grow flex-col gap-2">
             {foundItems &&
               foundItems.length !== 0 &&
               foundItems
@@ -130,7 +146,7 @@ export default function RecentSection({
                   />
                 ))}
           </div>
-          <span className="flex h-min grow-0 flex-col items-center">
+          <span className="hidden h-min grow-0 flex-col items-center md:flex">
             <Link
               className="text-sm text-gray-500 hover:text-gray-700"
               href="/found-item"

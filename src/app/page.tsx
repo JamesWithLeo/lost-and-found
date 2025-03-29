@@ -56,26 +56,28 @@ export default async function Page({ searchParams }: PageProps) {
       {openSearch && <SearchModal />}
       {q && <QuickSearchModal />}
       <section className="w-full flex-col">
-        <div className="grid h-80 w-full grid-cols-3 grid-rows-4 justify-items-center overflow-clip bg-[url(/images/hero.png)] bg-cover bg-center">
+        <div className="grid h-48 w-full grid-cols-3 grid-rows-4 justify-items-center overflow-clip bg-[url(/images/hero.png)] bg-cover bg-center sm:h-80">
           <div className="col-span-3 row-span-2 row-start-3"></div>
-          <span className="right-16 top-56 col-span-2 col-start-2 row-start-2 h-[140px] w-full max-w-[396px] select-none text-clip text-wrap bg-clip-text text-right text-5xl font-bold text-slate-50 opacity-70 drop-shadow-xl backdrop-opacity-45">
+          <span className="right-16 top-56 col-span-2 col-start-2 row-start-2 flex h-[140px] w-full max-w-[396px] select-none items-center text-clip text-wrap bg-clip-text text-right text-xl font-bold text-slate-50 opacity-70 drop-shadow-xl backdrop-opacity-45 sm:text-2xl md:text-4xl">
             Today, we helped 451 people reunite with their lost items!
           </span>
         </div>
       </section>
       <section className="flex w-full flex-col gap-4 pb-10">
-        <div className="w-full bg-slate-100 py-2">
+        <div className="flex w-full flex-col items-center bg-slate-100 py-2">
           <QuickSearchSection />
         </div>
-        <div className="flex w-full flex-col items-center justify-between gap-2 px-48">
+        <div className="grid w-full grid-cols-1 flex-col items-center justify-between gap-2 px-[1.5rem] sm:px-12 lg:px-48">
           <div className="flex w-full flex-col items-center gap-4">
             <span className="w-full">
-              <h1 className="text-primary text-6xl font-bold">Welcome back</h1>
-              <h1 className="text-4xl font-bold">
+              <h1 className="text-primary text-2xl font-bold lg:text-4xl">
+                Welcome back
+              </h1>
+              <h1 className="text-md font-bold lg:text-4xl">
                 {user?.firstName} {user?.lastName}
               </h1>
             </span>
-            <span className="col-start-2 row-start-4 flex">
+            <span className="col-start-2 row-start-4 grid w-full">
               <RecentSection
                 honestyPercentage={honestyPercentage}
                 returnedItemsQuantity={returnedItemsQuantity}

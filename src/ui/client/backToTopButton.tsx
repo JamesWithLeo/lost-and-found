@@ -1,6 +1,9 @@
 "use client";
 import { Inter } from "next/font/google";
-const inter = Inter({ weight: ["400", "500", "600"], subsets: ["latin"] });
+const inter = Inter({
+  weight: ["100", "200", "300", "400", "500", "600"],
+  subsets: ["latin"],
+});
 export default function BackToTop() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -10,7 +13,7 @@ export default function BackToTop() {
     <>
       <button
         onClick={scrollToTop}
-        className={`row-start-2 flex cursor-pointer flex-col items-center justify-center rounded-full bg-white text-[14px] font-extralight ${inter.className}`}
+        className={`row-start-2 flex cursor-pointer flex-col items-center justify-center rounded-full text-[14px] text-xs font-extralight ${inter.className}`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
