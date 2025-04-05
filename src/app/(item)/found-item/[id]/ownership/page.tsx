@@ -22,7 +22,7 @@ export default async function Page() {
   }
   return (
     <div className="grid h-full w-full grid-cols-1 grid-rows-[max-content_1fr] rounded-r-2xl">
-      <section className="flex w-max items-center gap-6 px-[1.5rem] py-2 text-sm text-gray-600 sm:px-8">
+      <section className="flex w-max items-center gap-6 py-2 text-sm text-gray-600">
         <Link href={"/"} className="">
           <svg
             xmlns="http://www.w3.org/2000/svg"

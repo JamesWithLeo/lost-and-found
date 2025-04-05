@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     maxAge: 60 * 60 * 24, // 1 day
-    path: "/result",
+    path: "/found-item",
   });
 
   return NextResponse.json({ message: "Item ID stored in cookie" });

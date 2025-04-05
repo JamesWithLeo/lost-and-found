@@ -47,7 +47,7 @@ export default async function Page({
                 item={i.item}
                 user={i.user}
                 key={i.item.id}
-                clickLink="/result/"
+                clickLink="/found-item/"
                 isCurrentUser={session?.user.id === i.user?.id}
               />
             ))}
