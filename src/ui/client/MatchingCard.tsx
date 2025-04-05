@@ -12,6 +12,7 @@ export default function MatchingCard({
   item,
   user,
   isCurrentUser,
+  clickLink,
 }: {
   item: InferSelectModel<typeof items>;
   user: {
@@ -21,6 +22,7 @@ export default function MatchingCard({
     email: string | null;
   } | null;
   isCurrentUser: boolean;
+  clickLink: string;
 }) {
   const router = useRouter();
   return (
@@ -39,13 +41,13 @@ export default function MatchingCard({
       <div
         className="h-full w-full cursor-pointer bg-gray-100 p-1.5"
         onClick={() => {
-          router.push(`/found-item/${item.id}`);
+          router.push(`${clickLink}${item.id}`);
         }}
       >
         <h1 className={`${anony.className} `}>{item.itemName}</h1>
         <h1 className={`${inter.className} text-xs`}>
-          Reported by
-          {isCurrentUser ? " You " : `${user?.firstName} ${user?.lastName}`}
+          Reported by{" "}
+          {isCurrentUser ? "You" : `${user?.firstName} ${user?.lastName}`}
         </h1>
         <h1 className={`${inter.className} text-xs`}>
           Claimant: {item.claimantCount}

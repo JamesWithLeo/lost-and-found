@@ -1,7 +1,7 @@
 import { neonConfig, neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import ws from "ws";
-import { items, users } from "./schema";
+import { claims, items, users } from "./schema";
 import { eq, ilike, and, or, not, gte } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/authOptions";
@@ -248,4 +248,47 @@ export async function getMyItems(userId: string | undefined, limit?: number) {
 }
 export async function GetGlobalCase() {
   return await db.select().from(items);
+}
+
+export async function insertClaims(newClaim: {
+  caption: string;
+  desc: string;
+  userId: string;
+  itemProof: string[] | null;
+  distinctFeature: string;
+  itemId: string;
+}) {
+  const result = await db
+    .insert(claims)
+    .values({
+      userId: newClaim.userId,
+      itemId: newClaim.itemId,
+      caption: newClaim.caption,
+      desc: newClaim.desc,
+      distinctFeature: newClaim.distinctFeature,
+      proof: newClaim.itemProof ?? [],
+    })
+    .onConflictDoUpdate({
+      target: [claims.itemId, claims.userId],
+      set: {
+        caption: newClaim.caption,
+      },
+    })
+    .returning();
+
+  return result[0];
+}
+
+export async function getClaims(itemId: string) {
+  const result = await db
+    .select({
+      userId: claims.userId,
+      createdAt: claims.createdAt,
+      itemId: claims.itemId,
+      caption: claims.caption,
+    })
+    .from(claims)
+    .where(eq(claims.itemId, itemId));
+
+  return result;
 }

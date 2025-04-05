@@ -29,7 +29,7 @@ export default function FoundItemCard({
         <span
           className={`flex w-full justify-between ${view === "grid" ? "flex-row items-center" : "flex-col items-start"}`}
         >
-          <h1 className="font-medium">{i.itemName}</h1>
+          <h1 className="text-sm font-medium">{i.itemName}</h1>
           {view === "grid" ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ export default function FoundItemCard({
             </svg>
           ) : (
             <h1
-              className={`text-sm ${bgDark} ${inria.className} w-max rounded-full px-4 text-white`}
+              className={`text-xs sm:text-sm ${bgDark} ${inria.className} w-max rounded-full px-4 text-white`}
             >
               {i.itemStatus
                 .toLowerCase()

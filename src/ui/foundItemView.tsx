@@ -21,12 +21,16 @@ export default function FoundItemView({
     localStorage.setItem("foundItemView", value);
   };
   return (
-    <section className="max-w-[1440px]] mt-4 flex w-full flex-col gap-2 px-48">
+    <section className="max-w-[1440px]] mt-4 flex w-full flex-col gap-2 px-[1.5rem] sm:px-8 md:px-48">
       <Tabs defaultValue="all" className="col-start-2">
-        <div className="flex w-max justify-between gap-8">
+        <div className="flex w-max justify-between gap-8 text-sm">
           <TabsList>
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="pending">Pending</TabsTrigger>
+            <TabsTrigger value="all" className="">
+              All
+            </TabsTrigger>
+            <TabsTrigger value="pending" className="">
+              Pending
+            </TabsTrigger>
           </TabsList>
           <div className="flex gap-2">
             <Input placeholder="Search" />
@@ -65,10 +69,10 @@ export default function FoundItemView({
         </div>
         <TabsContent
           value="all"
-          className={`grid ${view === "list" ? "grid-cols-1" : "grid-cols-3"} justify-end gap-1.5`}
+          className={`grid ${view === "list" ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"} justify-end gap-1.5`}
         >
           {items &&
-            items.length &&
+            !!items.length &&
             items.map((i) => (
               <FoundItemCard
                 key={`${i.id}`}
@@ -80,10 +84,10 @@ export default function FoundItemView({
         </TabsContent>
         <TabsContent
           value="pending"
-          className="grid grid-cols-3 justify-end gap-1.5"
+          className={`grid ${view === "list" ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"} justify-end gap-1.5`}
         >
           {items &&
-            items.length &&
+            !!items.length &&
             items
               .filter((h) => h.itemStatus === "pending")
               .map((i) => (

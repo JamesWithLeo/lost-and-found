@@ -1,0 +1,2 @@
+ALTER TABLE "items" ALTER COLUMN "created_at" SET DEFAULT '2025-04-04T23:33:38.435Z';--> statement-breakpoint
+ALTER TABLE "claims" ADD CONSTRAINT "claims_user_id_item_id_pk" PRIMARY KEY("user_id","item_id");

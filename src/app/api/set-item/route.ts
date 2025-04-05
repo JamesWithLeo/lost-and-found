@@ -8,13 +8,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing itemId" }, { status: 400 });
   }
 
-  // Set the cookie (httpOnly for security)
   (await cookies()).set("targetItemId", itemId, {
     httpOnly: true, // Prevents client-side access
-    secure: process.env.NODE_ENV === "production", // Only secure in prod
+    secure: process.env.NODE_ENV === "production",
     sameSite: "strict",
     maxAge: 60 * 60 * 24, // 1 day
-    path: "/found-item",
+    path: "/result",
   });
 
   return NextResponse.json({ message: "Item ID stored in cookie" });

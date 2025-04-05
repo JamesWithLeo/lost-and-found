@@ -1,9 +1,10 @@
-import { getFoundItem, getUserSafe } from "@/db/drizzle";
-import ChevBack from "@/ui/ChevBack";
+import { getClaims, getFoundItem, getUserSafe } from "@/db/drizzle";
+// import ChevBack from "@/ui/ChevBack";
 import { Anonymous_Pro } from "next/font/google";
-import Link from "next/link";
+// import Link from "next/link";
 import { formatDistanceToNowStrict } from "date-fns";
 import FileOwnershipButton from "@/ui/FileOwnershipButton";
+import { redirect } from "next/navigation";
 
 const anony = Anonymous_Pro({ weight: ["400", "700"], subsets: ["latin"] });
 
@@ -14,16 +15,17 @@ export default async function Page({
 }) {
   const id = (await params).id;
   const { data: item } = { ...(await getFoundItem(id)) };
-  const user = await getUserSafe(item?.userId);
+  if (!item) {
+    redirect("/");
+  }
+  const user = await getUserSafe(item.userId);
+  const claims = await getClaims(id);
+  console.log(claims);
   return (
     <main
-      className={`${anony.className} flex min-h-dvh w-full flex-col items-center gap-4 bg-slate-50 px-48 py-10`}
+      className={`${anony.className} flex h-max w-full flex-col items-center gap-4 bg-slate-50`}
     >
-      <span className="flex w-full items-center gap-4 py-2 text-sm text-gray-600">
-        <ChevBack />. . .
-        <Link href={`/found-item/${id}`}>{item?.itemName}</Link>
-      </span>
-      <section className="grid h-52 w-full max-w-[1440px] grid-cols-[30%_70%] gap-2 rounded border border-gray-300 bg-white p-2 pr-4">
+      <section className="grid w-full max-w-[1440px] grid-cols-1 grid-rows-2 gap-2 rounded border border-gray-300 bg-white p-2 pr-4 sm:h-52 sm:grid-cols-[30%_70%] sm:grid-rows-1">
         <div className="bg-gray-100"></div>
         <div className="flex flex-col gap-3">
           <div className="flex w-full justify-between">
@@ -62,7 +64,7 @@ export default async function Page({
             </button>
           </div>
           <span>
-            <h1>{item?.itemName}</h1>
+            <h1 className="text-sm md:text-[16px]">{item?.itemName}</h1>
             <h1 className="text-xs text-gray-500">{item?.id}</h1>
           </span>
           <span>
@@ -83,16 +85,9 @@ export default async function Page({
       </section>
       <section className="shad w-full max-w-[1440px] gap-2 rounded border-gray-300">
         <div className="grid w-full grid-cols-2 gap-2">
-          <button className="w-full cursor-pointer rounded border bg-white px-2 py-1">
+          <button className="w-full cursor-pointer rounded border bg-white px-2 py-1 text-[16px] text-sm">
             Contact Samaritan
           </button>
-          {/* <Link
-            href={`/found-item/${id}/ownership`}
-            scroll={false}
-            className="bg-primary flex w-full cursor-pointer flex-col items-center rounded border px-2 py-1 text-white"
-          >
-            File ownership
-          </Link> */}
           <FileOwnershipButton itemId={id} />
         </div>
       </section>

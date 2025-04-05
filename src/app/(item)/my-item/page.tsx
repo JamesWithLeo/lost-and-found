@@ -11,15 +11,15 @@ export default async function PostSearchPage() {
   return (
     <main className="flex min-h-dvh w-full flex-col items-center bg-slate-50 py-10">
       <section className="flex w-full flex-col items-center border-b border-gray-200 py-4">
-        <div className="w-full max-w-[1440px] px-48">
-          <h1 className="text-3xl">My items </h1>
-          <h1 className="text-sm">
+        <div className="w-full max-w-[1440px] px-[1.5rem] sm:px-8 md:px-48">
+          <h1 className="text-xl font-semibold sm:text-3xl">My items </h1>
+          <h1 className="text-nowrap text-sm">
             Reuniting Lost items with Owners, Including Yours!
           </h1>
         </div>
       </section>
 
-      <section className="max-w-[1440px]] mt-4 flex w-full flex-col gap-2 px-48">
+      <section className="max-w-[1440px]] mt-4 flex w-full flex-col gap-2 px-[1.5rem] sm:px-8 md:px-48">
         <Tabs defaultValue="all" className="col-start-2">
           <div className="flex w-max justify-between gap-8">
             <TabsList>
@@ -43,7 +43,7 @@ export default async function PostSearchPage() {
           </div>
           <TabsContent
             value="all"
-            className="grid grid-cols-3 justify-end gap-1.5"
+            className="grid grid-cols-2 justify-end gap-1.5 sm:grid-cols-3"
           >
             {items.map((i) => (
               <FoundItemCard
@@ -56,7 +56,7 @@ export default async function PostSearchPage() {
           </TabsContent>
           <TabsContent
             value="pending"
-            className="grid grid-cols-3 justify-end gap-1.5"
+            className="SM:grid-cols-3 grid grid-cols-2 justify-end gap-1.5"
           >
             {items
               .filter((h) => h.itemStatus === "pending")

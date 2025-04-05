@@ -2,10 +2,13 @@
 
 import { useRouter } from "next/navigation";
 
-export default function ChevBack() {
+export default function ChevBack({ label }: { label?: string }) {
   const router = useRouter();
   return (
-    <button className="cursor-pointer" onClick={() => router.back()}>
+    <button
+      className="flex w-max cursor-pointer items-center gap-2"
+      onClick={() => router.back()}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
@@ -20,6 +23,7 @@ export default function ChevBack() {
       >
         <path d="m15 18-6-6 6-6" />
       </svg>
+      {label}
     </button>
   );
 }

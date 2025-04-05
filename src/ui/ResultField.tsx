@@ -1,4 +1,5 @@
 "use client";
+import { time } from "console";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -115,7 +116,8 @@ export default function ResultField({
           <>
             <h1>Last seen: </h1>
             <h1>
-              {location} at {timeDate && new Date(timeDate).toLocaleString()}
+              {location} {timeDate && "at"}{" "}
+              {timeDate && new Date(timeDate).toLocaleString()}
             </h1>
           </>
         ) : (

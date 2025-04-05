@@ -11,11 +11,11 @@ export default function FileOwnershipButton({ itemId }: { itemId: string }) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ itemId }),
     });
-    router.push(`/found-item/${itemId}/ownership`);
+    router.push(`/result/${itemId}/ownership`);
   }
   return (
     <button
-      className="bg-primary flex w-full cursor-pointer flex-col items-center rounded border px-2 py-1 text-white"
+      className="bg-primary flex w-full cursor-pointer flex-col items-center justify-center rounded border px-2 py-1 text-sm text-white md:text-[16px]"
       onClick={handleFileOwnership}
     >
       File Ownership
