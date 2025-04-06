@@ -14,7 +14,9 @@ export default function MatchingCard({
   isCurrentUser,
   clickLink,
 }: {
-  item: InferSelectModel<typeof items>;
+  item: InferSelectModel<typeof items> & {
+    claimCount: number;
+  };
   user: {
     id: string;
     firstName: string | null;
@@ -28,7 +30,7 @@ export default function MatchingCard({
   return (
     <section className="grid h-full max-h-96 w-full max-w-96 grid-rows-[8fr_2fr] gap-1.5 rounded border bg-white p-1">
       {item.itemProof && item.itemProof[0] && (
-        <div className="h-full w-full bg-gray-100">
+        <div className="h-full w-full overflow-hidden bg-gray-100">
           <Image
             src={item.itemProof[0]}
             alt={`matching-${item.itemName}`}
@@ -50,7 +52,7 @@ export default function MatchingCard({
           {isCurrentUser ? "You" : `${user?.firstName} ${user?.lastName}`}
         </h1>
         <h1 className={`${inter.className} text-xs`}>
-          Claimant: {item.claimantCount}
+          Claimant: {item.claimCount}
         </h1>
         <h1 className={`${inter.className} text-xs`}>{item.location}</h1>
       </div>

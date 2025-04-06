@@ -1,11 +1,12 @@
 import { authOptions } from "@/authOptions";
-import { getClaims, getFoundItem } from "@/db/drizzle";
+import { getClaims, getFoundItem, getUserSafe } from "@/db/drizzle";
 import ChevBack from "@/ui/ChevBack";
 import FileOwnershipButton from "@/ui/FileOwnershipButton";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { formatDistanceToNowStrict } from "date-fns";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import ClaimantCard from "@/ui/ClaimantCard";
 
 export default async function Page({
   params,
@@ -15,20 +16,30 @@ export default async function Page({
   const id = (await params).id;
   const { data: item } = { ...(await getFoundItem(id)) };
   const session = await getServerSession(authOptions);
+  const samaritan: null | {
+    id: string;
+    firstName: string | null;
+    lastName: string | null;
+    email: string | null;
+  } | null = await getUserSafe(item?.userId);
+
   const claims = await getClaims(id);
-  let isVisitor = true;
-  if (item?.userId === session?.user.id) {
-    isVisitor = false;
-  }
+  const submittedOwnership = claims.some(
+    (claim) => claim.userId === session?.user.id,
+  );
+
   return (
     <main className="grid h-max flex-col items-center gap-4">
       <span className="flex w-full items-center gap-6 py-2 text-sm text-gray-600">
         <span className="flex h-max w-full flex-row text-sm text-gray-600">
-          <ChevBack label={`${isVisitor ? "result" : "found-item"}`} />
+          <ChevBack label={`${samaritan ? "result" : "found-item"}`} />
         </span>
-        {isVisitor && (
+        {samaritan && (
           <div className="flex w-full grid-cols-2 items-end justify-end gap-2">
-            <FileOwnershipButton itemId={id} />
+            <FileOwnershipButton
+              itemId={id}
+              disabled={submittedOwnership || session?.user.id === samaritan.id}
+            />
           </div>
         )}
       </span>
@@ -48,9 +59,12 @@ export default async function Page({
           <div className="flex w-full justify-between">
             <span>
               <h1>
-                Found by
-                {/* {user?.firstName} {user?.lastName} */}
+                Found by{" "}
+                {samaritan
+                  ? `${samaritan.firstName} ${samaritan.lastName}`
+                  : `You`}
               </h1>
+
               {item?.createdAt && (
                 <>
                   <h1 className="text-xs text-gray-500">
@@ -101,32 +115,28 @@ export default async function Page({
           </span>
         </div>
       </section>
-      <section className="w-full">
-        <section className="h-full w-full">
-          <Tabs defaultValue="claimants" className="">
-            <TabsList className="gap-1 rounded shadow-none md:w-1/3">
-              <TabsTrigger value="claimants" className="tabs-trigger rounded">
-                Claimants
-              </TabsTrigger>
-              <TabsTrigger value="more" className="tabs-trigger rounded">
-                more
-              </TabsTrigger>
-            </TabsList>
+      <section className="mt-16 h-full w-full">
+        <Tabs defaultValue="claimants" className="">
+          <TabsList className="gap-1 rounded shadow-none md:w-1/3">
+            <TabsTrigger value="claimants" className="tabs-trigger rounded">
+              Claimants
+            </TabsTrigger>
+            {/* todo : add new tabs */}
+            {/* <TabsTrigger value="more" className="tabs-trigger rounded">
+              more
+            </TabsTrigger> */}
+          </TabsList>
 
-            <TabsContent value="claimants" className="bg-white">
-              {claims.map((claim) => (
-                <span
-                  key={`${claim.itemId}-${claim.userId}`}
-                  className="grid grid-cols-[2fr_1fr_1fr] rounded border p-2"
-                >
-                  <h1>{claim.userId}</h1>
-                  <h1>{claim.caption}</h1>
-                  <h1>{claim.createdAt?.toDateString()}</h1>
-                </span>
-              ))}
-            </TabsContent>
-          </Tabs>
-        </section>
+          <TabsContent value="claimants" className="bg-white">
+            {claims.map((claim) => (
+              <ClaimantCard
+                key={`${claim.itemId}-${claim.userId}`}
+                claim={claim}
+                isCurrentUser={claim.userId === session?.user.id}
+              />
+            ))}
+          </TabsContent>
+        </Tabs>
       </section>
     </main>
   );

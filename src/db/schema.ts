@@ -55,7 +55,6 @@ export const items = pgTable("items", {
   desc: text("desc"),
   createdAt: text("created_at").default(new Date().toISOString()),
   type: itemTypeEnum().notNull().default("lost"),
-  claimantCount: integer("claimant_count").default(0),
   itemProof: text("item_proof").array().default([]),
 });
 
@@ -64,6 +63,11 @@ export const category = pgTable("category", {
   name: varchar("256").unique().notNull(),
 });
 
+export const ApprovalStatus = pgEnum("approvalStatus", [
+  "approved",
+  "pending",
+  "decline",
+]);
 export const claims = pgTable(
   "claims",
   {
@@ -74,11 +78,15 @@ export const claims = pgTable(
       .notNull()
       .references(() => items.id, { onDelete: "cascade" }),
     approvedAt: timestamp("approved_at", { withTimezone: true }),
-    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    declineAt: timestamp("decline_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
     caption: varchar({ length: 255 }),
     distinctFeature: text(),
     proof: text("proof").array().default([]),
     desc: text("desc"),
+    approvalStatus: ApprovalStatus().default("pending"),
   },
   (table) => {
     return {

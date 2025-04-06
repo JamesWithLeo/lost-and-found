@@ -2,7 +2,7 @@ import { neonConfig, neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import ws from "ws";
 import { claims, items, users } from "./schema";
-import { eq, ilike, and, or, not, gte } from "drizzle-orm";
+import { eq, ilike, and, or, not, gte, count } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/authOptions";
 neonConfig.webSocketConstructor = ws;
@@ -182,11 +182,12 @@ export async function findMatchingItems({
   ];
 
   if (location?.trim()) {
-    const terms = location.split(/[^a-zA-Z0-9]+/).map((term) => {
-      return ilike(items.location, `%${term}%`);
-    });
+    const terms = location
+      .split(/[^a-zA-Z0-9]+/)
+      .map((term) => ilike(items.location, `%${term}%`));
     conditions.push(or(...terms));
   }
+
   if (category) conditions.push(eq(items.category, category));
   if (color) conditions.push(ilike(items.color, `%${color}%`));
   if (brandModel) conditions.push(ilike(items.brandModel, `%${brandModel}%`));
@@ -195,17 +196,23 @@ export async function findMatchingItems({
 
   const matchingItems = await db
     .select({
-      item: items,
+      item: {
+        ...items,
+      },
       user: {
         id: users.id,
         firstName: users.firstName,
         lastName: users.lastName,
         email: users.email,
       },
+      claimCount: count(claims.itemId).as("claimCount"),
     })
     .from(items)
     .leftJoin(users, eq(items.userId, users.id))
-    .where(and(...conditions));
+    .leftJoin(claims, eq(claims.itemId, items.id))
+    .where(and(...conditions))
+    .groupBy(items.id, users.id);
+
   return matchingItems;
 }
 
@@ -286,9 +293,29 @@ export async function getClaims(itemId: string) {
       createdAt: claims.createdAt,
       itemId: claims.itemId,
       caption: claims.caption,
+      firstName: users.firstName,
+      lastName: users.lastName,
     })
     .from(claims)
+    .innerJoin(users, eq(claims.userId, users.id))
     .where(eq(claims.itemId, itemId));
 
   return result;
+}
+
+export async function getClaim(itemId: string, userId: string) {
+  return await db
+    .select({
+      claims,
+      claimant: {
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+      },
+    })
+    .from(claims)
+    .innerJoin(users, eq(claims.userId, users.id))
+    .where(and(eq(claims.itemId, itemId), eq(claims.userId, userId)))
+    .limit(1)
+    .then((res) => res[0]);
 }

@@ -60,7 +60,7 @@ export default function FoundItemCard({
           {new Date(i.timeDate).toLocaleString()}
         </h1>
         <h1 className={`text-sm ${anony.className}`}>
-          {i.claimantCount} {i.type === "found" ? "Claimants" : "leads"}
+          {} {i.type === "found" ? "Claimants" : "leads"}
         </h1>
         {view === "grid" ? (
           <h1

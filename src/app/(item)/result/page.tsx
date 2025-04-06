@@ -44,7 +44,7 @@ export default async function Page({
           <div className="grid h-full w-full grid-cols-3 gap-3 p-2">
             {matchingItem.map((i) => (
               <MatchingCard
-                item={i.item}
+                item={{ ...i.item, claimCount: i.claimCount }}
                 user={i.user}
                 key={i.item.id}
                 clickLink="/found-item/"
