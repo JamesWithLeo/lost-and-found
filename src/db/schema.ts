@@ -78,10 +78,10 @@ export const claims = pgTable(
       .notNull()
       .references(() => items.id, { onDelete: "cascade" }),
     approvedAt: timestamp("approved_at", { withTimezone: true }),
-    declineAt: timestamp("decline_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .defaultNow()
       .notNull(),
+    declineAt: timestamp("decline_at", { withTimezone: true }),
     caption: varchar({ length: 255 }),
     distinctFeature: text(),
     proof: text("proof").array().default([]),
