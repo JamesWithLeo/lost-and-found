@@ -36,7 +36,8 @@ export default async function Page({
             matchingItems.length > 0 &&
             matchingItems.map((match) => (
               <MatchingCard
-                {...match}
+                item={match.item}
+                user={match.user}
                 key={`${match.item.id}-matching-item`}
                 clickLink="/my-item/"
                 isCurrentUser={session?.user.id === match.user?.id}

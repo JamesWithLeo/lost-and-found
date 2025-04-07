@@ -14,9 +14,7 @@ export default function MatchingCard({
   isCurrentUser,
   clickLink,
 }: {
-  item: InferSelectModel<typeof items> & {
-    claimCount: number;
-  };
+  item: InferSelectModel<typeof items>;
   user: {
     id: string;
     firstName: string | null;
@@ -51,9 +49,7 @@ export default function MatchingCard({
           Reported by{" "}
           {isCurrentUser ? "You" : `${user?.firstName} ${user?.lastName}`}
         </h1>
-        <h1 className={`${inter.className} text-xs`}>
-          Claimant: {item.claimCount}
-        </h1>
+        <h1 className={`${inter.className} text-xs`}>Claimant: 0</h1>
         <h1 className={`${inter.className} text-xs`}>{item.location}</h1>
       </div>
     </section>

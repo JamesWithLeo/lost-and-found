@@ -302,6 +302,20 @@
       "when": 1743911852658,
       "tag": "0042_cool_rockslide",
       "breakpoints": true
+    },
+    {
+      "idx": 43,
+      "version": "7",
+      "when": 1744005764369,
+      "tag": "0043_charming_captain_universe",
+      "breakpoints": true
+    },
+    {
+      "idx": 44,
+      "version": "7",
+      "when": 1744006039978,
+      "tag": "0044_light_purple_man",
+      "breakpoints": true
     }
   ]
 }

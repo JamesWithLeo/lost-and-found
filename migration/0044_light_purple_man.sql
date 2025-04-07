@@ -1,0 +1,2 @@
+ALTER TABLE "items" ALTER COLUMN "created_at" SET DEFAULT '2025-04-07T06:07:19.961Z';
+ALTER TABLE "items" DROP COLUMN "claimCount";
