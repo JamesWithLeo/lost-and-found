@@ -7,7 +7,7 @@ const allowedOrigins = [
 ];
 
 // Helper function to set CORS headers based on origin
-export function getCorsHeaders(origin: string | null): HeadersInit {
+function getCorsHeaders(origin: string | null): HeadersInit {
   const headers: HeadersInit = {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Allow methods
     "Access-Control-Allow-Headers": "Content-Type, Authorization, x-user-email", // Allow specific headers
