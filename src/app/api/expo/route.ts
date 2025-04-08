@@ -12,7 +12,7 @@ export async function GET(req: Request) {
         status: 400,
         headers: {
           "Content-type": "application/json",
-          "Access-Control-Allow-Headers": "*",
+          "Access-Control-Allow-Origin": "*",
         },
       },
     );
@@ -26,7 +26,7 @@ export async function GET(req: Request) {
       status: 200,
       headers: {
         "Content-type": "application/json",
-        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
       },
     },
   );
