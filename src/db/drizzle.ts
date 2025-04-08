@@ -27,11 +27,7 @@ export const getUsersByProvider = async (
 };
 export const getUserByEmail = async (email: string) => {
   return await db
-    .select({
-      id: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-    })
+    .select()
     .from(users)
     .where(eq(users.email, email))
     .limit(1)
