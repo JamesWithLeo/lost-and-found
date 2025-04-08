@@ -1,7 +1,7 @@
 import { getUsersByProvider } from "@/db/drizzle";
 import { NextResponse } from "next/server";
 
-export async function Get(req: Request) {
+export async function GET(req: Request) {
   const userEmail = req.headers.get("x-user-email");
   // Check if the header is present
   if (!userEmail) {
