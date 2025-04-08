@@ -50,7 +50,7 @@ export async function GET(req: Request) {
   const dbUser = await getUsersByProvider(userEmail, "googleId");
 
   return NextResponse.json(
-    { email: userEmail, user: dbUser },
+    { email: userEmail, user: dbUser, message: "Hello world" },
     {
       status: 200,
       headers,
