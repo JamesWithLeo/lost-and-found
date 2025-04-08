@@ -1,4 +1,4 @@
-import { getUsersByProvider } from "@/db/drizzle";
+import { getUserByEmail } from "@/db/drizzle";
 import { NextResponse } from "next/server";
 
 const allowedOrigins = [
@@ -10,7 +10,8 @@ const allowedOrigins = [
 function getCorsHeaders(origin: string | null): HeadersInit {
   const headers: HeadersInit = {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS", // Allow methods
-    "Access-Control-Allow-Headers": "Content-Type, Authorization, x-user-email", // Allow specific headers
+    "Access-Control-Allow-Headers":
+      "Content-Type, Authorization, x-user-email , x-provider", // Allow specific headers
     "Content-Type": "application/json", // Content-Type header
   };
 
@@ -21,6 +22,7 @@ function getCorsHeaders(origin: string | null): HeadersInit {
 
   return headers;
 }
+
 export async function OPTIONS(req: Request) {
   const origin = req.headers.get("origin");
   const headers = getCorsHeaders(origin);
@@ -33,6 +35,7 @@ export async function OPTIONS(req: Request) {
 
 export async function GET(req: Request) {
   const userEmail = req.headers.get("x-user-email");
+  const provider = req.headers.get("x-provider");
   const origin = req.headers.get("origin");
   const headers = getCorsHeaders(origin);
   // Check if the header is present
@@ -46,11 +49,23 @@ export async function GET(req: Request) {
       },
     );
   }
+  let dbUser;
+  switch (provider) {
+    case "google":
+      dbUser = await getUserByEmail(userEmail);
+      break;
+    case "facebook":
+      // todo add facebook
+      dbUser = null;
+      break;
 
-  const dbUser = await getUsersByProvider(userEmail, "googleId");
+    default:
+      dbUser = null;
+      break;
+  }
 
   return NextResponse.json(
-    { email: userEmail, user: dbUser, message: "Hello world" },
+    { email: userEmail, user: dbUser },
     {
       status: 200,
       headers,

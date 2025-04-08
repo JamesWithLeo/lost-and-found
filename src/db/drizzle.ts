@@ -25,6 +25,18 @@ export const getUsersByProvider = async (
     .limit(1)
     .then((res) => res[0]);
 };
+export const getUserByEmail = async (email: string) => {
+  return await db
+    .select({
+      id: users.id,
+      firstName: users.firstName,
+      lastName: users.lastName,
+    })
+    .from(users)
+    .where(eq(users.email, email))
+    .limit(1)
+    .then((res) => res[0]);
+};
 
 export const getUser = async () => {
   const session = await getServerSession(authOptions);
