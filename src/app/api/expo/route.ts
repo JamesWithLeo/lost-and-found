@@ -6,7 +6,7 @@ const allowedOrigins = [
   "https://lost-and-found-chi.vercel.app", // Deployed frontend
 ];
 
-export function getCorsHeaders(origin: string | null): HeadersInit {
+function getCorsHeaders(origin: string | null): HeadersInit {
   const headers: HeadersInit = {
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Authorization",
