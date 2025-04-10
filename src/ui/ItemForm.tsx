@@ -127,7 +127,7 @@ export default function ItemForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmitForm)}
-      className="flex max-h-max w-full max-w-[1440px] flex-col gap-8 bg-slate-50 px-48 py-10"
+      className="bg-slate-5 0 flex max-h-max w-full max-w-[1440px] flex-col gap-8 px-48 py-10"
     >
       <div className="grid w-full grid-cols-1 justify-center gap-16">
         <div className="flex flex-col gap-4">

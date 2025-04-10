@@ -38,7 +38,7 @@ const now = truncateToMinute(new Date());
 export const postSearchSchema = z.object({
   itemName: z
     .string()
-    .min(2, "Item name must be at least 2 characters long ")
+    .min(2, "Item name must be at least 2 characters long")
     .max(256)
     .trim(),
   color: z.string().min(2).max(256).optional().nullable(),

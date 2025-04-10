@@ -84,7 +84,7 @@ export default function PostFoundForm({ id }: { id: string | undefined }) {
   return (
     <form
       onSubmit={handleSubmit(onSubmitForm)}
-      className="flex w-full max-w-[1440px] flex-col gap-8 bg-gradient-to-b from-slate-50 to-white px-48 py-10"
+      className="flex w-full max-w-[1440px] flex-col gap-8 bg-slate-50 px-48 py-10"
     >
       <div className="grid w-full grid-cols-1 justify-center gap-16">
         <div className="flex flex-col gap-4">

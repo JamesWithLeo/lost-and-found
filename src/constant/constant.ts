@@ -1,12 +1,10 @@
 export const CATEGORIES = [
-  "animals",
   "accessory",
   "clothing",
   "bags & wallet",
   "documents",
   "electronics",
   "food & beverages",
-  "pets & person",
   "miscellaneous",
   "furniture",
   "toys & games",
