@@ -35,10 +35,10 @@ export async function OPTIONS(req: Request) {
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const body = await req.json();
-  const { id } = params;
+  const { id } = await params;
 
   const validatedFields = postItemSchema.safeParse(body);
   if (!validatedFields.success) {
