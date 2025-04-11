@@ -22,6 +22,7 @@ export async function postFileOwnership(
   console.log(userId);
   console.log(itemId);
   const { caption, desc, distinctFeature } = { ...validatedFields.data };
+
   const insertedClaims = await insertClaims({
     caption,
     desc,
