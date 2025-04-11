@@ -18,3 +18,8 @@ export const CATEGORIES = [
   "tools & equipment",
   "garden supplies",
 ];
+
+export const allowedOrigins = [
+  "http://localhost:8081", // Expo local dev
+  "https://lost-and-found-chi.vercel.app", // Deployed frontend
+];

@@ -2,10 +2,7 @@ import { insertItem } from "@/db/drizzle";
 import { postItemSchema } from "@/lib/ItemActionSchema";
 import { NextResponse } from "next/server";
 
-const allowedOrigins = [
-  "http://localhost:8081", // Expo local dev
-  "https://lost-and-found-chi.vercel.app", // Deployed frontend
-];
+import { allowedOrigins } from "@/constant/constant";
 
 // Helper function to set CORS headers based on origin
 function getCorsHeaders(origin: string | null): HeadersInit {
