@@ -1,3 +1,4 @@
+import cloudinary from "@/db/cloudinary";
 import { insertItem } from "@/db/drizzle";
 import { postItemSchema } from "@/lib/ItemActionSchema";
 import { NextResponse } from "next/server";
@@ -39,7 +40,6 @@ export async function POST(
 ) {
   const body = await req.json();
   const { id } = await params;
-
   const validatedFields = postItemSchema.safeParse(body);
   if (!validatedFields.success) {
     return NextResponse.json({ Item: null }, { status: 400 });
@@ -53,7 +53,14 @@ export async function POST(
     color,
     location,
     timeDate,
+    itemProof,
   } = validatedFields.data;
+
+  const uploadedProofs = await Promise.all(
+    itemProof.map((image) => cloudinary.v2.uploader.upload(image)),
+  );
+  const imageUrls = uploadedProofs.map((res) => res.secure_url);
+
   const insertedItem = await insertItem({
     userId: id,
     itemName,
@@ -65,7 +72,7 @@ export async function POST(
     desc,
     timeDate,
     type: "found",
-    itemProof: [],
+    itemProof: imageUrls,
   });
 
   return NextResponse.json({ Item: insertedItem }, { status: 200 });
