@@ -33,6 +33,17 @@ export const getUserByEmail = async (email: string) => {
     .limit(1)
     .then((res) => res[0]);
 };
+export const getUserByGivenId = async (
+  id: string,
+  provider: "googleId" | "facebookId",
+) => {
+  return await db
+    .select()
+    .from(users)
+    .where(eq(users[provider], id))
+    .limit(1)
+    .then((res) => res[0]);
+};
 
 export const getUser = async () => {
   const session = await getServerSession(authOptions);
@@ -58,6 +69,26 @@ export const getUserSafe = async (id: string | undefined) => {
     .where(eq(users.id, id))
     .limit(1)
     .then((res) => res[0]);
+};
+export const insertUser = async ({
+  googleId,
+  email,
+  facebookId,
+}: {
+  email?: string | null;
+  googleId?: string | null;
+  facebookId?: string | null;
+}) => {
+  const result = await db
+    .insert(users)
+    .values({
+      googleId,
+      email,
+      facebookId,
+      role: "user",
+    })
+    .returning();
+  return result[0];
 };
 
 export const hasNullOrUndefinedData = ({
@@ -113,7 +144,6 @@ export const insertItem = async ({
       itemProof,
     })
     .returning();
-  console.log(result);
   return result[0];
 };
 
