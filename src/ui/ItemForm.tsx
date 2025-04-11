@@ -1,6 +1,6 @@
 "use client";
 
-import { FormSchema, postSearchSchema } from "@/lib/ItemActionSchema";
+import { FormSchema, postItemSchema } from "@/lib/ItemActionSchema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Anonymous_Pro } from "next/font/google";
@@ -45,7 +45,7 @@ export default function ItemForm({
     register,
     handleSubmit,
     setValue,
-  } = useForm<FormSchema>({ resolver: zodResolver(postSearchSchema) });
+  } = useForm<FormSchema>({ resolver: zodResolver(postItemSchema) });
 
   const onSubmitForm: SubmitHandler<FormSchema> = async (data) => {
     const formData = new FormData();

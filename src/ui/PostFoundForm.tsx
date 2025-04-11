@@ -1,5 +1,5 @@
 "use client";
-import { FormSchema, postSearchSchema } from "@/lib/ItemActionSchema";
+import { FormSchema, postItemSchema } from "@/lib/ItemActionSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Anonymous_Pro } from "next/font/google";
@@ -21,7 +21,7 @@ export default function PostFoundForm({ id }: { id: string | undefined }) {
     setValue,
     register,
     handleSubmit,
-  } = useForm({ resolver: zodResolver(postSearchSchema) });
+  } = useForm({ resolver: zodResolver(postItemSchema) });
   const [imageUrl, setImageUrl] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategories] =
     useState<(typeof CATEGORIES)[number]>("");

@@ -1,3 +1,5 @@
+import { insertItem } from "@/db/drizzle";
+import { postItemSchema } from "@/lib/ItemActionSchema";
 import { NextResponse } from "next/server";
 
 const allowedOrigins = [
@@ -31,8 +33,40 @@ export async function OPTIONS(req: Request) {
   });
 }
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request,
+  { params }: { params: { id: string } },
+) {
   const body = await req.json();
+  const { id } = params;
 
-  return NextResponse.json({ message: "hello", body: body }, { status: 200 });
+  const validatedFields = postItemSchema.safeParse(body);
+  if (!validatedFields.success) {
+    return NextResponse.json({ Item: null }, { status: 400 });
+  }
+  const {
+    desc,
+    itemName,
+    caption,
+    category,
+    brandModel,
+    color,
+    location,
+    timeDate,
+  } = validatedFields.data;
+  const insertedItem = await insertItem({
+    userId: id,
+    itemName,
+    caption,
+    category,
+    brandModel,
+    color,
+    location,
+    desc,
+    timeDate,
+    type: "found",
+    itemProof: [],
+  });
+
+  return NextResponse.json({ Item: insertedItem }, { status: 200 });
 }
