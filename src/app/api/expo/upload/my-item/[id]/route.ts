@@ -65,7 +65,7 @@ export async function POST(
     location,
     desc,
     timeDate,
-    type: "found",
+    type: "lost",
     itemProof,
   });
 
