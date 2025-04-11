@@ -44,7 +44,11 @@ export async function GET(req: Request) {
   try {
     const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: process.env.GOOGLE_CLIENT_ID,
+      audience: [
+        process.env.GOOGLE_CLIENT_ID!,
+        process.env.GOOGLE_ANDROID_CLIENT_ID!,
+      ],
+      // audience: process.env.GOOGLE_CLIENT_ID,
     });
 
     const payload = ticket.getPayload();
