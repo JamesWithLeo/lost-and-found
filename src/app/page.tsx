@@ -46,6 +46,7 @@ export default async function Page({ searchParams }: PageProps) {
       caseItem.itemStatus === "returned" ? count + 1 : count,
     0,
   );
+
   const honestyPercentage =
     globalCaseQuantity > 0
       ? (returnedItemsQuantity / globalCaseQuantity) * 100
