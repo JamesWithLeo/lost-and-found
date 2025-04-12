@@ -91,6 +91,27 @@ export const insertUser = async ({
   return result[0];
 };
 
+export const setupUser = async ({
+  id,
+  firstName,
+  lastName,
+  gender,
+  birthDate,
+}: {
+  id: string;
+  firstName: string;
+  lastName: string;
+  gender: "male" | "female";
+  birthDate: string;
+}) => {
+  const result = await db
+    .update(users)
+    .set({ firstName, lastName, gender, birthDate })
+    .where(eq(users.id, id))
+    .returning();
+  return result[0];
+};
+
 export const hasNullOrUndefinedData = ({
   firstName,
   lastName,

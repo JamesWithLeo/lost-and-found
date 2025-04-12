@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { allowedOrigins } from "@/constant/constant";
+import { setupUser } from "@/db/drizzle";
 
 // Helper function to set CORS headers based on origin
 function getCorsHeaders(origin: string | null): HeadersInit {
@@ -33,11 +34,34 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const { searchParams } = new URL(req.url);
+  // const { searchParams } = new URL(req.url);
   const body = await req.json();
+  const { birthDate, firstName, lastName, gender } = body;
+  if (
+    typeof birthDate !== "string" ||
+    typeof firstName !== "string" ||
+    typeof lastName !== "string" ||
+    gender !== "male" ||
+    gender !== "female"
+  ) {
+    return NextResponse.json(
+      {},
+      {
+        status: 400,
+        statusText: "Invalid request body",
+      },
+    );
+  }
 
+  const updatedUser = await setupUser({
+    id,
+    firstName,
+    lastName,
+    gender,
+    birthDate,
+  });
   return NextResponse.json(
-    { id, searchParams, body },
+    { user: updatedUser },
     {
       status: 200,
     },
