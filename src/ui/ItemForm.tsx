@@ -383,7 +383,7 @@ export default function ItemForm({
           </span>
         </div>
       </div>
-      s <ReportSearchButton />
+      <ReportSearchButton />
     </form>
   );
 }
