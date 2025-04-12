@@ -6,7 +6,7 @@ import { setupUser } from "@/db/drizzle";
 // Helper function to set CORS headers based on origin
 function getCorsHeaders(origin: string | null): HeadersInit {
   const headers: HeadersInit = {
-    "Access-Control-Allow-Methods": " POST, OPTIONS", // Allow methods
+    "Access-Control-Allow-Methods": "POST, OPTIONS", // Allow methods
     "Access-Control-Allow-Headers": "Content-Type, Authorization, ", // Allow specific headers
     "Content-Type": "application/json", // Content-Type header
   };
@@ -41,8 +41,7 @@ export async function POST(
     typeof birthDate !== "string" ||
     typeof firstName !== "string" ||
     typeof lastName !== "string" ||
-    gender !== "male" ||
-    gender !== "female"
+    (gender !== "male" && gender !== "female")
   ) {
     return NextResponse.json(
       {},
