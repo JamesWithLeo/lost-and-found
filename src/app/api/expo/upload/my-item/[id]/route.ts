@@ -52,7 +52,7 @@ export async function POST(
     color,
     location,
     timeDate,
-    itemProof,
+    // itemProof,
   } = validatedFields.data;
 
   const insertedItem = await insertItem({
@@ -66,7 +66,7 @@ export async function POST(
     desc,
     timeDate,
     type: "lost",
-    itemProof,
+    itemProof: [],
   });
 
   return NextResponse.json({ Item: insertedItem }, { status: 200 });
