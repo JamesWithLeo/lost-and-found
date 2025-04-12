@@ -1,8 +1,9 @@
 "use client";
 import { formatDistanceToNowStrict } from "date-fns";
-import Link from "next/link";
+import { redirect } from "next/navigation";
 export default function ClaimantCard({
   claim,
+  isAuthor,
   isCurrentUser,
 }: {
   claim: {
@@ -13,12 +14,17 @@ export default function ClaimantCard({
     firstName: string | null;
     lastName: string | null;
   };
-  isCurrentUser?: boolean;
+  isAuthor?: boolean;
+  isCurrentUser: boolean;
 }) {
   return (
-    <Link
+    <div
       className="grid cursor-pointer grid-cols-[2fr_1fr_1fr] items-center rounded border border-gray-300 p-4 text-sm"
-      href={`${claim.itemId}/c/${claim.userId}`}
+      onClick={() => {
+        if (isAuthor) {
+          redirect(`${claim.itemId}/c/${claim.userId}`);
+        }
+      }}
     >
       <h1 className="">
         {claim.firstName} {claim.lastName} {isCurrentUser && "(You)"}
@@ -41,6 +47,6 @@ export default function ClaimantCard({
         <circle cx="19" cy="12" r="1" />
         <circle cx="5" cy="12" r="1" />
       </svg> */}
-    </Link>
+    </div>
   );
 }

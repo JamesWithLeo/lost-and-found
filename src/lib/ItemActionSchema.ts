@@ -54,7 +54,7 @@ export const postItemSchema = z.object({
   category: z.enum(["unknown", ...CATEGORIES]),
   caption: z.string().min(10).max(256),
   desc: z.string().optional().nullable(),
-  itemProof: z.array(z.string()),
+  // itemProof: z.array(z.string()),
 });
 
 export const quickSearchSchema = z.object({

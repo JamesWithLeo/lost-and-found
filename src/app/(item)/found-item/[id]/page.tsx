@@ -45,7 +45,7 @@ export default async function Page({
       </span>
       <section className="grid h-52 w-full max-w-[1440px] grid-cols-[30%_70%] gap-2 rounded border border-gray-300 bg-white p-2">
         <div className="overflow-hidden bg-gray-100">
-          {item?.itemProof?.length && item.itemProof[0] && (
+          {item?.itemProof?.length && item.itemProof[0] ? (
             <Image
               src={item.itemProof[0]}
               width={100}
@@ -53,7 +53,7 @@ export default async function Page({
               alt={`proof-${item.itemName}`}
               className="h-full w-full"
             />
-          )}
+          ) : null}
         </div>
         <div className="flex flex-col gap-3">
           <div className="flex w-full justify-between">
@@ -132,7 +132,8 @@ export default async function Page({
               <ClaimantCard
                 key={`${claim.itemId}-${claim.userId}`}
                 claim={claim}
-                isCurrentUser={claim.userId === session?.user.id}
+                isAuthor={samaritan?.id === session?.user.id}
+                isCurrentUser={session?.user.id === claim.userId}
               />
             ))}
           </TabsContent>
