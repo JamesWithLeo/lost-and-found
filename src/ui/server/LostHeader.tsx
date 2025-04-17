@@ -4,9 +4,9 @@ const ibm = IBM_Plex_Sans_Thai_Looped({
   subsets: ["latin"],
 });
 import { IBM_Plex_Sans_Thai_Looped } from "next/font/google";
-import NavigationButton from "../client/NavigationButton";
+import NavigationButton from "../NavigationButton";
 import Logo from "./Logo";
-export default function LocateHeader({ isAuth }: { isAuth: boolean }) {
+export default function LostHeader({ isAuth }: { isAuth: boolean }) {
   return (
     <>
       <header
@@ -24,27 +24,29 @@ export default function LocateHeader({ isAuth }: { isAuth: boolean }) {
         </div>
 
         <div className="flex w-full justify-center border-b border-slate-200 pb-4">
-          <span className="grid w-full max-w-[1440px] grid-cols-2 px-48">
-            <span>
-              <h1 className={`${ibm.className} text-nowrap text-4xl font-bold`}>
+          <span className="flex w-full max-w-[1440px] flex-col flex-wrap px-[1.5rem] sm:px-8 md:px-48 lg:flex-row lg:justify-between">
+            <span className="">
+              <h1
+                className={`${ibm.className} text-nowrap text-xl font-bold md:text-3xl`}
+              >
                 Let&apos;s locate your lost items!
               </h1>
               <h1 className={`${ibm.className} `}>
                 To find your item, Fill in the form below.
               </h1>
             </span>
-            <span className="col-start-2 flex items-end justify-end gap-4">
+            <span className="col-start-2 row-start-2 flex w-full items-end justify-end gap-4">
               <Link
                 href="/found-item/new"
                 className={
-                  "flex gap-2 rounded border border-gray-200 bg-slate-50 px-3 py-1"
+                  "flex gap-2 rounded border border-gray-200 bg-slate-50 px-3 py-1 text-xs sm:text-sm"
                 }
               >
-                <h1>Found something? Report it instead</h1>
+                <h1 className="">Found something? Report it instead</h1>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

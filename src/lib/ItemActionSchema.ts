@@ -35,14 +35,14 @@ const truncateToMinute = (date: Date) => {
 
 const now = truncateToMinute(new Date());
 
-export const postItemSchema = z.object({
+export const ItemFormSchema = z.object({
   itemName: z
     .string()
     .min(2, "Item name must be at least 2 characters long")
     .max(256)
     .trim(),
   color: z.string().min(2).max(256).optional().nullable(),
-  brandModel: z.string().min(2).max(256).optional().optional().nullable(),
+  brandModel: z.string().max(256).optional().optional().nullable(),
   location: z
     .string()
     .min(2)
@@ -54,7 +54,7 @@ export const postItemSchema = z.object({
   category: z.enum(["unknown", ...CATEGORIES]),
   caption: z.string().min(10).max(256),
   desc: z.string().optional().nullable(),
-  // itemProof: z.array(z.string()),
+  itemProof: z.array(z.string()).min(1),
 });
 
 export const quickSearchSchema = z.object({
@@ -85,4 +85,4 @@ export const quickSearchSchema = z.object({
   category: z.enum(["unknown", ...CATEGORIES]),
 });
 
-export type FormSchema = z.infer<typeof postItemSchema>;
+export type FormSchema = z.infer<typeof ItemFormSchema>;

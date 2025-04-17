@@ -1,6 +1,6 @@
 import { Anonymous_Pro } from "next/font/google";
 import Link from "next/link";
-import BackToTop from "../client/backToTopButton";
+import BackToTop from "../backToTopButton";
 const anony = Anonymous_Pro({ weight: ["400", "700"], subsets: ["latin"] });
 
 export default function Footer() {

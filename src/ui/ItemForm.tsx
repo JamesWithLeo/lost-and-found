@@ -1,10 +1,10 @@
 "use client";
 
-import { FormSchema, postItemSchema } from "@/lib/ItemActionSchema";
+import { FormSchema, ItemFormSchema } from "@/lib/ItemActionSchema";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Anonymous_Pro } from "next/font/google";
-import { postSearchItems } from "@/actions/itemActions";
+import { postFoundItems, postSearchItems } from "@/actions/itemActions";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { useFormStatus } from "react-dom";
@@ -19,10 +19,12 @@ const anony = Anonymous_Pro({
 
 export default function ItemForm({
   id,
-  value,
+  initialValue,
+  type,
 }: {
   id: string | undefined;
-  value: {
+  type: "lost" | "found";
+  initialValue?: {
     itemName: string | undefined;
     brandModel: string | undefined;
     location: string | undefined;
@@ -33,8 +35,6 @@ export default function ItemForm({
     caption: string | undefined;
   };
 }) {
-  const { itemName, brandModel, location, timeDate, color, caption, desc } =
-    value;
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [imageUrl, setImageUrl] = useState<string[]>([]);
   const [imagePreview, setImagePreview] = useState<File[] | []>([]);
@@ -45,7 +45,7 @@ export default function ItemForm({
     register,
     handleSubmit,
     setValue,
-  } = useForm<FormSchema>({ resolver: zodResolver(postItemSchema) });
+  } = useForm<FormSchema>({ resolver: zodResolver(ItemFormSchema) });
 
   const onSubmitForm: SubmitHandler<FormSchema> = async (data) => {
     const formData = new FormData();
@@ -68,20 +68,22 @@ export default function ItemForm({
         });
       }),
     );
-    await postSearchItems(id, base64Images, formData);
+
+    if (type === "lost") {
+      await postSearchItems(id, base64Images, formData);
+    } else if (type === "found") {
+      await postFoundItems(id, base64Images, formData);
+    }
   };
 
   const HandleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(imageUrl);
     if (imageUrl.length === 3) {
+      // image limit
       event.preventDefault();
       return;
     }
     const currentfile = event.target.files?.[0];
-    console.log(currentfile?.size);
     if (currentfile && currentfile?.size > 3 * 1024 * 1024) {
-      // 3mb
-      console.log("large image");
       toast.error(
         "The selected file is too large. Please upload an image under 3MB.",
         {
@@ -99,9 +101,10 @@ export default function ItemForm({
     setImagePreview((prev) => [...prev, ...files]);
   };
 
-  const HandleRemoveImage = (img: string) => {
-    setImageUrl((prev) => prev.filter((p) => p !== img));
+  const HandleRemoveImage = (index: number) => {
+    setImagePreview((prev) => prev.filter((_, i) => i !== index));
   };
+
   const HandleClickUnknownBrand = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -127,7 +130,7 @@ export default function ItemForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmitForm)}
-      className="bg-slate-5 0 flex max-h-max w-full max-w-[1440px] flex-col gap-8 px-48 py-10"
+      className="bg-slate-5 0 flex max-h-max w-full max-w-[1440px] flex-col gap-8 px-[1.5rem] py-10 sm:px-8 md:px-48"
     >
       <div className="grid w-full grid-cols-1 justify-center gap-16">
         <div className="flex flex-col gap-4">
@@ -178,11 +181,10 @@ export default function ItemForm({
               Item name *
             </label>
             <input
-              required
               {...register("itemName")}
               name="itemName"
               placeholder="Umbrella"
-              value={itemName}
+              value={initialValue?.itemName}
               className={`h-[40px] w-full rounded-2xl border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />
             {errors.itemName?.message && (
@@ -200,7 +202,7 @@ export default function ItemForm({
               {...register("brandModel")}
               placeholder="Black"
               name="color"
-              value={color}
+              value={initialValue?.color}
               className={`h-[40px] w-full rounded-2xl border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />
             {errors.color?.message && (
@@ -216,7 +218,7 @@ export default function ItemForm({
             <input
               id="brand"
               {...register("brandModel")}
-              value={brandModel}
+              value={initialValue?.brandModel}
               placeholder="UV"
               name="brandModel"
               className={`h-[40px] w-full rounded-2xl border bg-white pl-6 focus:outline-0 ${anony.className}`}
@@ -240,7 +242,7 @@ export default function ItemForm({
               Location
             </label>
             <input
-              value={location}
+              value={initialValue?.location}
               {...register("location")}
               placeholder="City, State or Address"
               name="location"
@@ -262,7 +264,9 @@ export default function ItemForm({
               type="datetime-local"
               {...register("timeDate")}
               defaultValue={
-                timeDate ? new Date(timeDate).toString() : undefined
+                initialValue?.timeDate
+                  ? new Date(initialValue.timeDate).toString()
+                  : undefined
               }
               name="timeDate"
               className={`h-[40px] w-full rounded-2xl border bg-white px-6 focus:outline-0 ${anony.className}`}
@@ -280,7 +284,7 @@ export default function ItemForm({
             </label>
             <input
               {...register("caption")}
-              defaultValue={caption}
+              defaultValue={initialValue?.caption}
               className={`h-[40px] w-full rounded-2xl border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />
 
@@ -297,7 +301,7 @@ export default function ItemForm({
             <textarea
               {...register("desc")}
               name="desc"
-              defaultValue={desc}
+              defaultValue={initialValue?.desc}
               rows={3}
               className={`min-h-32 w-full resize-none rounded-2xl border bg-white pl-6 focus:outline-0 ${anony.className}`}
             />
@@ -316,14 +320,14 @@ export default function ItemForm({
               <label className="text-xs">(Maximum of 3mb per image)</label>
             </span>
 
-            <span className="flex h-max w-[400px] gap-2 rounded-2xl">
+            <span className="flex h-max gap-2 rounded-2xl sm:w-[400px]">
               {imageUrl.map((img, index) => (
                 <div key={index} className="relative max-h-28 max-w-28">
                   <button
                     className="absolute right-1 top-1 cursor-pointer rounded-full bg-gray-400 p-1 text-white hover:bg-gray-500"
                     type="button"
                     onClick={() => {
-                      HandleRemoveImage(img);
+                      HandleRemoveImage(index);
                     }}
                   >
                     <svg
@@ -337,7 +341,7 @@ export default function ItemForm({
                     </svg>
                   </button>
                   <Image
-                    className="h-auto w-auto rounded object-cover shadow-sm"
+                    className="h-auto w-auto rounded-2xl object-cover shadow-sm"
                     src={img}
                     height={100}
                     width={100}
@@ -354,31 +358,33 @@ export default function ItemForm({
                 multiple
                 onChange={HandleFileChange}
               />
-              <button
-                className="hover:text-primary rounded-2xl border bg-white p-8 text-gray-700"
-                type="button"
-                onClick={() => {
-                  fileInputRef.current?.click();
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="36"
-                  height="36"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-image-up"
+              {imageUrl.length < 3 && (
+                <button
+                  className="hover:text-primary rounded-2xl border bg-white p-8 text-gray-700"
+                  type="button"
+                  onClick={() => {
+                    fileInputRef.current?.click();
+                  }}
                 >
-                  <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
-                  <path d="m14 19.5 3-3 3 3" />
-                  <path d="M17 22v-5.5" />
-                  <circle cx="9" cy="9" r="2" />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="36"
+                    height="36"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="lucide lucide-image-up"
+                  >
+                    <path d="M10.3 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v10l-3.1-3.1a2 2 0 0 0-2.814.014L6 21" />
+                    <path d="m14 19.5 3-3 3 3" />
+                    <path d="M17 22v-5.5" />
+                    <circle cx="9" cy="9" r="2" />
+                  </svg>
+                </button>
+              )}
             </span>
           </span>
         </div>

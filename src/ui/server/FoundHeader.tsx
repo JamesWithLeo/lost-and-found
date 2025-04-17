@@ -3,10 +3,10 @@ const ibm = IBM_Plex_Sans_Thai_Looped({
   subsets: ["latin"],
 });
 import { IBM_Plex_Sans_Thai_Looped } from "next/font/google";
-import NavigationButton from "@/ui/client/NavigationButton";
+import NavigationButton from "@/ui/NavigationButton";
 import Link from "next/link";
 import Logo from "./Logo";
-export default function ReportHeader({ isAuth }: { isAuth: boolean }) {
+export default function FoundHeader({ isAuth }: { isAuth: boolean }) {
   return (
     <>
       <header
@@ -23,28 +23,28 @@ export default function ReportHeader({ isAuth }: { isAuth: boolean }) {
           </span>
         </div>
 
-        <div className="flex w-full justify-center border-b border-slate-200 pb-4">
-          <span className="grid w-full max-w-[1440px] grid-cols-2 px-48">
+        <div className="flex w-full justify-center border-b border-slate-200 bg-white pb-4">
+          <span className="flex w-full max-w-[1440px] flex-wrap justify-between px-[1.5rem] sm:flex-row sm:px-8 md:px-48">
             <span>
-              <h1 className={`${ibm.className} text-4xl font-bold`}>
+              <h1 className={`${ibm.className} text-xl font-bold md:text-4xl`}>
                 Report found items
               </h1>
               <h1 className={`${ibm.className} `}>
                 Let&apos;s help you return items to rightful owner!
               </h1>
             </span>
-            <span className="col-start-2 flex items-end justify-end gap-4">
+            <span className="col-start-2 flex w-full items-end justify-end gap-4">
               <Link
                 href="/my-item/new"
                 className={
-                  "flex gap-2 rounded border border-gray-200 bg-slate-50 px-3 py-1"
+                  "flex gap-2 rounded border border-gray-200 bg-slate-50 px-3 py-1 text-xs sm:text-sm"
                 }
               >
                 <h1>Lost something? Search for it instead.</h1>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"

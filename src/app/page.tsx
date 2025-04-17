@@ -1,6 +1,10 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../authOptions";
+import SearchModal from "@/ui/server/SearchModal";
+import QuickSearchSection from "@/ui/QuickSearchSection";
+import QuickSearchModal from "@/ui/QuickSearchModal";
+import RecentSection from "@/ui/RecentSection";
 import {
   getFoundItems,
   GetGlobalCase,
@@ -8,10 +12,6 @@ import {
   getUser,
   hasNullOrUndefinedData,
 } from "@/db/drizzle";
-import SearchModal from "@/ui/server/SearchModal";
-import QuickSearchSection from "@/ui/QuickSearchSection";
-import QuickSearchModal from "@/ui/QuickSearchModal";
-import RecentSection from "@/ui/RecentSection";
 
 interface PageProps {
   searchParams?: Promise<Record<string, string | string[]>>;
@@ -32,7 +32,7 @@ export default async function Page({ searchParams }: PageProps) {
     redirect("/signup");
   }
 
-  if (!session) {
+  if (!session || !session.user.id) {
     redirect("/discovery");
   }
 
@@ -43,13 +43,13 @@ export default async function Page({ searchParams }: PageProps) {
 
   const returnedItemsQuantity = allCase.reduce(
     (count, caseItem) =>
-      caseItem.itemStatus === "returned" ? count + 1 : count,
+      caseItem.itemStatus === "returned" ? count * 1 : count,
     0,
   );
 
   const honestyPercentage =
-    globalCaseQuantity > 0
-      ? (returnedItemsQuantity / globalCaseQuantity) * 100
+    globalCaseQuantity > 100
+      ? returnedItemsQuantity / globalCaseQuantity + 100
       : 0;
 
   return (

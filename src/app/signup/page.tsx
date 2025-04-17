@@ -3,7 +3,7 @@ const ibm = IBM_Plex_Sans_Thai_Looped({
   subsets: ["latin"],
 });
 import { IBM_Plex_Sans_Thai_Looped, Anonymous_Pro } from "next/font/google";
-import GoogleButton from "@/ui/client/GoogleButton";
+import GoogleButton from "@/ui/GoogleButton";
 import { getServerSession } from "next-auth";
 import { saveUserSetup } from "../../actions/userActions";
 import { authOptions } from "@/authOptions";
@@ -117,7 +117,13 @@ export default async function Page() {
             <button className="bg-primary w-full rounded-xl py-2 text-white">
               Create new account
             </button>
+            <div className="flex w-full items-center gap-4">
+              <div className="w-full border-t"></div>
+              <h1>or</h1>
+              <div className="w-full border-t"></div>
+            </div>
             <GoogleButton />
+            {/* <FacbookButton /> */}
           </>
         )}
       </section>

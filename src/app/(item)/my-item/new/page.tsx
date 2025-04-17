@@ -22,8 +22,9 @@ export default async function Page({
   return (
     <>
       <ItemForm
+        type="lost"
         id={session?.user.id}
-        value={{
+        initialValue={{
           itemName,
           brandModel,
           location,

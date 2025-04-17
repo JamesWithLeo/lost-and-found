@@ -31,6 +31,7 @@ export default function QuickSearchSection() {
           <input
             className={`grow border-r px-2 outline-0 md:w-auto ${anony.className}`}
             placeholder="Item name"
+            disabled={true}
           />
           <button className="text-primary rounded text-sm md:px-2 md:text-[16px]">
             Quick Search

@@ -47,6 +47,7 @@ export default function QuickSearchModal() {
               <h1 className="w-max text-center">Item name </h1>
               <div className="h-full w-2 border-r"></div>
               <input
+                autoFocus
                 className={`w-full outline-0 ${anony.className} text-gray-900`}
                 name="itemName"
                 required

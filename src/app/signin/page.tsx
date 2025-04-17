@@ -1,5 +1,5 @@
-import { IBM_Plex_Sans_Thai_Looped, Anonymous_Pro } from "next/font/google";
-import GoogleButton from "@/ui/client/GoogleButton";
+import GoogleButton from "@/ui/GoogleButton";
+import { Anonymous_Pro, IBM_Plex_Sans_Thai_Looped } from "next/font/google";
 
 const anony = Anonymous_Pro({
   weight: ["400", "700"],
@@ -10,7 +10,7 @@ const ibm = IBM_Plex_Sans_Thai_Looped({
   weight: ["300", "400"],
   subsets: ["latin"],
 });
-export default function SigninPage() {
+export default function SignonPage() {
   return (
     <main className="flex h-dvh flex-col items-center justify-center">
       <section className="mb-16 flex w-[400px] flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-4 pb-4 pt-16">

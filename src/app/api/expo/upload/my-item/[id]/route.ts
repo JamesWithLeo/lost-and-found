@@ -1,5 +1,5 @@
 import { insertItem } from "@/db/drizzle";
-import { postItemSchema } from "@/lib/ItemActionSchema";
+import { ItemFormSchema } from "@/lib/ItemActionSchema";
 import { NextResponse } from "next/server";
 
 const allowedOrigins = [
@@ -39,7 +39,7 @@ export async function POST(
 ) {
   const body = await req.json();
   const { id } = await params;
-  const validatedFields = postItemSchema.safeParse(body);
+  const validatedFields = ItemFormSchema.safeParse(body);
   if (!validatedFields.success) {
     return NextResponse.json({ Item: null }, { status: 400 });
   }

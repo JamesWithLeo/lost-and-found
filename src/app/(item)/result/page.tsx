@@ -1,6 +1,6 @@
 import { authOptions } from "@/authOptions";
 import { findMatchingItems } from "@/db/drizzle";
-import MatchingCard from "@/ui/client/MatchingCard";
+import MatchingCard from "@/ui/MatchingCard";
 import ResultField from "@/ui/ResultField";
 import { getServerSession } from "next-auth";
 import { Anonymous_Pro } from "next/font/google";

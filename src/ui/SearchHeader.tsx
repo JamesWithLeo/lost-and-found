@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import NavigationButton from "./client/NavigationButton";
+import NavigationButton from "./NavigationButton";
 import Logo from "./server/Logo";
 const ibm = IBM_Plex_Sans_Thai_Looped({
   weight: ["300", "400"],

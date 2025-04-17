@@ -1,9 +1,9 @@
 "use client";
 import Link from "next/link";
-import Logo from "../server/Logo";
+import Logo from "./server/Logo";
 import LogoutButton from "./logoutButton";
-import SigninButton from "../server/SigninButton";
-import SignupButton from "../server/SignupButton";
+// import SigninButton from "../server/SigninButton";
+// imp`ort SignupButton from "../server/SignupButton";
 
 import {
   DropdownMenu,
@@ -15,6 +15,8 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useEffect, useState } from "react";
+import SigninButton from "./server/SigninButton";
+import SignupButton from "./server/SignupButton";
 
 export default function DefaultHeader({
   isAuth,

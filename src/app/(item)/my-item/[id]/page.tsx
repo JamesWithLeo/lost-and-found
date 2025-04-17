@@ -1,6 +1,6 @@
 import { authOptions } from "@/authOptions";
 import { findMatchingItems, getItem } from "@/db/drizzle";
-import MatchingCard from "@/ui/client/MatchingCard";
+import MatchingCard from "@/ui/MatchingCard";
 import ToggleSidebarButton from "@/ui/ToggleSidebarButton";
 import { getServerSession } from "next-auth";
 

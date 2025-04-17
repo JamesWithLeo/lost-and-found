@@ -1,11 +1,9 @@
 "use server";
-
-import { insertItem } from "@/db/drizzle";
-import { postItemSchema, quickSearchSchema } from "@/lib/ItemActionSchema";
+import { ItemFormSchema, quickSearchSchema } from "@/lib/ItemActionSchema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
 import cloudinary from "../db/cloudinary";
+import { insertItem } from "@/db/drizzle";
 
 export async function postSearchItems(
   userId: string | undefined,
@@ -16,7 +14,7 @@ export async function postSearchItems(
     throw new Error("User Id is required to perform this action.");
   }
 
-  const validatedFields = postItemSchema.safeParse({
+  const validatedFields = ItemFormSchema.safeParse({
     itemName: formData.get("itemName") as string,
     color: formData.get("color") as string,
     brandModel: formData.get("brandModel") as string,
@@ -62,7 +60,7 @@ export async function postFoundItems(
   if (!userId) {
     throw new Error("User Id is required to perform this action.");
   }
-  const validatedFields = postItemSchema.safeParse({
+  const validatedFields = ItemFormSchema.safeParse({
     itemName: formData.get("itemName") as string,
     color: formData.get("color") as string,
     brandModel: formData.get("brandModel") as string,

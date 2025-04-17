@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Logo from "./server/Logo";
-import LogoutButton from "./client/logoutButton";
+import LogoutButton from "./logoutButton";
 import SigninButton from "./server/SigninButton";
 import SignupButton from "./server/SignupButton";
 
