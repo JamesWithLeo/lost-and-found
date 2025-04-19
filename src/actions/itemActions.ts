@@ -1,4 +1,5 @@
 "use server";
+
 import { ItemFormSchema, quickSearchSchema } from "@/lib/ItemActionSchema";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -7,13 +8,12 @@ import { insertItem } from "@/db/drizzle";
 
 export async function postSearchItems(
   userId: string | undefined,
-  base64Images: string[],
   formData: FormData,
 ) {
   if (!userId) {
     throw new Error("User Id is required to perform this action.");
   }
-
+  const itemProof = formData.get("itemProof") as string;
   const validatedFields = ItemFormSchema.safeParse({
     itemName: formData.get("itemName") as string,
     color: formData.get("color") as string,
@@ -23,18 +23,17 @@ export async function postSearchItems(
     category: formData.get("category") as string,
     caption: formData.get("caption") as string,
     desc: formData.get("desc") as string,
-    itemProof: formData.get("itemProof"),
+    itemProof: itemProof ? JSON.parse(itemProof) : [],
   });
-  const uploadedProofs = await Promise.all(
-    base64Images.map((image) => cloudinary.v2.uploader.upload(image)),
-  );
-  const imageUrls = uploadedProofs.map((res) => res.secure_url);
 
   if (!validatedFields.success) {
     console.log(validatedFields.error);
   } else {
     const { data } = validatedFields;
-
+    const uploadedProofs = await Promise.all(
+      data.itemProof.map((image) => cloudinary.v2.uploader.upload(image)),
+    );
+    const imageUrls = uploadedProofs.map((res) => res.secure_url);
     const insertedItem = await insertItem({
       userId,
       itemName: data.itemName,
@@ -54,12 +53,12 @@ export async function postSearchItems(
 }
 export async function postFoundItems(
   userId: string | undefined,
-  base64Images: string[],
   formData: FormData,
 ) {
   if (!userId) {
     throw new Error("User Id is required to perform this action.");
   }
+  const itemProof = formData.get("itemProof") as string;
   const validatedFields = ItemFormSchema.safeParse({
     itemName: formData.get("itemName") as string,
     color: formData.get("color") as string,
@@ -69,34 +68,36 @@ export async function postFoundItems(
     category: formData.get("category") as string,
     caption: formData.get("caption") as string,
     desc: formData.get("desc") as string,
-    itemProof: formData.get("itemProof") as string,
+    itemProof: itemProof ? JSON.parse(itemProof) : [],
   });
+
+  if (!validatedFields.success) {
+    return {
+      success: false,
+      errors: validatedFields.error.errors.map((e) => e.message),
+    };
+  }
+
+  const { data } = validatedFields;
   const uploadedProofs = await Promise.all(
-    base64Images.map((image) => cloudinary.v2.uploader.upload(image)),
+    data.itemProof.map((image) => cloudinary.v2.uploader.upload(image)),
   );
   const imageUrls = uploadedProofs.map((res) => res.secure_url);
 
-  if (!validatedFields.success) {
-    console.log(validatedFields.error.message);
-  } else {
-    const { data } = validatedFields;
-    console.log(data);
-    const insertedItem = await insertItem({
-      userId,
-      itemName: data.itemName,
-      color: data.color,
-      brandModel: data.brandModel,
-      location: data.location,
-      timeDate: data.timeDate,
-      category: data.category,
-      desc: data.desc,
-      caption: data.caption,
-      type: "found",
-      itemProof: imageUrls,
-    });
-    console.log("inserted item", insertedItem);
-    redirect(`/found-item/${insertedItem.id}`);
-  }
+  const insertedItem = await insertItem({
+    userId,
+    itemName: data.itemName,
+    color: data.color,
+    brandModel: data.brandModel,
+    location: data.location,
+    timeDate: data.timeDate,
+    category: data.category,
+    desc: data.desc,
+    caption: data.caption,
+    type: "found",
+    itemProof: imageUrls,
+  });
+  redirect(`/found-item/${insertedItem.id}`);
 }
 
 export async function quickSearchItems(formData: FormData) {

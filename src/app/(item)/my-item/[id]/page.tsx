@@ -31,7 +31,7 @@ export default async function Page({
         <ToggleSidebarButton />
       </div>
       <div className="grid h-full min-h-dvh w-full">
-        <div className="grid w-full grid-cols-2 border-r border-gray-200 p-2">
+        <div className="grid w-full grid-cols-2 p-2">
           {matchingItems &&
             matchingItems.length > 0 &&
             matchingItems.map((match) => (

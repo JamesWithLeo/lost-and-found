@@ -1,8 +1,12 @@
 import { InferSelectModel } from "drizzle-orm";
-import FoundItemCard from "./FoundItemCard";
-import { items as itemsTable } from "@/db/schema";
+import ItemCard from "./ItemCard";
 import Link from "next/link";
+import { items as itemTable } from "@/db/schema";
 
+export interface ItemWithClaimantCount
+  extends InferSelectModel<typeof itemTable> {
+  claimantCount: number;
+}
 export default function RecentSection({
   lostItems,
   foundItems,
@@ -10,8 +14,8 @@ export default function RecentSection({
   returnedItemsQuantity,
   honestyPercentage,
 }: {
-  lostItems: InferSelectModel<typeof itemsTable>[];
-  foundItems: InferSelectModel<typeof itemsTable>[];
+  lostItems: ItemWithClaimantCount[];
+  foundItems: ItemWithClaimantCount[];
   globalCaseQuantity: number;
   returnedItemsQuantity: number;
   honestyPercentage: number;
@@ -104,7 +108,8 @@ export default function RecentSection({
               lostItems
                 .filter((h) => h.itemStatus === "pending")
                 .map((i) => (
-                  <FoundItemCard
+                  <ItemCard
+                    claimantCount={i.claimantCount}
                     view={"grid"}
                     key={`${i.id}`}
                     href={`/my-item/${i.id}`}
@@ -138,7 +143,8 @@ export default function RecentSection({
               foundItems
                 .filter((h) => h.itemStatus === "pending")
                 .map((i) => (
-                  <FoundItemCard
+                  <ItemCard
+                    claimantCount={i.claimantCount}
                     view={"grid"}
                     key={`${i.id}`}
                     href={`/found-item/${i.id}`}

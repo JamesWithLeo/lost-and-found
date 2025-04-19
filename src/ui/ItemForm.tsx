@@ -48,16 +48,6 @@ export default function ItemForm({
   } = useForm<FormSchema>({ resolver: zodResolver(ItemFormSchema) });
 
   const onSubmitForm: SubmitHandler<FormSchema> = async (data) => {
-    const formData = new FormData();
-    formData.append("itemName", data.itemName);
-    formData.append("brandModel", data.brandModel!);
-    formData.append("caption", data.caption);
-    formData.append("category", data.category);
-    formData.append("desc", data.desc!);
-    formData.append("location", data.location ?? "unknown");
-    formData.append("timeDate", data.timeDate.toString());
-    formData.append("itemProof", JSON.stringify(imageUrl));
-
     const base64Images = await Promise.all(
       imagePreview.map((image) => {
         return new Promise<string>((resolve, reject) => {
@@ -68,17 +58,32 @@ export default function ItemForm({
         });
       }),
     );
+    const formData = new FormData();
+    formData.append("itemName", data.itemName);
+    formData.append("brandModel", data.brandModel!);
+    formData.append("caption", data.caption);
+    formData.append("category", data.category);
+    formData.append("desc", data.desc!);
+    formData.append("location", data.location ?? "unknown");
+    formData.append("timeDate", data.timeDate.toString());
+    formData.append("itemProof", JSON.stringify(base64Images));
 
     if (type === "lost") {
-      await postSearchItems(id, base64Images, formData);
+      await postSearchItems(id, formData);
     } else if (type === "found") {
-      await postFoundItems(id, base64Images, formData);
+      const res = await postFoundItems(id, formData);
+      if (!res.success) {
+        res.errors.map((e) => {
+          toast.error(e, { position: "top-center" });
+        });
+      }
     }
   };
 
-  const HandleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const HandleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     if (imageUrl.length === 3) {
-      // image limit
       event.preventDefault();
       return;
     }
@@ -99,6 +104,18 @@ export default function ItemForm({
     }
     const files = event.target.files ? Array.from(event.target.files) : [];
     setImagePreview((prev) => [...prev, ...files]);
+
+    const base64Images = await Promise.all(
+      imagePreview.map((image) => {
+        return new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(image);
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+        });
+      }),
+    );
+    setValue("itemProof", base64Images);
   };
 
   const HandleRemoveImage = (index: number) => {
@@ -318,6 +335,11 @@ export default function ItemForm({
             >
               <label>Item proof</label>
               <label className="text-xs">(Maximum of 3mb per image)</label>
+              {errors.itemProof?.message && (
+                <label className="mr-4 text-right text-xs text-red-400">
+                  {errors.itemProof.message}
+                </label>
+              )}
             </span>
 
             <span className="flex h-max gap-2 rounded-2xl sm:w-[400px]">
@@ -386,42 +408,44 @@ export default function ItemForm({
                 </button>
               )}
             </span>
+            <span></span>
           </span>
         </div>
       </div>
-      <ReportSearchButton />
+      <div className="flex w-full justify-end gap-4">
+        <ReportSearchButton type={type} />
+      </div>
     </form>
   );
 }
 
-function ReportSearchButton() {
+function ReportSearchButton({ type }: { type: "lost" | "found" }) {
   const { pending } = useFormStatus();
 
   return (
-    <div className="flex w-full justify-end gap-4">
-      <button
-        type="submit"
-        disabled={pending}
-        className="bg-primary flex cursor-pointer items-center justify-center rounded px-4 py-2 text-white"
-      >
-        {pending ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="lucide lucide-loader-circle animate-spin"
-          >
-            <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-          </svg>
-        ) : null}
-        {!pending && "Report and search"}
-      </button>
-    </div>
+    <button
+      type="submit"
+      disabled={pending}
+      className={`bg-primary flex ${pending ? "cursor-progress" : "cursor-pointer"} items-center justify-center rounded px-4 py-2 text-white`}
+    >
+      {pending ? (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="lucide lucide-loader-circle animate-spin"
+        >
+          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+        </svg>
+      ) : null}
+      {!pending && type === "found" && "Report"}
+      {!pending && type === "lost" && "Report and search"}
+    </button>
   );
 }

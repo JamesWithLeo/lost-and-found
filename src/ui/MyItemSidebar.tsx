@@ -7,19 +7,19 @@ import {
 import { items } from "@/db/schema";
 import { InferSelectModel } from "drizzle-orm";
 import { Anonymous_Pro } from "next/font/google";
-import Image from "next/image";
 import Link from "next/link";
+import ProofGallary from "./ProofGallary";
 
 const anony = Anonymous_Pro({ weight: ["400", "700"], subsets: ["latin"] });
 export function MyItemSidebar({
   item,
 }: {
-  item: InferSelectModel<typeof items> | null;
+  item: InferSelectModel<typeof items>;
 }) {
   return (
-    <Sidebar className="top-[5rem] !h-[calc(100svh-var(--header-height))]">
-      <SidebarContent className="">
-        <SidebarGroup>
+    <Sidebar className="top-[5rem] !h-[calc(100svh-var(--header-height))] py-2">
+      <SidebarContent className="bg-white">
+        <SidebarGroup className="gap-4">
           <span className="flex items-center gap-6 text-sm text-gray-600">
             <Link href={"/"} className="">
               <svg
@@ -36,38 +36,29 @@ export function MyItemSidebar({
             /<Link href="/my-item">My Items</Link>/
             <h1 className="cursor-pointer">{item?.itemName}</h1>
           </span>
-          <span className="flex flex-col items-baseline gap-2">
-            <h1 className={`${anony.className} text-2xl`}>{item?.itemName}</h1>
-          </span>
-          <h1 className={`${anony.className} text-sm`}>
-            Category: {item?.category}
-          </h1>
-          <h1 className={`${anony.className} text-sm`}>
-            last seen: {item?.location} at
-            {item?.timeDate && new Date(item.timeDate).toLocaleString()}
-          </h1>
-          <h1 className={`${anony.className} text-sm`}>
-            color: {item?.color ?? "unknown"}
-          </h1>
 
-          <div className="grid h-64 w-full grid-cols-3 grid-rows-2 gap-2">
-            {item?.itemProof &&
-              item?.itemProof.map((p, index) => (
-                <div
-                  className="col-span-2 row-span-2 w-full bg-gray-100"
-                  key={`proof ${index}`}
-                >
-                  <Image
-                    className="h-full w-full"
-                    src={p}
-                    width={100}
-                    height={100}
-                    alt={`item ${item?.id}`}
-                  />
-                </div>
-              ))}
+          <span className="flex flex-col items-baseline">
+            <h1 className={`${anony.className} sm:text-2xl`}>
+              {item?.itemName}
+            </h1>
+            <h1 className={`${anony.className} text-xs sm:text-sm`}>
+              Category: {item.category}
+            </h1>
+            <h1 className={`${anony.className} text-xs sm:text-sm`}>
+              last seen: {item.location} at
+              {item?.timeDate && new Date(item.timeDate).toLocaleString()}
+            </h1>
+            <h1 className={`${anony.className} text-xs sm:text-sm`}>
+              color: {item.color ?? "unknown"}
+            </h1>
+          </span>
+
+          <div className="">
+            <ProofGallary itemProof={item.itemProof} />
           </div>
-          <h1 className={`${anony.className}`}>Description :{item?.desc}</h1>
+          <h1 className={`${anony.className} text-xs sm:text-sm`}>
+            Description :{item?.desc}
+          </h1>
         </SidebarGroup>
         <SidebarGroup />
       </SidebarContent>

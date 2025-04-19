@@ -1,6 +1,6 @@
 import { authOptions } from "@/authOptions";
 import { getFoundItems } from "@/db/drizzle";
-import FoundItemView from "@/ui/foundItemView";
+import ItemViewGrid from "@/ui/ItemViewGrid";
 import { getServerSession } from "next-auth";
 export default async function Page() {
   const session = await getServerSession(authOptions);
@@ -13,7 +13,7 @@ export default async function Page() {
           <h1 className="text-sm">Helping People Reclaim What&apos; Theirs!</h1>
         </div>
       </section>
-      <FoundItemView items={items} />
+      <ItemViewGrid items={items} type="found" />
     </main>
   );
 }

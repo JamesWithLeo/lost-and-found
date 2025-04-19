@@ -1,25 +1,54 @@
 "use client";
+
 import { items as itemTable } from "@/db/schema";
 import { InferSelectModel } from "drizzle-orm";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import FoundItemCard from "@/ui/FoundItemCard";
+import ItemCard from "@/ui/ItemCard";
+import debounce from "lodash.debounce";
 
-export default function FoundItemView({
+export interface ItemWithClaimantCount
+  extends InferSelectModel<typeof itemTable> {
+  claimantCount: number;
+}
+export default function ItemViewGrid({
   items,
+  type,
 }: {
-  items: InferSelectModel<typeof itemTable>[] | null;
+  items: ItemWithClaimantCount[];
+  type: "lost" | "found";
 }) {
   const [view, setView] = useState<"grid" | "list">("grid");
-  useEffect(() => {
-    const savedView = localStorage.getItem("foundItemView");
-    if (savedView === "list") setView(savedView);
-  }, []);
+  const [filteredItems, setFilteredItems] =
+    useState<ItemWithClaimantCount[]>(items);
+
   const toggleView = (value: "list" | "grid") => {
     setView(value);
     localStorage.setItem("foundItemView", value);
   };
+  function prioritizeItems(items: ItemWithClaimantCount[], search: string) {
+    const lowerSearch = search.toLowerCase();
+
+    return [...items].sort((a, b) => {
+      const aMatch = a.itemName.toLowerCase().includes(lowerSearch) ? 0 : 1;
+      const bMatch = b.itemName.toLowerCase().includes(lowerSearch) ? 0 : 1;
+
+      return aMatch - bMatch;
+    });
+  }
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((value: string) => {
+        setFilteredItems(prioritizeItems(items, value));
+      }, 1000),
+    [items],
+  );
+
+  useEffect(() => {
+    const savedView = localStorage.getItem("foundItemView");
+    if (savedView === "list") setView(savedView);
+  }, []);
   return (
     <section className="max-w-[1440px]] mt-4 flex w-full flex-col gap-2 px-[1.5rem] sm:px-8 md:px-48">
       <Tabs defaultValue="all" className="col-start-2">
@@ -33,7 +62,12 @@ export default function FoundItemView({
             </TabsTrigger>
           </TabsList>
           <div className="flex gap-2">
-            <Input placeholder="Search" />
+            <Input
+              placeholder="Search"
+              onChange={(e) => {
+                debouncedSearch(e.target.value);
+              }}
+            />
             <button className="bg-primary rounded px-2 text-white">
               Search
             </button>
@@ -71,13 +105,16 @@ export default function FoundItemView({
           value="all"
           className={`grid ${view === "list" ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"} justify-end gap-1.5`}
         >
-          {items &&
-            !!items.length &&
-            items.map((i) => (
-              <FoundItemCard
+          {filteredItems &&
+            !!filteredItems.length &&
+            filteredItems.map((i) => (
+              <ItemCard
+                claimantCount={i.claimantCount}
                 key={`${i.id}`}
                 view={view}
-                href={`/found-item/${i.id}`}
+                href={
+                  type === "found" ? `/found-item/${i.id}` : `/my-item/${i.id}`
+                }
                 i={i}
               />
             ))}
@@ -86,15 +123,20 @@ export default function FoundItemView({
           value="pending"
           className={`grid ${view === "list" ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"} justify-end gap-1.5`}
         >
-          {items &&
-            !!items.length &&
-            items
+          {filteredItems &&
+            !!filteredItems.length &&
+            filteredItems
               .filter((h) => h.itemStatus === "pending")
               .map((i) => (
-                <FoundItemCard
+                <ItemCard
+                  claimantCount={i.claimantCount}
                   view={view}
                   key={`${i.id}`}
-                  href={`/found-item/${i.id}`}
+                  href={
+                    type === "found"
+                      ? `/found-item/${i.id}`
+                      : `/my-item/${i.id}`
+                  }
                   i={i}
                 />
               ))}

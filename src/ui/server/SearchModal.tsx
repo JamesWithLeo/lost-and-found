@@ -5,18 +5,17 @@ export default function SearchModal() {
   return (
     <>
       <div className="fixed inset-0 z-40 h-full w-full bg-black opacity-45"></div>
-      <div className="fixed left-1/2 top-1/2 z-50 flex h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-10 rounded-xl bg-white p-4">
+      <div className="fixed left-1/2 top-1/2 z-50 grid h-80 w-full -translate-x-1/2 -translate-y-1/2 transform grid-rows-[max-content_max-content_1fr] flex-col gap-10 rounded-xl bg-white p-4 pb-8 sm:w-96 sm:p-8">
         <div className="flex flex-col items-end">
           <ExitModal />
         </div>
         <h1 className="text-center">Report Item</h1>
-        <div className="flex w-full justify-evenly">
-          <Link href={"/my-item/new"}>
-            <div className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded bg-gray-100">
+        <div className="flex w-full items-center justify-evenly gap-4">
+          <Link href={"/my-item/new"} className="h-full w-full">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded bg-gray-100 text-xs sm:text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
+                className="h-6 w-6 sm:h-8 sm:w-8"
                 fill="#000000"
                 viewBox="0 0 256 256"
               >
@@ -25,12 +24,11 @@ export default function SearchModal() {
               <h1>My Item</h1>
             </div>
           </Link>
-          <Link href={"/found-item/new"}>
-            <div className="flex h-32 w-32 flex-col items-center justify-center gap-2 rounded bg-gray-100">
+          <Link href={"/found-item/new"} className="h-full w-full">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 rounded bg-gray-100 text-xs sm:text-sm">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
+                className="h-6 w-6 sm:h-8 sm:w-8"
                 fill="currentColor"
                 viewBox="0 0 256 256"
               >

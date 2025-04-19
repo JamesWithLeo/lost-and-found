@@ -282,36 +282,76 @@ export async function getFoundItems(
   if (!userId) {
     throw new Error("User id is required to perform this query");
   }
-  if (limit)
-    return await db
-      .select()
-      .from(items)
-      .where(and(eq(items.userId, userId), eq(items.type, "found")))
-      .limit(limit);
-  else {
-    return await db
-      .select()
-      .from(items)
-      .where(and(eq(items.userId, userId), eq(items.type, "found")));
+
+  const condition = and(eq(items.userId, userId), not(eq(items.type, "lost")));
+
+  const query = db
+    .select({
+      id: items.id,
+      itemName: items.itemName,
+      desc: items.desc,
+      createdAt: items.createdAt,
+      color: items.color,
+      brandModel: items.brandModel,
+      category: items.category,
+      itemProof: items.itemProof,
+      userId: items.userId,
+      itemStatus: items.itemStatus,
+      location: items.location,
+      timeDate: items.timeDate,
+      caption: items.caption,
+      type: items.type,
+      claimantCount: count(claims),
+    })
+    .from(items)
+    .leftJoin(claims, eq(claims.itemId, items.id))
+    .where(condition)
+    .groupBy(items.id);
+
+  if (limit) {
+    query.limit(limit);
   }
+
+  return query;
 }
 
 export async function getMyItems(userId: string | undefined, limit?: number) {
   if (!userId) {
     throw new Error("User id is required to perform this query");
   }
-  if (limit) {
-    return await db
-      .select()
-      .from(items)
-      .where(and(eq(items.userId, userId), not(eq(items.type, "found"))))
-      .limit(limit);
-  }
-  return await db
-    .select()
+
+  const condition = and(eq(items.userId, userId), not(eq(items.type, "found")));
+
+  const query = db
+    .select({
+      id: items.id,
+      itemName: items.itemName,
+      desc: items.desc,
+      createdAt: items.createdAt,
+      color: items.color,
+      brandModel: items.brandModel,
+      category: items.category,
+      itemProof: items.itemProof,
+      userId: items.userId,
+      itemStatus: items.itemStatus,
+      location: items.location,
+      timeDate: items.timeDate,
+      caption: items.caption,
+      type: items.type,
+      claimantCount: count(claims),
+    })
     .from(items)
-    .where(and(eq(items.userId, userId), not(eq(items.type, "found"))));
+    .leftJoin(claims, eq(claims.itemId, items.id))
+    .where(condition)
+    .groupBy(items.id);
+
+  if (limit) {
+    query.limit(limit);
+  }
+
+  return query;
 }
+
 export async function GetGlobalCase() {
   return await db.select().from(items);
 }

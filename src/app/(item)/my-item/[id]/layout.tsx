@@ -4,6 +4,7 @@ import { getItem } from "@/db/drizzle";
 import MyItemHeader from "@/ui/MyItemHeader";
 import { MyItemSidebar } from "@/ui/MyItemSidebar";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export default async function Layout({
   children,
@@ -16,6 +17,9 @@ export default async function Layout({
 
   const session = await getServerSession(authOptions);
   const { data: item } = await getItem(id, "lost");
+  if (!item) {
+    redirect("/"); // todo 404
+  }
   return (
     <>
       <SidebarProvider defaultOpen className="flex flex-col">
