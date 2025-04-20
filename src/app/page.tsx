@@ -12,6 +12,9 @@ import {
   getUser,
   hasNullOrUndefinedData,
 } from "@/db/drizzle";
+import Image from "next/image";
+import { Suspense } from "react";
+import RecentSectionSkeleton from "@/ui/skeleton/RecentSectionSkeleton";
 
 interface PageProps {
   searchParams?: Promise<Record<string, string | string[]>>;
@@ -57,9 +60,21 @@ export default async function Page({ searchParams }: PageProps) {
       {openSearch && <SearchModal />}
       {q && <QuickSearchModal />}
       <section className="w-full flex-col">
-        <div className="grid h-48 w-full grid-cols-3 grid-rows-4 justify-items-center overflow-clip bg-[url(/images/hero.png)] bg-cover bg-center sm:h-80">
-          <div className="col-span-3 row-span-2 row-start-3"></div>
-          <span className="right-16 top-56 col-span-2 col-start-2 row-start-2 flex h-[140px] w-full max-w-[396px] select-none items-center text-clip text-wrap bg-clip-text text-right text-xl font-bold text-slate-50 opacity-70 drop-shadow-xl backdrop-opacity-45 sm:text-2xl md:text-4xl">
+        <div className="relative grid h-48 w-full grid-cols-3 grid-rows-4 justify-items-center overflow-hidden sm:h-80">
+          <Image
+            src="/images/hero.png"
+            alt="hero image"
+            fill
+            quality={100}
+            loading="lazy"
+            style={{
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
+            className="z-0 col-span-3 col-start-1 row-span-4 row-start-1 h-full w-full"
+          />
+
+          <span className="z-10 col-span-2 col-start-2 row-start-2 flex h-[140px] w-full max-w-[396px] select-none items-center text-clip text-wrap pr-[1.5re] text-right text-xl font-bold text-slate-50 opacity-90 drop-shadow-xl sm:pr-8 sm:text-2xl md:text-4xl">
             Today, we helped 451 people reunite with their lost items!
           </span>
         </div>
@@ -79,13 +94,15 @@ export default async function Page({ searchParams }: PageProps) {
               </h1>
             </span>
             <span className="col-start-2 row-start-4 grid w-full">
-              <RecentSection
-                honestyPercentage={honestyPercentage}
-                returnedItemsQuantity={returnedItemsQuantity}
-                globalCaseQuantity={globalCaseQuantity}
-                foundItems={recentlyFoundItems}
-                lostItems={recentlylostItems}
-              />
+              <Suspense fallback={<RecentSectionSkeleton />}>
+                <RecentSection
+                  honestyPercentage={honestyPercentage}
+                  returnedItemsQuantity={returnedItemsQuantity}
+                  globalCaseQuantity={globalCaseQuantity}
+                  foundItems={recentlyFoundItems}
+                  lostItems={recentlylostItems}
+                />
+              </Suspense>
             </span>
           </div>
         </div>
