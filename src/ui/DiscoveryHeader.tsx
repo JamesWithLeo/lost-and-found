@@ -36,6 +36,7 @@ export default function DiscoveryHeader({
             <SignupButton />
           </div>
         )}
+
         <div className="h-6 border-l border-gray-300"></div>
         <DropdownMenu>
           <DropdownMenuTrigger

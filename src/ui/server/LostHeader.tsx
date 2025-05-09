@@ -17,7 +17,7 @@ export default function LostHeader({ isAuth }: { isAuth: boolean }) {
           <span className="flex items-center gap-8">
             <NavigationButton
               label={isAuth ? "Home" : "Discovery"}
-              target={isAuth ? "/" : "discovery"}
+              target={isAuth ? "/" : "/discovery"}
             />
             <NavigationButton label="About us" target="/about" />
           </span>

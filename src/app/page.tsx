@@ -74,7 +74,7 @@ export default async function Page({ searchParams }: PageProps) {
             className="z-0 col-span-3 col-start-1 row-span-4 row-start-1 h-full w-full"
           />
 
-          <span className="z-10 col-span-2 col-start-2 row-start-2 flex h-[140px] w-full max-w-[396px] select-none items-center text-clip text-wrap pr-[1.5re] text-right text-xl font-bold text-slate-50 opacity-90 drop-shadow-xl sm:pr-8 sm:text-2xl md:text-4xl">
+          <span className="z-10 col-span-2 col-start-1 row-start-2 flex h-[140px] w-full max-w-[396px] select-none items-center text-clip text-wrap pl-[1.5rem] text-left text-xl font-bold text-stone-300 opacity-85 drop-shadow-xl sm:pl-8 sm:text-2xl md:text-4xl">
             Today, we helped 451 people reunite with their lost items!
           </span>
         </div>

@@ -36,7 +36,8 @@ export default function MainHeader({
   } else if (
     pathname.startsWith("/contact") ||
     pathname.startsWith("/about") ||
-    pathname.startsWith("/found-item")
+    pathname.startsWith("/found-item") ||
+    pathname.startsWith("/browse")
   ) {
     return <DiscoveryHeader isAuth={isAuth} photoUrl={photoUrl} />;
   } else {

@@ -38,7 +38,9 @@ export default function DefaultHeader({
   });
   return (
     <header
-      className={`${isBlur && "backdrop-blur-xs"} fixed top-0 z-40 flex h-[--header-height] w-full items-center justify-between bg-transparent px-8 text-sm`}
+      className={`${isBlur && "backdrop-blur-xs"} ${
+        !isBlur && "bg-gradient-to-b from-stone-800 to-transparent"
+      } fixed top-0 z-40 flex h-[--header-height] w-full items-center justify-between bg-transparent px-8 text-sm`}
     >
       <Link href={isAuth ? "/" : "/discovery"} className={""}>
         <Logo />
@@ -51,6 +53,12 @@ export default function DefaultHeader({
             <SignupButton />
           </div>
         )}
+        <Link
+          href={"/browse"}
+          className="h-full w-full cursor-pointer rounded-full text-center text-sm text-gray-300 hover:text-white sm:w-max md:text-[16px]"
+        >
+          Browse
+        </Link>
         <div className="h-6 border-l border-gray-300"></div>
         <DropdownMenu>
           <DropdownMenuTrigger
