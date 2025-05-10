@@ -1,6 +1,8 @@
 "use client";
+
 import Link from "next/link";
 import Logo from "./server/Logo";
+import { signOut } from "next-auth/react";
 export default function SignupHeader({ isAuth }: { isAuth: boolean }) {
   return (
     <header
@@ -10,7 +12,7 @@ export default function SignupHeader({ isAuth }: { isAuth: boolean }) {
         <Link href={isAuth ? "/" : "/discovery"}>
           <Logo />
         </Link>
-        {!isAuth && (
+        {!isAuth ? (
           <span className="flex items-center">
             <Link
               href={"signin"}
@@ -18,6 +20,17 @@ export default function SignupHeader({ isAuth }: { isAuth: boolean }) {
             >
               Sign in
             </Link>
+          </span>
+        ) : (
+          <span className="flex items-center">
+            <button
+              className="h-max cursor-pointer rounded bg-red-400 px-2 py-1 text-sm text-white"
+              onClick={() => {
+                signOut();
+              }}
+            >
+              Logout
+            </button>
           </span>
         )}
       </div>

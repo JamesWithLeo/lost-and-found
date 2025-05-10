@@ -2,9 +2,19 @@ import { neonConfig, neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import ws from "ws";
 import { claims, items, users } from "./schema";
-import { eq, ilike, and, or, not, gte, count } from "drizzle-orm";
+import {
+  eq,
+  ilike,
+  and,
+  or,
+  not,
+  gte,
+  count,
+  sql as sqlDrizzle,
+} from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/authOptions";
+
 neonConfig.webSocketConstructor = ws;
 
 const sql = neon(process.env.DATABASE_URL!);
@@ -278,6 +288,7 @@ export async function findMatchingItems({
 export async function getFoundItems(
   userId: string | undefined | null,
   limit?: number,
+  random?: boolean,
 ) {
   if (!userId) {
     throw new Error("User id is required to perform this query");
@@ -310,6 +321,9 @@ export async function getFoundItems(
 
   if (limit) {
     query.limit(limit);
+  }
+  if (random) {
+    query.orderBy(sqlDrizzle`random()`);
   }
 
   return query;
@@ -417,4 +431,44 @@ export async function getClaim(itemId: string, userId: string) {
     .where(and(eq(claims.itemId, itemId), eq(claims.userId, userId)))
     .limit(1)
     .then((res) => res[0]);
+}
+
+export async function getRandomItems(
+  userId: string | undefined | null,
+  limit?: number,
+  random?: boolean,
+) {
+  if (!userId) {
+    throw new Error("User id is required to perform this query");
+  }
+
+  const conditions = [not(eq(items.userId, userId)), eq(items.type, "found")];
+
+  const query = db
+    .select({
+      item: {
+        ...items,
+      },
+      user: {
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        email: users.email,
+      },
+      claimCount: count(claims.itemId).as("claimCount"),
+    })
+    .from(items)
+    .leftJoin(users, eq(items.userId, users.id))
+    .leftJoin(claims, eq(claims.itemId, items.id))
+    .where(and(...conditions))
+    .groupBy(items.id, users.id);
+
+  if (limit) {
+    query.limit(limit);
+  }
+  if (random) {
+    query.orderBy(sqlDrizzle`random()`);
+  }
+
+  return query;
 }
