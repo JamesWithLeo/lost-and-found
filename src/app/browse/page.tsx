@@ -12,8 +12,8 @@ export default async function Page() {
   const items = await getRandomItems(session.user.id, 20, true);
 
   return (
-    <main className="flex min-h-dvh w-full flex-col items-center py-10">
-      <section className="flex w-full max-w-7xl gap-8">
+    <main className="flex min-h-dvh w-full flex-col items-center px-[1.5rem] py-10 sm:px-8">
+      <section className="flex w-full max-w-7xl items-baseline gap-8">
         {items &&
           Array.isArray(items) &&
           items.length &&
@@ -25,7 +25,7 @@ export default async function Page() {
               user={item.user}
               claimantCount={item.claimCount}
               clickLink="/found-item/"
-            ></MatchingCard>
+            />
           ))}
       </section>
     </main>

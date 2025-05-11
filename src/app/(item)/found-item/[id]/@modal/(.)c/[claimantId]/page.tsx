@@ -76,7 +76,7 @@ export default async function Page({
           </span>
         </div>
         <div className="grid w-full grid-cols-2 gap-4 md:w-max">
-          <button className="text-primary cursor-pointer rounded border p-4 hover:bg-gray-100 hover:shadow">
+          <button className="text-primary cursor-pointer rounded border p-4 hover:bg-gray-50 hover:shadow">
             Approved
           </button>
           <button className="cursor-pointer rounded border bg-red-400 p-4 text-white hover:shadow">
