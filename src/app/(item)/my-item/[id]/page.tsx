@@ -40,6 +40,7 @@ export default async function Page({
                 user={match.user}
                 key={`${match.item.id}-matching-item`}
                 clickLink="/my-item/"
+                claimantCount={match.claimCount}
                 isCurrentUser={session?.user.id === match.user?.id}
               />
             ))}
