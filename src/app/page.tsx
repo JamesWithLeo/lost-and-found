@@ -32,7 +32,7 @@ export default async function Page({ searchParams }: PageProps) {
       birthDate: user?.birthDate,
     })
   ) {
-    redirect("/signup");
+    redirect("/discovery");
   }
 
   if (!session || !session.user.id) {

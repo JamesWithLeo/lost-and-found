@@ -9,6 +9,7 @@ import {
   integer,
   primaryKey,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const role = pgEnum("role", ["user", "admin"]);
 export const gender = pgEnum("gender", ["male", "female"]);
@@ -68,6 +69,7 @@ export const ApprovalStatus = pgEnum("approvalStatus", [
   "pending",
   "decline",
 ]);
+
 export const claims = pgTable(
   "claims",
   {
@@ -94,3 +96,19 @@ export const claims = pgTable(
     };
   },
 );
+
+export const userRelations = relations(users, ({ many }) => ({
+  items: many(items),
+}));
+
+export const itemsRelations = relations(items, ({ one, many }) => ({
+  users: one(users, {
+    fields: [items.userId],
+    references: [users.id],
+  }),
+  claims: many(claims),
+}));
+
+export const claimsRelations = relations(claims, ({ one }) => ({
+  items: one(items),
+}));

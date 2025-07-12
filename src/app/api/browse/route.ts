@@ -1,0 +1,31 @@
+import { getServerSession } from "next-auth";
+import { getRandomItems, getTableCount } from "@/db/drizzle";
+import { authOptions } from "@/authOptions";
+import { NextResponse } from "next/server";
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const session = await getServerSession(authOptions);
+  const lastCreated = searchParams.get("lastCreated");
+  const byDate = searchParams.get("byDate") == "true";
+  const byPopularity = searchParams.get("byPopularity");
+  const byBounty = searchParams.get("byBounty");
+  const random = searchParams.get("random");
+  const lastDate = searchParams.get("lastDate");
+  const offset = searchParams.get("offset");
+
+  const result = await getRandomItems({
+    userId: session.user.id,
+    byDate: byDate,
+    byPopularity: byPopularity,
+    byBounty: byBounty,
+    random: random,
+    lastCreatedAt: lastDate,
+    offset: offset,
+  });
+
+  const tableCount = await getTableCount({ userId: session.user.id });
+  const remaining = result.length;
+
+  return NextResponse.json({ items: result, remaining: remaining });
+}
