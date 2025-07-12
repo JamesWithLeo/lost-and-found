@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { getRandomItems, getTableCount } from "@/db/drizzle";
+import { getRandomItems } from "@/db/drizzle";
 import { authOptions } from "@/authOptions";
 import { NextResponse } from "next/server";
 
@@ -10,7 +10,6 @@ export async function GET(req: Request) {
   const byPopularity = searchParams.get("byPopularity");
   const byBounty = searchParams.get("byBounty");
   const random = searchParams.get("random");
-  const lastDate = searchParams.get("lastDate");
   const offset = searchParams.get("offset");
 
   const result = await getRandomItems({
