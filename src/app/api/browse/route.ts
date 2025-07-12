@@ -6,6 +6,7 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const session = await getServerSession(authOptions);
+
   const byDate = searchParams.get("byDate") == "true";
   const byPopularity = searchParams.get("byPopularity");
   const byBounty = searchParams.get("byBounty");
@@ -13,7 +14,7 @@ export async function GET(req: Request) {
   const offset = searchParams.get("offset");
 
   const result = await getRandomItems({
-    userId: session.user.id,
+    userId: session?.user.id,
     byDate: byDate,
     byPopularity: byPopularity,
     byBounty: byBounty,
