@@ -7,15 +7,15 @@ import {
   eq,
   ilike,
   and,
-  gt,
-  lte,
-  lt,
+  // gt,
+  // lte,
+  // lt,
   or,
   not,
   gte,
   count,
   desc,
-  asc,
+  // asc,
   sql as sqlDrizzle,
 } from "drizzle-orm";
 import { getServerSession } from "next-auth";
@@ -445,7 +445,6 @@ export async function getRandomItems({
   limit,
   random,
   byDate,
-  lastCreatedAt,
   byBounty,
   byPopularity,
   offset,
@@ -456,12 +455,15 @@ export async function getRandomItems({
   byBounty?: boolean;
   random?: boolean;
   byPopularity?: boolean;
-  lastCreatedAt?: string;
   offset?: number;
 }) {
   if (!userId) throw new Error("User id is required to perform this query");
-
   const conditions = [not(eq(items.userId, userId)), eq(items.type, "found")];
+
+  if (byPopularity) {
+  }
+  if (byBounty) {
+  }
   const LIMIT = 10;
 
   const query = db
@@ -489,18 +491,4 @@ export async function getRandomItems({
   }
 
   return query;
-}
-
-export async function getTableCount({
-  userId,
-}: {
-  userId: string | undefined | null;
-}) {
-  const conditions = [not(eq(items.userId, userId)), eq(items.type, "found")];
-
-  const result = await db
-    .select({ count: count() })
-    .from(items)
-    .where(and(...conditions));
-  return result[0]?.count ?? 0;
 }

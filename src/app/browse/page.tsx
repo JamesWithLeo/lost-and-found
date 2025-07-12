@@ -6,7 +6,6 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import MatchingCard from "@/ui/MatchingCard.tsx";
 
 export default function Page() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [isEnd, setIsEnd] = useState<boolean>(false);
 
@@ -92,7 +91,7 @@ export default function Page() {
 
   useEffect(() => {
     fetchItems();
-  }, []);
+  }, [fetchItems]);
 
   useEffect(() => {
     if (isEnd) return;
@@ -108,14 +107,14 @@ export default function Page() {
     const el = loaderRef.current;
     if (el) observer.observe(el);
     return () => el && observer.unobserve(el);
-  }, [isEnd]);
+  }, [isEnd, fetchItems]);
 
   return (
     <main className="flex w-full  flex-col gap-8 items-center px-[1.5rem] py-10 sm:px-8">
       <section className="grid items-start grid-cols-1 min-h-dvh grid-rows-1  md:grid-cols-4 w-full  max-w-7xl  gap-8">
         {postedItems &&
           Array.isArray(postedItems) &&
-          postedItems.length &&
+          !!postedItems.length &&
           postedItems.map(({ item, claimCount, user }) => (
             <MatchingCard
               key={item.id}

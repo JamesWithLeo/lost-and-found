@@ -6,7 +6,6 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const session = await getServerSession(authOptions);
-  const lastCreated = searchParams.get("lastCreated");
   const byDate = searchParams.get("byDate") == "true";
   const byPopularity = searchParams.get("byPopularity");
   const byBounty = searchParams.get("byBounty");
@@ -20,11 +19,9 @@ export async function GET(req: Request) {
     byPopularity: byPopularity,
     byBounty: byBounty,
     random: random,
-    lastCreatedAt: lastDate,
     offset: offset,
   });
 
-  const tableCount = await getTableCount({ userId: session.user.id });
   const remaining = result.length;
 
   return NextResponse.json({ items: result, remaining: remaining });
